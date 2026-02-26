@@ -1,12 +1,13 @@
-package com.example.taskschedule.domain;
+package com.example.expertschedule.domain;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Employee {
+public class Skill {
 
     private String name;
 
 }
+

@@ -1,4 +1,4 @@
-package com.example.taskschedule.domain;
+package com.example.expertschedule.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,9 +16,15 @@ import java.util.List;
 @PlanningSolution
 public class TaskSchedule {
 
-    @ValueRangeProvider(id = "employeeRange")
     @ProblemFactCollectionProperty
-    private List<Employee> employeeList;
+    private List<Skill> skillList;
+
+    @ValueRangeProvider(id = "expertRange")
+    @ProblemFactCollectionProperty
+    private List<Expert> expertList;
+
+    @ProblemFactCollectionProperty
+    private List<Customer> customerList;
 
     @PlanningEntityCollectionProperty
     private List<Task> taskList;
