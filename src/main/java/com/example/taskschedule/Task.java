@@ -17,8 +17,4 @@ public class Task {
     @PlanningVariable(valueRangeProviderRefs = "employeeRange")
     private Employee assignedEmployee;
 
-    public Task(String name, int durationInHours) {
-        this.name = name;
-        this.durationInHours = durationInHours;
-    }
 }
