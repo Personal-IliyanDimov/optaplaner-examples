@@ -1,6 +1,5 @@
 package com.example.taskschedule;
 
-import lombok.AllArgsConstructor;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
@@ -15,7 +14,7 @@ public class Task {
     private String name;
     private int durationInHours;
 
-    @PlanningVariable
+    @PlanningVariable(valueRangeProviderRefs = "employeeRange")
     private Employee assignedEmployee;
 
     public Task(String name, int durationInHours) {
