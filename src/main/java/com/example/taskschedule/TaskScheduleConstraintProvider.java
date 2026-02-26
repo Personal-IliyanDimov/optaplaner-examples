@@ -17,7 +17,7 @@ public class TaskScheduleConstraintProvider implements ConstraintProvider {
     private Constraint balanceWorkload(ConstraintFactory factory) {
         // Very simple example:
         // Minimize total task duration per employee, encouraging OptaPlanner to distribute tasks.
-        return factory.from(Task.class)
+        return factory.forEach(Task.class)
                 .groupBy(Task::getAssignedEmployee,
                         org.optaplanner.core.api.score.stream.ConstraintCollectors.sum(Task::getDurationInHours))
                 .penalize(HardSoftScore.ONE_SOFT,

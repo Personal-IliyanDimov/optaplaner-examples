@@ -22,7 +22,9 @@ public class TaskScheduleApp {
                 new Task("Task C", 5)
         );
 
-        TaskSchedule problem = new TaskSchedule(employees, tasks);
+        TaskSchedule problem = new TaskSchedule();
+        problem.setEmployeeList(employees);
+        problem.setTaskList(tasks);
 
         SolverConfig solverConfig = new SolverConfig()
                 .withSolutionClass(TaskSchedule.class)
@@ -43,4 +45,3 @@ public class TaskScheduleApp {
         }
     }
 }
-
