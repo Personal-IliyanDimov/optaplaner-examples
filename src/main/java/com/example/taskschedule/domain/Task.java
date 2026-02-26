@@ -1,4 +1,4 @@
-package com.example.taskschedule;
+package com.example.taskschedule.domain;
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;

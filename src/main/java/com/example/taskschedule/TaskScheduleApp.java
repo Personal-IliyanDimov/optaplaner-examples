@@ -1,5 +1,8 @@
 package com.example.taskschedule;
 
+import com.example.taskschedule.domain.Employee;
+import com.example.taskschedule.domain.Task;
+import com.example.taskschedule.domain.TaskSchedule;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
@@ -7,7 +10,6 @@ import org.optaplanner.core.config.solver.termination.TerminationConfig;
 
 import java.util.Arrays;
 import java.util.List;
-
 public class TaskScheduleApp {
 
     public static void main(String[] args) {

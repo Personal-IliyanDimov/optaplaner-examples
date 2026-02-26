@@ -1,4 +1,4 @@
-package com.example.taskschedule;
+package com.example.taskschedule.domain;
 
 import lombok.Getter;
 import lombok.Setter;

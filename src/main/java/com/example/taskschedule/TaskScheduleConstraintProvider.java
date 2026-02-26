@@ -1,5 +1,6 @@
 package com.example.taskschedule;
 
+import com.example.taskschedule.domain.Task;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.stream.Constraint;
 import org.optaplanner.core.api.score.stream.ConstraintFactory;
