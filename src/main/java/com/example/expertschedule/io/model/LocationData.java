@@ -1,4 +1,4 @@
-package com.example.expertschedule.generator;
+package com.example.expertschedule.io.model;
 
 import lombok.Getter;
 import lombok.Setter;

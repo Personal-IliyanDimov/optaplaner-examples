@@ -1,9 +1,9 @@
-package com.example.expertschedule;
+package com.example.expertschedule.planner.cp;
 
-import com.example.expertschedule.domain.Expert;
-import com.example.expertschedule.domain.Location;
-import com.example.expertschedule.domain.Skill;
-import com.example.expertschedule.domain.Task;
+import com.example.expertschedule.planner.domain.Expert;
+import com.example.expertschedule.planner.domain.Location;
+import com.example.expertschedule.planner.domain.Skill;
+import com.example.expertschedule.planner.domain.Order;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.stream.Constraint;
 import org.optaplanner.core.api.score.stream.ConstraintFactory;
@@ -23,10 +23,10 @@ public class TaskScheduleConstraintProvider implements ConstraintProvider {
 
     private Constraint missingRequiredSkill(ConstraintFactory factory) {
         // Hard: expert must have all skills required by the order.
-        return factory.forEach(Task.class)
-                .filter(task -> {
-                    Expert expert = task.getAssignedExpert();
-                    Set<Skill> required = task.getRequiredSkills();
+        return factory.forEach(Order.class)
+                .filter(order -> {
+                    Expert expert = order.getAssignedExpert();
+                    Set<Skill> required = order.getRequiredSkills();
                     if (expert == null || required == null) {
                         return false;
                     }
@@ -39,15 +39,15 @@ public class TaskScheduleConstraintProvider implements ConstraintProvider {
 
     private Constraint minimizeTravelFromExpertToCustomer(ConstraintFactory factory) {
         // Soft: minimize distance between expert back office location and customer location.
-        return factory.forEach(Task.class)
-                .filter(task -> task.getAssignedExpert() != null
-                        && task.getCustomer() != null
-                        && task.getCustomer().getLocation() != null
-                        && task.getAssignedExpert().getBackOfficeLocation() != null)
+        return factory.forEach(Order.class)
+                .filter(order -> order.getAssignedExpert() != null
+                        && order.getCustomer() != null
+                        && order.getCustomer().getLocation() != null
+                        && order.getAssignedExpert().getBackOfficeLocation() != null)
                 .penalize(HardSoftScore.ONE_SOFT,
-                        task -> {
-                            Location from = task.getAssignedExpert().getBackOfficeLocation();
-                            Location to = task.getCustomer().getLocation();
+                        order -> {
+                            Location from = order.getAssignedExpert().getBackOfficeLocation();
+                            Location to = order.getCustomer().getLocation();
                             return (int) Math.round(from.distanceTo(to));
                         })
                 .asConstraint("Minimize travel from expert to customer");

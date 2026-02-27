@@ -1,4 +1,4 @@
-package com.example.expertschedule.domain;
+package com.example.expertschedule.planner.domain;
 
 import lombok.Getter;
 import lombok.Setter;

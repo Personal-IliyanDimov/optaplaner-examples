@@ -1,4 +1,4 @@
-package com.example.expertschedule.domain;
+package com.example.expertschedule.planner.domain;
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @PlanningEntity
-public class Task {
+public class Order {
 
     // Order that must be visited.
     private String code;

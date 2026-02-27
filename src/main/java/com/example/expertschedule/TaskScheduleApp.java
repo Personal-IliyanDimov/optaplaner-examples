@@ -1,16 +1,17 @@
 package com.example.expertschedule;
 
-import com.example.expertschedule.domain.Customer;
-import com.example.expertschedule.domain.Expert;
-import com.example.expertschedule.domain.Location;
-import com.example.expertschedule.domain.Skill;
-import com.example.expertschedule.domain.Task;
-import com.example.expertschedule.domain.TaskSchedule;
-import com.example.expertschedule.generator.CustomerData;
-import com.example.expertschedule.generator.ExpertData;
-import com.example.expertschedule.generator.LocationData;
-import com.example.expertschedule.generator.OrderData;
-import com.example.expertschedule.generator.SkillData;
+import com.example.expertschedule.planner.cp.TaskScheduleConstraintProvider;
+import com.example.expertschedule.planner.domain.Customer;
+import com.example.expertschedule.planner.domain.Expert;
+import com.example.expertschedule.planner.domain.Location;
+import com.example.expertschedule.planner.domain.Skill;
+import com.example.expertschedule.planner.domain.Order;
+import com.example.expertschedule.planner.solution.ExpertPlanningSolution;
+import com.example.expertschedule.io.model.CustomerData;
+import com.example.expertschedule.io.model.ExpertData;
+import com.example.expertschedule.io.model.LocationData;
+import com.example.expertschedule.io.model.OrderData;
+import com.example.expertschedule.io.model.SkillData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.optaplanner.core.api.solver.Solver;
@@ -35,21 +36,21 @@ public class TaskScheduleApp {
         List<ExpertData> expertData = readList(mapper, dataDir.resolve("experts.json").toFile(), new TypeReference<>() {});
         List<OrderData> orderData = readList(mapper, dataDir.resolve("orders.json").toFile(), new TypeReference<>() {});
 
-        TaskSchedule problem = toDomain(skillData, customerData, expertData, orderData);
+        ExpertPlanningSolution problem = toDomain(skillData, customerData, expertData, orderData);
 
         SolverConfig solverConfig = new SolverConfig()
-                .withSolutionClass(TaskSchedule.class)
-                .withEntityClasses(Task.class)
+                .withSolutionClass(ExpertPlanningSolution.class)
+                .withEntityClasses(Order.class)
                 .withConstraintProviderClass(TaskScheduleConstraintProvider.class)
                 .withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(5L));
 
-        SolverFactory<TaskSchedule> solverFactory = SolverFactory.create(solverConfig);
-        Solver<TaskSchedule> solver = solverFactory.buildSolver();
+        SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
+        Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();
 
-        TaskSchedule solution = solver.solve(problem);
+        ExpertPlanningSolution solution = solver.solve(problem);
 
         System.out.println("Best score: " + solution.getScore());
-        for (Task order : solution.getTaskList()) {
+        for (Order order : solution.getOrderList()) {
             System.out.printf("  %s -> %s at %s%n",
                     order.getCode(),
                     order.getAssignedExpert() == null ? "unassigned" : order.getAssignedExpert().getName(),
@@ -57,10 +58,10 @@ public class TaskScheduleApp {
         }
     }
 
-    private static TaskSchedule toDomain(List<SkillData> skillData,
-                                         List<CustomerData> customerData,
-                                         List<ExpertData> expertData,
-                                         List<OrderData> orderData) {
+    private static ExpertPlanningSolution toDomain(List<SkillData> skillData,
+                                                   List<CustomerData> customerData,
+                                                   List<ExpertData> expertData,
+                                                   List<OrderData> orderData) {
 
         Map<String, Skill> skillByName = new HashMap<>();
         for (SkillData sd : skillData) {
@@ -96,11 +97,11 @@ public class TaskScheduleApp {
             experts.add(expert);
         }
 
-        List<Task> tasks = new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         for (OrderData od : orderData) {
-            Task task = new Task();
-            task.setCode(od.getCode());
-            task.setCustomer(customerByName.get(od.getCustomer()));
+            Order order = new Order();
+            order.setCode(od.getCode());
+            order.setCustomer(customerByName.get(od.getCustomer()));
 
             Set<Skill> required = new HashSet<>();
             if (od.getRequiredSkills() != null) {
@@ -111,15 +112,15 @@ public class TaskScheduleApp {
                     }
                 }
             }
-            task.setRequiredSkills(required);
-            tasks.add(task);
+            order.setRequiredSkills(required);
+            orders.add(order);
         }
 
-        TaskSchedule schedule = new TaskSchedule();
+        ExpertPlanningSolution schedule = new ExpertPlanningSolution();
         schedule.setSkillList(new ArrayList<>(skillByName.values()));
         schedule.setExpertList(experts);
         schedule.setCustomerList(new ArrayList<>(customerByName.values()));
-        schedule.setTaskList(tasks);
+        schedule.setOrderList(orders);
         return schedule;
     }
 

@@ -1,8 +1,9 @@
-package com.example.expertschedule.domain;
+package com.example.expertschedule.planner.domain;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -15,4 +16,6 @@ public class Expert {
     private Location backOfficeLocation;
     private Set<Skill> skills;
 
+    // One schedule per day for this expert.
+    private List<ExpertSchedule> schedules;
 }

@@ -1,5 +1,9 @@
-package com.example.expertschedule.domain;
+package com.example.expertschedule.planner.solution;
 
+import com.example.expertschedule.planner.domain.Customer;
+import com.example.expertschedule.planner.domain.Expert;
+import com.example.expertschedule.planner.domain.Order;
+import com.example.expertschedule.planner.domain.Skill;
 import lombok.Getter;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
@@ -14,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @PlanningSolution
-public class TaskSchedule {
+public class ExpertPlanningSolution {
 
     @ProblemFactCollectionProperty
     private List<Skill> skillList;
@@ -27,7 +31,7 @@ public class TaskSchedule {
     private List<Customer> customerList;
 
     @PlanningEntityCollectionProperty
-    private List<Task> taskList;
+    private List<Order> orderList;
 
     @PlanningScore
     private HardSoftScore score;

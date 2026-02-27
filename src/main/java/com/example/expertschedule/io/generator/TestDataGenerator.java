@@ -1,5 +1,10 @@
-package com.example.expertschedule.generator;
+package com.example.expertschedule.io.generator;
 
+import com.example.expertschedule.io.model.CustomerData;
+import com.example.expertschedule.io.model.ExpertData;
+import com.example.expertschedule.io.model.LocationData;
+import com.example.expertschedule.io.model.OrderData;
+import com.example.expertschedule.io.model.SkillData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
