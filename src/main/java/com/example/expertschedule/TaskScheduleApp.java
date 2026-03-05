@@ -25,7 +25,7 @@ public class TaskScheduleApp {
                 .withSolutionClass(ExpertPlanningSolution.class)
                 .withEntityClasses(ExpertSchedule.class)
                 .withConstraintProviderClass(TaskScheduleConstraintProvider.class)
-                .withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(5L));
+                .withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(15L));
 
         SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
         Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();

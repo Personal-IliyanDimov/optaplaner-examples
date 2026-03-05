@@ -66,6 +66,7 @@ public class TestDataGenerator {
         return switch (name) {
             case "medium" -> GeneratorConfigPresets.medium();
             case "large" -> GeneratorConfigPresets.large();
+            case "extraLarge" -> GeneratorConfigPresets.extraLarge();
             default -> GeneratorConfigPresets.small();
         };
     }
