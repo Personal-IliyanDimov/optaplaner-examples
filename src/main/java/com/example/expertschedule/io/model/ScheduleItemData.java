@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CustomerData {
+public class ScheduleItemData {
 
-    private long id;
-    private String name;
+    private long orderId;
+    private int sequence;
 }

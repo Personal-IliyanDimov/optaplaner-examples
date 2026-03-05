@@ -2,7 +2,9 @@ package com.example.expertschedule;
 
 import com.example.expertschedule.loader.ExpertPlanningSolutionLoader;
 import com.example.expertschedule.planner.cp.TaskScheduleConstraintProvider;
+import com.example.expertschedule.planner.domain.ExpertSchedule;
 import com.example.expertschedule.planner.domain.Order;
+import com.example.expertschedule.planner.domain.ScheduleItem;
 import com.example.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -21,7 +23,7 @@ public class TaskScheduleApp {
 
         SolverConfig solverConfig = new SolverConfig()
                 .withSolutionClass(ExpertPlanningSolution.class)
-                .withEntityClasses(Order.class)
+                .withEntityClasses(ExpertSchedule.class)
                 .withConstraintProviderClass(TaskScheduleConstraintProvider.class)
                 .withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(5L));
 
@@ -31,11 +33,23 @@ public class TaskScheduleApp {
         ExpertPlanningSolution solution = solver.solve(problem);
 
         System.out.println("Best score: " + solution.getScore());
-        for (Order order : solution.getOrderList()) {
-            System.out.printf("  %s -> %s at %s%n",
-                    order.getCode(),
-                    order.getAssignedExpert() == null ? "unassigned" : order.getAssignedExpert().getName(),
-                    order.getCustomer() == null ? "n/a" : order.getCustomer().getName());
+        for (ExpertSchedule schedule : solution.getExpertScheduleList()) {
+            System.out.printf("Expert %d on %s: %d items%n",
+                    schedule.getExpertRef().getId(),
+                    schedule.getDate(),
+                    schedule.getItems() != null ? schedule.getItems().size() : 0);
+            if (schedule.getItems() != null) {
+                for (ScheduleItem item : schedule.getItems()) {
+                    Order order = item.getOrder();
+                    if (order != null) {
+                        System.out.printf("  seq %d -> order %d at (%.2f, %.2f)%n",
+                                item.getSequence(),
+                                order.getId().getId(),
+                                order.getLocation() != null ? order.getLocation().getLatitude() : 0,
+                                order.getLocation() != null ? order.getLocation().getLongitude() : 0);
+                    }
+                }
+            }
         }
     }
 }

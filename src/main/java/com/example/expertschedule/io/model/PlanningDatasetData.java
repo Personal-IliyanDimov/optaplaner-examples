@@ -17,4 +17,5 @@ public class PlanningDatasetData {
     private List<CustomerData> customers;
     private List<ExpertData> experts;
     private List<OrderData> orders;
+    private List<ExpertScheduleData> expertSchedules;
 }

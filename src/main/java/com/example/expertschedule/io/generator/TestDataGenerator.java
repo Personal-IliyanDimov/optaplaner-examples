@@ -40,9 +40,6 @@ public class TestDataGenerator {
         System.out.println("Generated " + presetName + " dataset: " + outputFile.toAbsolutePath());
     }
 
-    /**
-     * Generates a dataset from the given config and writes it to a single JSON file.
-     */
     public static void generate(GeneratorConfig config, Path outputFile) throws IOException {
         PlanningDatasetData dataset = buildDataset(config);
         MAPPER.writeValue(outputFile.toFile(), dataset);
@@ -54,12 +51,14 @@ public class TestDataGenerator {
         List<ExpertData> experts = buildExperts(config.getNumExperts(), skills,
                 config.getExpertsWithAvailability(), config.getExpertsWithAbsence());
         List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills);
+        List<ExpertScheduleData> expertSchedules = buildExpertSchedules(experts);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setSkills(skills);
         dataset.setCustomers(customers);
         dataset.setExperts(experts);
         dataset.setOrders(orders);
+        dataset.setExpertSchedules(expertSchedules);
         return dataset;
     }
 
@@ -86,8 +85,8 @@ public class TestDataGenerator {
         List<CustomerData> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             CustomerData c = new CustomerData();
+            c.setId(i + 1);
             c.setName("Customer-" + (i + 1));
-            c.setLocation(randomLocation(0, 20, 0, 20));
             list.add(c);
         }
         return list;
@@ -99,6 +98,7 @@ public class TestDataGenerator {
         String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace", "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah", "Olivia"};
         for (int i = 0; i < count; i++) {
             ExpertData e = new ExpertData();
+            e.setId(i + 1);
             e.setName(i < names.length ? names[i] : "Expert-" + (i + 1));
             e.setBackOfficeLocation(randomLocation(0, 10, 0, 5));
             e.setSkills(pickSkillNamesFromSkillData(skills));
@@ -123,9 +123,11 @@ public class TestDataGenerator {
     }
 
     private static List<AvailabilityData> sampleAvailabilities() {
+        int week = LocalDate.now().get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
         List<AvailabilityData> list = new ArrayList<>();
         for (DayOfWeek day : new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY}) {
             AvailabilityData a = new AvailabilityData();
+            a.setCalendarWeek(week);
             a.setDayOfWeek(day);
             a.setStartTime(LocalTime.of(8, 0));
             a.setEndTime(LocalTime.of(17, 0));
@@ -135,9 +137,12 @@ public class TestDataGenerator {
     }
 
     private static List<AbsenceData> sampleAbsences() {
+        int week = LocalDate.now().plusWeeks(1).get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
         AbsenceData a = new AbsenceData();
-        a.setStartDate(LocalDate.now().plusDays(7));
-        a.setEndDate(LocalDate.now().plusDays(9));
+        a.setCalendarWeek(week);
+        a.setDayOfWeek(DayOfWeek.WEDNESDAY);
+        a.setStartTime(LocalTime.of(0, 0));
+        a.setEndTime(LocalTime.of(23, 59));
         a.setReason("Leave");
         return List.of(a);
     }
@@ -148,8 +153,10 @@ public class TestDataGenerator {
         if (skillNames.isEmpty()) skillNames = List.of("Electrical");
         for (int i = 0; i < count; i++) {
             OrderData o = new OrderData();
+            o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
-            o.setCustomer(customers.get(ThreadLocalRandom.current().nextInt(customers.size())).getName());
+            o.setCustomerId(customers.get(ThreadLocalRandom.current().nextInt(customers.size())).getId());
+            o.setLocation(randomLocation(0, 20, 0, 20));
             int skillCount = Math.max(1, ThreadLocalRandom.current().nextInt(2) + 1);
             Set<String> required = new HashSet<>();
             while (required.size() < skillCount && required.size() < skillNames.size()) {
@@ -157,6 +164,19 @@ public class TestDataGenerator {
             }
             o.setRequiredSkills(new ArrayList<>(required));
             list.add(o);
+        }
+        return list;
+    }
+
+    private static List<ExpertScheduleData> buildExpertSchedules(List<ExpertData> experts) {
+        LocalDate scheduleDate = LocalDate.now();
+        List<ExpertScheduleData> list = new ArrayList<>();
+        for (ExpertData e : experts) {
+            ExpertScheduleData es = new ExpertScheduleData();
+            es.setExpertId(e.getId());
+            es.setDate(scheduleDate);
+            es.setItems(new ArrayList<>());
+            list.add(es);
         }
         return list;
     }

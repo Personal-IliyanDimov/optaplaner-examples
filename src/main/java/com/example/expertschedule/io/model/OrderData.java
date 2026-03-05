@@ -9,8 +9,10 @@ import java.util.List;
 @Setter
 public class OrderData {
 
+    private long id;
+    /** Optional display code (e.g. ORDER-1). */
     private String code;
-    private String customer;
+    private long customerId;
+    private LocationData location;
     private List<String> requiredSkills;
 }
-

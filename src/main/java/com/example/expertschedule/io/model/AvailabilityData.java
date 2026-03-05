@@ -6,14 +6,13 @@ import lombok.Setter;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
+/** DTO for planner.domain.time.Availability (extends WeekPeriod). */
 @Getter
 @Setter
 public class AvailabilityData {
 
-    /** Day of week (e.g. MONDAY). */
+    private int calendarWeek;
     private DayOfWeek dayOfWeek;
-    /** Start of availability window. */
     private LocalTime startTime;
-    /** End of availability window. */
     private LocalTime endTime;
 }

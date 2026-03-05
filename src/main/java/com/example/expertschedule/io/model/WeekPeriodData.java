@@ -6,14 +6,13 @@ import lombok.Setter;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-/** DTO for planner.domain.time.Absence (extends WeekPeriod + reason). */
+/** DTO matching planner.domain.time.WeekPeriod (calendar week + day + time window). */
 @Getter
 @Setter
-public class AbsenceData {
+public class WeekPeriodData {
 
     private int calendarWeek;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String reason;
 }
