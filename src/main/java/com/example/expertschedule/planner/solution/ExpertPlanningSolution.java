@@ -2,6 +2,7 @@ package com.example.expertschedule.planner.solution;
 
 import com.example.expertschedule.planner.domain.Customer;
 import com.example.expertschedule.planner.domain.Expert;
+import com.example.expertschedule.planner.domain.ExpertSchedule;
 import com.example.expertschedule.planner.domain.Order;
 import com.example.expertschedule.planner.domain.Skill;
 import lombok.Getter;
@@ -30,10 +31,12 @@ public class ExpertPlanningSolution {
     @ProblemFactCollectionProperty
     private List<Customer> customerList;
 
-    @PlanningEntityCollectionProperty
+    @ProblemFactCollectionProperty
     private List<Order> orderList;
+
+    @PlanningEntityCollectionProperty
+    private List<ExpertSchedule> expertScheduleList;
 
     @PlanningScore
     private HardSoftScore score;
-
 }

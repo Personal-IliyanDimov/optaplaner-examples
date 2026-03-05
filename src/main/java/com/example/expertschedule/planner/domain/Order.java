@@ -1,5 +1,7 @@
 package com.example.expertschedule.planner.domain;
 
+import com.example.expertschedule.planner.domain.refs.CustomerRef;
+import com.example.expertschedule.planner.domain.refs.OrderRef;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
@@ -12,13 +14,8 @@ import java.util.Set;
 @Setter
 @PlanningEntity
 public class Order {
-
-    // Order that must be visited.
-    private String code;
-    private Customer customer;
+    private OrderRef id;
+    private CustomerRef customerRef;
+    private Location location;
     private Set<Skill> requiredSkills;
-
-    @PlanningVariable(valueRangeProviderRefs = "expertRange")
-    private Expert assignedExpert;
-
 }
