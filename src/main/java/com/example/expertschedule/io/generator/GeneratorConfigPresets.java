@@ -11,7 +11,7 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig small() {
         return GeneratorConfig.builder()
-                .numSkills(5)
+                .numSkills(15)
                 .numExperts(5)
                 .numCustomers(10)
                 .numOrders(20)
@@ -23,7 +23,7 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig medium() {
         return GeneratorConfig.builder()
-                .numSkills(5)
+                .numSkills(15)
                 .numExperts(15)
                 .numCustomers(20)
                 .numOrders(50)
@@ -35,7 +35,7 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig large() {
         return GeneratorConfig.builder()
-                .numSkills(10)
+                .numSkills(15)
                 .numExperts(30)
                 .numCustomers(100)
                 .numOrders(100)
@@ -47,7 +47,7 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig extraLarge() {
         return GeneratorConfig.builder()
-                .numSkills(10)
+                .numSkills(15)
                 .numExperts(50)
                 .numCustomers(1000)
                 .numOrders(100)

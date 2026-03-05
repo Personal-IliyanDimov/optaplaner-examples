@@ -75,7 +75,11 @@ public class TestDataGenerator {
 
     private static List<SkillData> buildSkills(int count) {
         List<SkillData> list = new ArrayList<>();
-        String[] names = {"Electrical", "Plumbing", "Networking", "HVAC", "Carpentry", "Painting", "Security", "Landscaping"};
+        String[] names = {"Electrical", "Painting-Scratches", "Engine-Petrol",
+                          "Engine-Diesel", "Exclusive", "Total Damage", "Security",
+                          "Painting-Part", "Tires", "Glass", "Interior", "Exterior",
+                          "Software", "Hardware", "Other"};
+
         for (int i = 0; i < count; i++) {
             SkillData s = new SkillData();
             s.setName(i < names.length ? names[i] : "Skill-" + (i + 1));
