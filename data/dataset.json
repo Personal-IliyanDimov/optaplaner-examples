@@ -1,0 +1,428 @@
+{
+  "skills" : [ {
+    "name" : "Electrical"
+  }, {
+    "name" : "Plumbing"
+  }, {
+    "name" : "Networking"
+  }, {
+    "name" : "HVAC"
+  }, {
+    "name" : "Carpentry"
+  } ],
+  "customers" : [ {
+    "id" : 1,
+    "name" : "Customer-1"
+  }, {
+    "id" : 2,
+    "name" : "Customer-2"
+  }, {
+    "id" : 3,
+    "name" : "Customer-3"
+  }, {
+    "id" : 4,
+    "name" : "Customer-4"
+  }, {
+    "id" : 5,
+    "name" : "Customer-5"
+  }, {
+    "id" : 6,
+    "name" : "Customer-6"
+  }, {
+    "id" : 7,
+    "name" : "Customer-7"
+  }, {
+    "id" : 8,
+    "name" : "Customer-8"
+  }, {
+    "id" : 9,
+    "name" : "Customer-9"
+  }, {
+    "id" : 10,
+    "name" : "Customer-10"
+  } ],
+  "experts" : [ {
+    "id" : 1,
+    "name" : "Alice",
+    "backOfficeLocation" : {
+      "latitude" : 4.347423940336146,
+      "longitude" : 3.0535823758722476
+    },
+    "skills" : [ "Electrical" ],
+    "availabilities" : [ {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    } ],
+    "absences" : [ {
+      "calendarWeek" : 11,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 0, 0 ],
+      "endTime" : [ 23, 59 ],
+      "reason" : "Leave"
+    } ]
+  }, {
+    "id" : 2,
+    "name" : "Bob",
+    "backOfficeLocation" : {
+      "latitude" : 2.4530945257039516,
+      "longitude" : 2.177550515466271
+    },
+    "skills" : [ "Plumbing", "Electrical", "Networking", "HVAC" ],
+    "availabilities" : [ {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    } ],
+    "absences" : null
+  }, {
+    "id" : 3,
+    "name" : "Carol",
+    "backOfficeLocation" : {
+      "latitude" : 9.500139224729928,
+      "longitude" : 0.1804635187138054
+    },
+    "skills" : [ "Plumbing" ],
+    "availabilities" : [ {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    } ],
+    "absences" : null
+  }, {
+    "id" : 4,
+    "name" : "Dave",
+    "backOfficeLocation" : {
+      "latitude" : 2.846407332055425,
+      "longitude" : 0.22402441345796775
+    },
+    "skills" : [ "Plumbing", "Networking", "Electrical", "Carpentry", "HVAC" ],
+    "availabilities" : [ {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    } ],
+    "absences" : null
+  }, {
+    "id" : 5,
+    "name" : "Eve",
+    "backOfficeLocation" : {
+      "latitude" : 7.352817480506402,
+      "longitude" : 3.130625809195881
+    },
+    "skills" : [ "Plumbing", "Electrical", "Carpentry" ],
+    "availabilities" : [ {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 8, 0 ],
+      "endTime" : [ 17, 0 ]
+    } ],
+    "absences" : null
+  } ],
+  "orders" : [ {
+    "id" : 1,
+    "code" : "ORDER-1",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 18.972588040578607,
+      "longitude" : 0.791324107901541
+    },
+    "requiredSkills" : [ "Networking" ]
+  }, {
+    "id" : 2,
+    "code" : "ORDER-2",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 19.44535123249215,
+      "longitude" : 5.175934972705363
+    },
+    "requiredSkills" : [ "Plumbing", "Carpentry" ]
+  }, {
+    "id" : 3,
+    "code" : "ORDER-3",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 6.7319010938370045,
+      "longitude" : 5.629804830893724
+    },
+    "requiredSkills" : [ "Plumbing", "Electrical" ]
+  }, {
+    "id" : 4,
+    "code" : "ORDER-4",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 4.412762919921112,
+      "longitude" : 4.855034269804102
+    },
+    "requiredSkills" : [ "Networking", "Carpentry" ]
+  }, {
+    "id" : 5,
+    "code" : "ORDER-5",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 9.408585245048393,
+      "longitude" : 12.131492287384898
+    },
+    "requiredSkills" : [ "Plumbing", "Electrical" ]
+  }, {
+    "id" : 6,
+    "code" : "ORDER-6",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 8.254771253079063,
+      "longitude" : 13.473051124031521
+    },
+    "requiredSkills" : [ "HVAC", "Carpentry" ]
+  }, {
+    "id" : 7,
+    "code" : "ORDER-7",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 3.028338663029797,
+      "longitude" : 9.839892829962839
+    },
+    "requiredSkills" : [ "Carpentry" ]
+  }, {
+    "id" : 8,
+    "code" : "ORDER-8",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 13.583082125639123,
+      "longitude" : 13.891591437057254
+    },
+    "requiredSkills" : [ "Plumbing", "Electrical" ]
+  }, {
+    "id" : 9,
+    "code" : "ORDER-9",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 17.69348604513847,
+      "longitude" : 15.547171814265482
+    },
+    "requiredSkills" : [ "Electrical" ]
+  }, {
+    "id" : 10,
+    "code" : "ORDER-10",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 8.521615754930982,
+      "longitude" : 1.141934607238031
+    },
+    "requiredSkills" : [ "Plumbing", "HVAC" ]
+  }, {
+    "id" : 11,
+    "code" : "ORDER-11",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 1.0824139508619912,
+      "longitude" : 17.797180763347296
+    },
+    "requiredSkills" : [ "HVAC", "Electrical" ]
+  }, {
+    "id" : 12,
+    "code" : "ORDER-12",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 9.419007150051733,
+      "longitude" : 16.020489478870537
+    },
+    "requiredSkills" : [ "Plumbing", "Networking" ]
+  }, {
+    "id" : 13,
+    "code" : "ORDER-13",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 19.083467449231673,
+      "longitude" : 0.07352825856767886
+    },
+    "requiredSkills" : [ "Plumbing", "Carpentry" ]
+  }, {
+    "id" : 14,
+    "code" : "ORDER-14",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 1.7587021965416039,
+      "longitude" : 5.243592686513649
+    },
+    "requiredSkills" : [ "HVAC", "Networking" ]
+  }, {
+    "id" : 15,
+    "code" : "ORDER-15",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 9.012589377511492,
+      "longitude" : 0.6218627893026629
+    },
+    "requiredSkills" : [ "HVAC", "Carpentry" ]
+  }, {
+    "id" : 16,
+    "code" : "ORDER-16",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 14.340880989063605,
+      "longitude" : 11.680583926495387
+    },
+    "requiredSkills" : [ "HVAC", "Networking" ]
+  }, {
+    "id" : 17,
+    "code" : "ORDER-17",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 8.76322405116447,
+      "longitude" : 2.126173198958552
+    },
+    "requiredSkills" : [ "Plumbing", "Networking" ]
+  }, {
+    "id" : 18,
+    "code" : "ORDER-18",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 19.84704808882791,
+      "longitude" : 7.545054277008325
+    },
+    "requiredSkills" : [ "Carpentry" ]
+  }, {
+    "id" : 19,
+    "code" : "ORDER-19",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.160975648254513,
+      "longitude" : 18.29909960352365
+    },
+    "requiredSkills" : [ "HVAC" ]
+  }, {
+    "id" : 20,
+    "code" : "ORDER-20",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.041342812180429,
+      "longitude" : 17.045767928421792
+    },
+    "requiredSkills" : [ "Plumbing" ]
+  } ],
+  "expertSchedules" : [ {
+    "expertId" : 1,
+    "date" : [ 2026, 3, 5 ],
+    "items" : [ ]
+  }, {
+    "expertId" : 2,
+    "date" : [ 2026, 3, 5 ],
+    "items" : [ ]
+  }, {
+    "expertId" : 3,
+    "date" : [ 2026, 3, 5 ],
+    "items" : [ ]
+  }, {
+    "expertId" : 4,
+    "date" : [ 2026, 3, 5 ],
+    "items" : [ ]
+  }, {
+    "expertId" : 5,
+    "date" : [ 2026, 3, 5 ],
+    "items" : [ ]
+  } ]
+}

@@ -14,6 +14,7 @@ import java.util.List;
 public class PlanningDatasetData {
 
     private List<SkillData> skills;
+    private List<BackOfficeData> backOffices;
     private List<CustomerData> customers;
     private List<ExpertData> experts;
     private List<OrderData> orders;

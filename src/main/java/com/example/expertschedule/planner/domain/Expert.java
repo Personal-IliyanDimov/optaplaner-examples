@@ -1,5 +1,6 @@
 package com.example.expertschedule.planner.domain;
 
+import com.example.expertschedule.planner.domain.refs.BackOfficeRef;
 import com.example.expertschedule.planner.domain.refs.ExpertRef;
 import com.example.expertschedule.planner.domain.time.Absence;
 import com.example.expertschedule.planner.domain.time.Availability;
@@ -16,7 +17,7 @@ public class Expert {
     private ExpertRef id;
     private String name;
 
-    // Expert's back office location, from where travel starts.
+    private BackOfficeRef backOfficeRef;
     private Location backOfficeLocation;
     private Set<Skill> skills;
 

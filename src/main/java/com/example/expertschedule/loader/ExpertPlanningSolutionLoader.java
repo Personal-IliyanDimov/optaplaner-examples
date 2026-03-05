@@ -2,6 +2,7 @@ package com.example.expertschedule.loader;
 
 import com.example.expertschedule.io.model.*;
 import com.example.expertschedule.planner.domain.*;
+import com.example.expertschedule.planner.domain.refs.BackOfficeRef;
 import com.example.expertschedule.planner.domain.refs.CustomerRef;
 import com.example.expertschedule.planner.domain.refs.ExpertRef;
 import com.example.expertschedule.planner.domain.refs.OrderRef;
@@ -36,6 +37,7 @@ public class ExpertPlanningSolutionLoader {
         PlanningDatasetData data = objectMapper.readValue(datasetFile.toFile(), PlanningDatasetData.class);
         return toDomain(
                 data.getSkills() != null ? data.getSkills() : List.of(),
+                data.getBackOffices() != null ? data.getBackOffices() : List.of(),
                 data.getCustomers() != null ? data.getCustomers() : List.of(),
                 data.getExperts() != null ? data.getExperts() : List.of(),
                 data.getOrders() != null ? data.getOrders() : List.of(),
@@ -48,6 +50,7 @@ public class ExpertPlanningSolutionLoader {
     }
 
     private ExpertPlanningSolution toDomain(List<SkillData> skillData,
+                                            List<BackOfficeData> backOfficeData,
                                             List<CustomerData> customerData,
                                             List<ExpertData> expertData,
                                             List<OrderData> orderData,
@@ -57,6 +60,17 @@ public class ExpertPlanningSolutionLoader {
             Skill skill = new Skill();
             skill.setName(sd.getName());
             skillByName.put(sd.getName(), skill);
+        }
+
+        Map<Long, BackOffice> backOfficeById = new HashMap<>();
+        for (BackOfficeData bd : backOfficeData) {
+            BackOffice bo = new BackOffice();
+            BackOfficeRef bRef = new BackOfficeRef();
+            bRef.setId(bd.getId());
+            bo.setId(bRef);
+            bo.setName(bd.getName());
+            bo.setLocation(toLocation(bd.getLocation()));
+            backOfficeById.put(bd.getId(), bo);
         }
 
         Map<Long, Customer> customerById = new HashMap<>();
@@ -76,6 +90,9 @@ public class ExpertPlanningSolutionLoader {
             eRef.setId(ed.getId());
             expert.setId(eRef);
             expert.setName(ed.getName());
+            BackOfficeRef boRef = new BackOfficeRef();
+            boRef.setId(ed.getBackOfficeId());
+            expert.setBackOfficeRef(boRef);
             expert.setBackOfficeLocation(toLocation(ed.getBackOfficeLocation()));
 
             Set<Skill> skills = new HashSet<>();
@@ -125,6 +142,8 @@ public class ExpertPlanningSolutionLoader {
             cRef.setId(od.getCustomerId());
             order.setCustomerRef(cRef);
             order.setLocation(toLocation(od.getLocation()));
+            order.setDueDate(od.getDueDate());
+            order.setPriority(parsePriority(od.getPriority()));
 
             Set<Skill> required = new HashSet<>();
             if (od.getRequiredSkills() != null) {
@@ -162,11 +181,21 @@ public class ExpertPlanningSolutionLoader {
 
         ExpertPlanningSolution solution = new ExpertPlanningSolution();
         solution.setSkillList(new ArrayList<>(skillByName.values()));
+        solution.setBackOfficeList(new ArrayList<>(backOfficeById.values()));
         solution.setExpertList(new ArrayList<>(expertById.values()));
         solution.setCustomerList(new ArrayList<>(customerById.values()));
         solution.setOrderList(new ArrayList<>(orderById.values()));
         solution.setExpertScheduleList(expertSchedules);
         return solution;
+    }
+
+    private static OrderPriority parsePriority(String s) {
+        if (s == null) return OrderPriority.MEDIUM;
+        return switch (s.toUpperCase(java.util.Locale.ROOT)) {
+            case "HIGH" -> OrderPriority.HIGH;
+            case "LOW" -> OrderPriority.LOW;
+            default -> OrderPriority.MEDIUM;
+        };
     }
 
     private Location toLocation(LocationData data) {

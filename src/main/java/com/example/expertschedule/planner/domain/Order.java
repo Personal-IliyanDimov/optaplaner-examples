@@ -8,6 +8,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -18,4 +19,6 @@ public class Order {
     private CustomerRef customerRef;
     private Location location;
     private Set<Skill> requiredSkills;
+    private LocalDate dueDate;
+    private OrderPriority priority;
 }

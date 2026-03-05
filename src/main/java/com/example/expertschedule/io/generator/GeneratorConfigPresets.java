@@ -15,6 +15,7 @@ public final class GeneratorConfigPresets {
                 .numExperts(5)
                 .numCustomers(10)
                 .numOrders(20)
+                .numOffices(1)
                 .expertsWithAvailability(5)
                 .expertsWithAbsence(1)
                 .build();
@@ -26,6 +27,7 @@ public final class GeneratorConfigPresets {
                 .numExperts(15)
                 .numCustomers(20)
                 .numOrders(50)
+                .numOffices(3)
                 .expertsWithAvailability(15)
                 .expertsWithAbsence(3)
                 .build();
@@ -37,6 +39,7 @@ public final class GeneratorConfigPresets {
                 .numExperts(30)
                 .numCustomers(100)
                 .numOrders(100)
+                .numOffices(6)
                 .expertsWithAvailability(30)
                 .expertsWithAbsence(5)
                 .build();
@@ -48,6 +51,7 @@ public final class GeneratorConfigPresets {
                 .numExperts(50)
                 .numCustomers(1000)
                 .numOrders(100)
+                .numOffices(10)
                 .expertsWithAvailability(50)
                 .expertsWithAbsence(10)
                 .build();

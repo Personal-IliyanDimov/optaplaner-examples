@@ -1,5 +1,6 @@
 package com.example.expertschedule.planner.solution;
 
+import com.example.expertschedule.planner.domain.BackOffice;
 import com.example.expertschedule.planner.domain.Customer;
 import com.example.expertschedule.planner.domain.Expert;
 import com.example.expertschedule.planner.domain.ExpertSchedule;
@@ -27,6 +28,9 @@ public class ExpertPlanningSolution {
     @ValueRangeProvider(id = "expertRange")
     @ProblemFactCollectionProperty
     private List<Expert> expertList;
+
+    @ProblemFactCollectionProperty
+    private List<BackOffice> backOfficeList;
 
     @ProblemFactCollectionProperty
     private List<Customer> customerList;

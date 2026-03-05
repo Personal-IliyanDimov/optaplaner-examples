@@ -47,14 +47,16 @@ public class TestDataGenerator {
 
     public static PlanningDatasetData buildDataset(GeneratorConfig config) {
         List<SkillData> skills = buildSkills(config.getNumSkills());
+        List<BackOfficeData> backOffices = buildBackOffices(config.getNumOffices());
         List<CustomerData> customers = buildCustomers(config.getNumCustomers());
-        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills,
+        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices,
                 config.getExpertsWithAvailability(), config.getExpertsWithAbsence());
         List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills);
         List<ExpertScheduleData> expertSchedules = buildExpertSchedules(experts);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setSkills(skills);
+        dataset.setBackOffices(backOffices);
         dataset.setCustomers(customers);
         dataset.setExperts(experts);
         dataset.setOrders(orders);
@@ -93,7 +95,20 @@ public class TestDataGenerator {
         return list;
     }
 
+    private static List<BackOfficeData> buildBackOffices(int count) {
+        List<BackOfficeData> list = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            BackOfficeData b = new BackOfficeData();
+            b.setId(i + 1);
+            b.setName("BackOffice-" + (i + 1));
+            b.setLocation(randomLocation(0, 10, 0, 5));
+            list.add(b);
+        }
+        return list;
+    }
+
     private static List<ExpertData> buildExperts(int count, List<SkillData> skills,
+                                                  List<BackOfficeData> backOffices,
                                                   int withAvailability, int withAbsence) {
         List<ExpertData> list = new ArrayList<>();
         String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace", "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah", "Olivia"};
@@ -101,7 +116,9 @@ public class TestDataGenerator {
             ExpertData e = new ExpertData();
             e.setId(i + 1);
             e.setName(i < names.length ? names[i] : "Expert-" + (i + 1));
-            e.setBackOfficeLocation(randomLocation(0, 10, 0, 5));
+            BackOfficeData office = backOffices.get(i % backOffices.size());
+            e.setBackOfficeId(office.getId());
+            e.setBackOfficeLocation(office.getLocation());
             e.setSkills(pickSkillNamesFromSkillData(skills));
 
             if (i < withAvailability) {
@@ -152,16 +169,20 @@ public class TestDataGenerator {
         List<OrderData> list = new ArrayList<>();
         List<String> skillNames = skills.stream().map(SkillData::getName).toList();
         if (skillNames.isEmpty()) skillNames = List.of("Electrical");
+        String[] priorities = {"LOW", "MEDIUM", "HIGH"};
+        ThreadLocalRandom r = ThreadLocalRandom.current();
         for (int i = 0; i < count; i++) {
             OrderData o = new OrderData();
             o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
-            o.setCustomerId(customers.get(ThreadLocalRandom.current().nextInt(customers.size())).getId());
+            o.setCustomerId(customers.get(r.nextInt(customers.size())).getId());
             o.setLocation(randomLocation(0, 20, 0, 20));
-            int skillCount = Math.max(1, ThreadLocalRandom.current().nextInt(2) + 1);
+            o.setDueDate(LocalDate.now().plusDays(r.nextInt(15)));
+            o.setPriority(priorities[r.nextInt(priorities.length)]);
+            int skillCount = Math.max(1, r.nextInt(2) + 1);
             Set<String> required = new HashSet<>();
             while (required.size() < skillCount && required.size() < skillNames.size()) {
-                required.add(skillNames.get(ThreadLocalRandom.current().nextInt(skillNames.size())));
+                required.add(skillNames.get(r.nextInt(skillNames.size())));
             }
             o.setRequiredSkills(new ArrayList<>(required));
             list.add(o);
