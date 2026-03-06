@@ -8,12 +8,15 @@ import com.example.expertschedule.planner.domain.refs.ExpertRef;
 import com.example.expertschedule.planner.domain.refs.OrderRef;
 import com.example.expertschedule.planner.domain.time.Absence;
 import com.example.expertschedule.planner.domain.time.Availability;
+import com.example.expertschedule.planner.domain.time.TimeSlot;
 import com.example.expertschedule.planner.solution.ExpertPlanningSolution;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Period;
 import java.util.*;
 
 /**
@@ -144,6 +147,7 @@ public class ExpertPlanningSolutionLoader {
             order.setLocation(toLocation(od.getLocation()));
             order.setDueDate(od.getDueDate());
             order.setPriority(parsePriority(od.getPriority()));
+            order.setDiagnosisDuration(parseDuration(od.getDiagnosisDuration()));
 
             Set<Skill> required = new HashSet<>();
             if (od.getRequiredSkills() != null) {
@@ -167,11 +171,13 @@ public class ExpertPlanningSolutionLoader {
                 List<ScheduleItem> items = new ArrayList<>();
                 for (ScheduleItemData sid : esd.getItems()) {
                     ScheduleItem si = new ScheduleItem();
-                    si.setOrder(orderById.get(sid.getOrderId()));
-                    si.setSequence(sid.getSequence());
+                    OrderRef oRef = new OrderRef();
+                    oRef.setId(sid.getOrderId());
+                    si.setOrderRef(oRef);
+                    si.setTravelDuration(parsePeriod(sid.getTravelDuration()));
+                    si.setSlot(toTimeSlot(sid.getSlot()));
                     items.add(si);
                 }
-                items.sort(Comparator.comparingInt(ScheduleItem::getSequence));
                 es.setItems(items);
             } else {
                 es.setItems(new ArrayList<>());
@@ -196,6 +202,34 @@ public class ExpertPlanningSolutionLoader {
             case "LOW" -> OrderPriority.LOW;
             default -> OrderPriority.MEDIUM;
         };
+    }
+
+    private static Period parsePeriod(String s) {
+        if (s == null || s.isBlank()) return Period.ZERO;
+        try {
+            return Period.parse(s);
+        } catch (Exception e) {
+            return Period.ZERO;
+        }
+    }
+
+    private static Duration parseDuration(String s) {
+        if (s == null || s.isBlank()) return Duration.ZERO;
+        try {
+            return Duration.parse(s);
+        } catch (Exception e) {
+            return Duration.ZERO;
+        }
+    }
+
+    private static TimeSlot toTimeSlot(TimeSlotData data) {
+        if (data == null) return null;
+        TimeSlot slot = new TimeSlot();
+        slot.setCalendarWeek(data.getCalendarWeek());
+        slot.setDayOfWeek(data.getDayOfWeek());
+        slot.setStartTime(data.getStartTime());
+        slot.setEndTime(data.getEndTime());
+        return slot;
     }
 
     private Location toLocation(LocationData data) {

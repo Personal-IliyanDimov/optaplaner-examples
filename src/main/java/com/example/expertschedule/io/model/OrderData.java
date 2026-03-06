@@ -11,12 +11,12 @@ import java.util.List;
 public class OrderData {
 
     private long id;
-    /** Optional display code (e.g. ORDER-1). */
     private String code;
     private long customerId;
     private LocationData location;
     private List<String> requiredSkills;
     private LocalDate dueDate;
-    /** LOW, MEDIUM, or HIGH. */
     private String priority;
+    /** ISO-8601 duration (e.g. PT30M, PT1H, PT2H) - between 30m and 2h. */
+    private String diagnosisDuration;
 }

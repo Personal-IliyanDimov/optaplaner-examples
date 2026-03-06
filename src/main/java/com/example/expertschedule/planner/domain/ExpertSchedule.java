@@ -4,6 +4,8 @@ import com.example.expertschedule.planner.domain.refs.ExpertRef;
 import lombok.Getter;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
+import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
+import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,8 +14,13 @@ import java.util.List;
 @Setter
 @PlanningEntity
 public class ExpertSchedule {
+    @PlanningVariable
     private ExpertRef expertRef;
+
+    @PlanningVariable
     private LocalDate date;
+
+    @PlanningEntityCollectionProperty
     private List<ScheduleItem> items;
 }
 

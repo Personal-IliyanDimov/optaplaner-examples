@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * with the corresponding preset. Default is {@code small}.
  */
 public class TestDataGenerator {
+    private static final String[] PERIODS = { "PT30M", "PT1H", "PT1H30M", "PT2H" };
 
     private static final String DEFAULT_FILENAME = "dataset.json";
     private static final ObjectMapper MAPPER = new ObjectMapper()
@@ -183,6 +184,7 @@ public class TestDataGenerator {
             o.setLocation(randomLocation(0, 20, 0, 20));
             o.setDueDate(LocalDate.now().plusDays(r.nextInt(15)));
             o.setPriority(priorities[r.nextInt(priorities.length)]);
+            o.setDiagnosisDuration(randomDiagnosisDuration());
             int skillCount = Math.max(1, r.nextInt(2) + 1);
             Set<String> required = new HashSet<>();
             while (required.size() < skillCount && required.size() < skillNames.size()) {
@@ -197,7 +199,7 @@ public class TestDataGenerator {
     private static List<ExpertScheduleData> buildExpertSchedules(List<ExpertData> experts) {
         LocalDate scheduleDate = LocalDate.now();
         List<ExpertScheduleData> list = new ArrayList<>();
-        for (ExpertData e : experts) {
+        for (final ExpertData e : experts) {
             ExpertScheduleData es = new ExpertScheduleData();
             es.setExpertId(e.getId());
             es.setDate(scheduleDate);
@@ -205,6 +207,10 @@ public class TestDataGenerator {
             list.add(es);
         }
         return list;
+    }
+
+    private static String randomDiagnosisDuration() {
+        return PERIODS[ThreadLocalRandom.current().nextInt(PERIODS.length)];
     }
 
     private static LocationData randomLocation(double minLat, double maxLat, double minLon, double maxLon) {

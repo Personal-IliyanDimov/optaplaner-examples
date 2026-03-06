@@ -8,6 +8,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -21,4 +22,5 @@ public class Order {
     private Set<Skill> requiredSkills;
     private LocalDate dueDate;
     private OrderPriority priority;
+    private Duration diagnosisDuration;
 }

@@ -8,5 +8,6 @@ import lombok.Setter;
 public class ScheduleItemData {
 
     private long orderId;
-    private int sequence;
+    private String travelDuration;
+    private TimeSlotData slot;
 }
