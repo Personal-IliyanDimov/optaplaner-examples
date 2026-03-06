@@ -1,11 +1,11 @@
 package com.example.expertschedule.planner.solution;
 
-import com.example.expertschedule.planner.domain.BackOffice;
-import com.example.expertschedule.planner.domain.Customer;
 import com.example.expertschedule.planner.domain.Expert;
 import com.example.expertschedule.planner.domain.ExpertSchedule;
 import com.example.expertschedule.planner.domain.Order;
 import com.example.expertschedule.planner.domain.Skill;
+import com.example.expertschedule.planner.domain.refs.ExpertRef;
+import com.example.expertschedule.planner.domain.refs.OrderRef;
 import lombok.Getter;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
@@ -22,21 +22,15 @@ import java.util.List;
 @PlanningSolution
 public class ExpertPlanningSolution {
 
-    @ProblemFactCollectionProperty
-    private List<Skill> skillList;
+    private SolutionContext context;
 
-    @ValueRangeProvider(id = "expertRange")
+    @ValueRangeProvider(id = "expertRefRange")
     @ProblemFactCollectionProperty
-    private List<Expert> expertList;
+    private List<ExpertRef> expertRefList;
 
+    @ValueRangeProvider(id = "orderRefRange")
     @ProblemFactCollectionProperty
-    private List<BackOffice> backOfficeList;
-
-    @ProblemFactCollectionProperty
-    private List<Customer> customerList;
-
-    @ProblemFactCollectionProperty
-    private List<Order> orderList;
+    private List<OrderRef> orderRefList;
 
     @PlanningEntityCollectionProperty
     private List<ExpertSchedule> expertScheduleList;

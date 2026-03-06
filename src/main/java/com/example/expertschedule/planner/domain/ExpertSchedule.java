@@ -14,10 +14,10 @@ import java.util.List;
 @Setter
 @PlanningEntity
 public class ExpertSchedule {
-    @PlanningVariable
+    @PlanningVariable(valueRangeProviderRefs = "expertRefRange")
     private ExpertRef expertRef;
 
-    @PlanningVariable
+    @PlanningVariable(valueRangeProviderRefs = "planningDateRangeProvider")
     private LocalDate date;
 
     @PlanningEntityCollectionProperty

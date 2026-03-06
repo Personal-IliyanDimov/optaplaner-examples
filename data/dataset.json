@@ -2,13 +2,41 @@
   "skills" : [ {
     "name" : "Electrical"
   }, {
-    "name" : "Plumbing"
+    "name" : "Painting-Scratches"
   }, {
-    "name" : "Networking"
+    "name" : "Engine-Petrol"
   }, {
-    "name" : "HVAC"
+    "name" : "Engine-Diesel"
   }, {
-    "name" : "Carpentry"
+    "name" : "Exclusive"
+  }, {
+    "name" : "Total Damage"
+  }, {
+    "name" : "Security"
+  }, {
+    "name" : "Painting-Part"
+  }, {
+    "name" : "Tires"
+  }, {
+    "name" : "Glass"
+  }, {
+    "name" : "Interior"
+  }, {
+    "name" : "Exterior"
+  }, {
+    "name" : "Software"
+  }, {
+    "name" : "Hardware"
+  }, {
+    "name" : "Other"
+  } ],
+  "backOffices" : [ {
+    "id" : 1,
+    "name" : "BackOffice-1",
+    "location" : {
+      "latitude" : 4.691104001044902,
+      "longitude" : 0.447993514300814
+    }
   } ],
   "customers" : [ {
     "id" : 1,
@@ -44,11 +72,12 @@
   "experts" : [ {
     "id" : 1,
     "name" : "Alice",
+    "backOfficeId" : 1,
     "backOfficeLocation" : {
-      "latitude" : 4.347423940336146,
-      "longitude" : 3.0535823758722476
+      "latitude" : 4.691104001044902,
+      "longitude" : 0.447993514300814
     },
-    "skills" : [ "Electrical" ],
+    "skills" : [ "Hardware", "Interior", "Exterior", "Exclusive", "Painting-Part", "Total Damage", "Security", "Electrical", "Engine-Petrol", "Engine-Diesel", "Glass", "Other", "Software", "Tires", "Painting-Scratches" ],
     "availabilities" : [ {
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
@@ -85,11 +114,12 @@
   }, {
     "id" : 2,
     "name" : "Bob",
+    "backOfficeId" : 1,
     "backOfficeLocation" : {
-      "latitude" : 2.4530945257039516,
-      "longitude" : 2.177550515466271
+      "latitude" : 4.691104001044902,
+      "longitude" : 0.447993514300814
     },
-    "skills" : [ "Plumbing", "Electrical", "Networking", "HVAC" ],
+    "skills" : [ "Other", "Exclusive", "Tires", "Hardware", "Painting-Scratches", "Glass", "Electrical", "Total Damage" ],
     "availabilities" : [ {
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
@@ -120,11 +150,12 @@
   }, {
     "id" : 3,
     "name" : "Carol",
+    "backOfficeId" : 1,
     "backOfficeLocation" : {
-      "latitude" : 9.500139224729928,
-      "longitude" : 0.1804635187138054
+      "latitude" : 4.691104001044902,
+      "longitude" : 0.447993514300814
     },
-    "skills" : [ "Plumbing" ],
+    "skills" : [ "Tires", "Total Damage", "Other", "Glass", "Painting-Scratches", "Exclusive", "Interior", "Hardware", "Engine-Diesel", "Security" ],
     "availabilities" : [ {
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
@@ -155,11 +186,12 @@
   }, {
     "id" : 4,
     "name" : "Dave",
+    "backOfficeId" : 1,
     "backOfficeLocation" : {
-      "latitude" : 2.846407332055425,
-      "longitude" : 0.22402441345796775
+      "latitude" : 4.691104001044902,
+      "longitude" : 0.447993514300814
     },
-    "skills" : [ "Plumbing", "Networking", "Electrical", "Carpentry", "HVAC" ],
+    "skills" : [ "Security", "Engine-Diesel", "Painting-Scratches", "Glass", "Exterior", "Hardware", "Total Damage", "Other", "Tires", "Exclusive", "Electrical", "Software", "Engine-Petrol" ],
     "availabilities" : [ {
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
@@ -190,11 +222,12 @@
   }, {
     "id" : 5,
     "name" : "Eve",
+    "backOfficeId" : 1,
     "backOfficeLocation" : {
-      "latitude" : 7.352817480506402,
-      "longitude" : 3.130625809195881
+      "latitude" : 4.691104001044902,
+      "longitude" : 0.447993514300814
     },
-    "skills" : [ "Plumbing", "Electrical", "Carpentry" ],
+    "skills" : [ "Painting-Scratches" ],
     "availabilities" : [ {
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
@@ -226,203 +259,263 @@
   "orders" : [ {
     "id" : 1,
     "code" : "ORDER-1",
-    "customerId" : 7,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 18.972588040578607,
-      "longitude" : 0.791324107901541
+      "latitude" : 11.663353439553006,
+      "longitude" : 16.585141518252847
     },
-    "requiredSkills" : [ "Networking" ]
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 10 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M"
   }, {
     "id" : 2,
     "code" : "ORDER-2",
-    "customerId" : 4,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 19.44535123249215,
-      "longitude" : 5.175934972705363
+      "latitude" : 17.61516916339537,
+      "longitude" : 12.484798168793095
     },
-    "requiredSkills" : [ "Plumbing", "Carpentry" ]
+    "requiredSkills" : [ "Interior" ],
+    "dueDate" : [ 2026, 3, 20 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M"
   }, {
     "id" : 3,
     "code" : "ORDER-3",
-    "customerId" : 2,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 6.7319010938370045,
-      "longitude" : 5.629804830893724
+      "latitude" : 5.33258697172037,
+      "longitude" : 16.84333460764851
     },
-    "requiredSkills" : [ "Plumbing", "Electrical" ]
+    "requiredSkills" : [ "Interior" ],
+    "dueDate" : [ 2026, 3, 20 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 4,
     "code" : "ORDER-4",
-    "customerId" : 2,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 4.412762919921112,
-      "longitude" : 4.855034269804102
+      "latitude" : 18.343040668717997,
+      "longitude" : 1.534841981591124
     },
-    "requiredSkills" : [ "Networking", "Carpentry" ]
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 5,
     "code" : "ORDER-5",
     "customerId" : 10,
     "location" : {
-      "latitude" : 9.408585245048393,
-      "longitude" : 12.131492287384898
+      "latitude" : 16.07908504052786,
+      "longitude" : 16.801134937196608
     },
-    "requiredSkills" : [ "Plumbing", "Electrical" ]
+    "requiredSkills" : [ "Security", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 19 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M"
   }, {
     "id" : 6,
     "code" : "ORDER-6",
-    "customerId" : 3,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 8.254771253079063,
-      "longitude" : 13.473051124031521
+      "latitude" : 3.199525209547829,
+      "longitude" : 12.83994402337574
     },
-    "requiredSkills" : [ "HVAC", "Carpentry" ]
+    "requiredSkills" : [ "Security", "Other" ],
+    "dueDate" : [ 2026, 3, 12 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M"
   }, {
     "id" : 7,
     "code" : "ORDER-7",
-    "customerId" : 10,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 3.028338663029797,
-      "longitude" : 9.839892829962839
+      "latitude" : 0.08618325077148326,
+      "longitude" : 16.292746789666296
     },
-    "requiredSkills" : [ "Carpentry" ]
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 10 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M"
   }, {
     "id" : 8,
     "code" : "ORDER-8",
-    "customerId" : 8,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 13.583082125639123,
-      "longitude" : 13.891591437057254
+      "latitude" : 15.1349424746298,
+      "longitude" : 10.881095891389364
     },
-    "requiredSkills" : [ "Plumbing", "Electrical" ]
+    "requiredSkills" : [ "Interior" ],
+    "dueDate" : [ 2026, 3, 11 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M"
   }, {
     "id" : 9,
     "code" : "ORDER-9",
-    "customerId" : 7,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 17.69348604513847,
-      "longitude" : 15.547171814265482
+      "latitude" : 6.112959106820657,
+      "longitude" : 17.812559894733155
     },
-    "requiredSkills" : [ "Electrical" ]
+    "requiredSkills" : [ "Painting-Part" ],
+    "dueDate" : [ 2026, 3, 10 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 10,
     "code" : "ORDER-10",
-    "customerId" : 10,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 8.521615754930982,
-      "longitude" : 1.141934607238031
+      "latitude" : 15.688221238313329,
+      "longitude" : 4.253448976558301
     },
-    "requiredSkills" : [ "Plumbing", "HVAC" ]
+    "requiredSkills" : [ "Tires", "Other" ],
+    "dueDate" : [ 2026, 3, 16 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT2H"
   }, {
     "id" : 11,
     "code" : "ORDER-11",
-    "customerId" : 9,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 1.0824139508619912,
-      "longitude" : 17.797180763347296
+      "latitude" : 5.993692558564145,
+      "longitude" : 18.372536564655725
     },
-    "requiredSkills" : [ "HVAC", "Electrical" ]
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 8 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 12,
     "code" : "ORDER-12",
-    "customerId" : 3,
+    "customerId" : 9,
     "location" : {
-      "latitude" : 9.419007150051733,
-      "longitude" : 16.020489478870537
+      "latitude" : 18.682626500320232,
+      "longitude" : 8.941507253374184
     },
-    "requiredSkills" : [ "Plumbing", "Networking" ]
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 13 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT2H"
   }, {
     "id" : 13,
     "code" : "ORDER-13",
-    "customerId" : 2,
+    "customerId" : 8,
     "location" : {
-      "latitude" : 19.083467449231673,
-      "longitude" : 0.07352825856767886
+      "latitude" : 6.807201267981087,
+      "longitude" : 5.098071384870783
     },
-    "requiredSkills" : [ "Plumbing", "Carpentry" ]
+    "requiredSkills" : [ "Exterior" ],
+    "dueDate" : [ 2026, 3, 18 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT2H"
   }, {
     "id" : 14,
     "code" : "ORDER-14",
-    "customerId" : 2,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 1.7587021965416039,
-      "longitude" : 5.243592686513649
+      "latitude" : 18.760667302668715,
+      "longitude" : 1.5139530329202033
     },
-    "requiredSkills" : [ "HVAC", "Networking" ]
+    "requiredSkills" : [ "Software", "Exterior" ],
+    "dueDate" : [ 2026, 3, 13 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 15,
     "code" : "ORDER-15",
-    "customerId" : 1,
+    "customerId" : 8,
     "location" : {
-      "latitude" : 9.012589377511492,
-      "longitude" : 0.6218627893026629
+      "latitude" : 14.877253799133932,
+      "longitude" : 9.5384336528088
     },
-    "requiredSkills" : [ "HVAC", "Carpentry" ]
+    "requiredSkills" : [ "Software", "Interior" ],
+    "dueDate" : [ 2026, 3, 18 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M"
   }, {
     "id" : 16,
     "code" : "ORDER-16",
-    "customerId" : 9,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 14.340880989063605,
-      "longitude" : 11.680583926495387
+      "latitude" : 6.0915634908486265,
+      "longitude" : 11.365343442232419
     },
-    "requiredSkills" : [ "HVAC", "Networking" ]
+    "requiredSkills" : [ "Hardware", "Other" ],
+    "dueDate" : [ 2026, 3, 9 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 17,
     "code" : "ORDER-17",
-    "customerId" : 9,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 8.76322405116447,
-      "longitude" : 2.126173198958552
+      "latitude" : 11.597439921325442,
+      "longitude" : 3.481384985104492
     },
-    "requiredSkills" : [ "Plumbing", "Networking" ]
+    "requiredSkills" : [ "Glass", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 12 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 18,
     "code" : "ORDER-18",
-    "customerId" : 7,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 19.84704808882791,
-      "longitude" : 7.545054277008325
+      "latitude" : 7.951123963235904,
+      "longitude" : 6.407954569904284
     },
-    "requiredSkills" : [ "Carpentry" ]
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 14 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M"
   }, {
     "id" : 19,
     "code" : "ORDER-19",
-    "customerId" : 4,
+    "customerId" : 10,
     "location" : {
-      "latitude" : 2.160975648254513,
-      "longitude" : 18.29909960352365
+      "latitude" : 0.021275517605510164,
+      "longitude" : 7.542097923455319
     },
-    "requiredSkills" : [ "HVAC" ]
+    "requiredSkills" : [ "Hardware", "Exterior" ],
+    "dueDate" : [ 2026, 3, 12 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H"
   }, {
     "id" : 20,
     "code" : "ORDER-20",
     "customerId" : 5,
     "location" : {
-      "latitude" : 2.041342812180429,
-      "longitude" : 17.045767928421792
+      "latitude" : 11.287882332766925,
+      "longitude" : 10.389062615491815
     },
-    "requiredSkills" : [ "Plumbing" ]
+    "requiredSkills" : [ "Painting-Part", "Tires" ],
+    "dueDate" : [ 2026, 3, 7 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT2H"
   } ],
   "expertSchedules" : [ {
     "expertId" : 1,
-    "date" : [ 2026, 3, 5 ],
+    "date" : [ 2026, 3, 6 ],
     "items" : [ ]
   }, {
     "expertId" : 2,
-    "date" : [ 2026, 3, 5 ],
+    "date" : [ 2026, 3, 6 ],
     "items" : [ ]
   }, {
     "expertId" : 3,
-    "date" : [ 2026, 3, 5 ],
+    "date" : [ 2026, 3, 6 ],
     "items" : [ ]
   }, {
     "expertId" : 4,
-    "date" : [ 2026, 3, 5 ],
+    "date" : [ 2026, 3, 6 ],
     "items" : [ ]
   }, {
     "expertId" : 5,
-    "date" : [ 2026, 3, 5 ],
+    "date" : [ 2026, 3, 6 ],
     "items" : [ ]
   } ]
 }

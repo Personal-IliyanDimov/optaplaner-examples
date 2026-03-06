@@ -1,7 +1,26 @@
 package com.example.expertschedule.loader;
 
-import com.example.expertschedule.io.model.*;
-import com.example.expertschedule.planner.domain.*;
+import com.example.expertschedule.io.model.AbsenceData;
+import com.example.expertschedule.io.model.AvailabilityData;
+import com.example.expertschedule.io.model.BackOfficeData;
+import com.example.expertschedule.io.model.CustomerData;
+import com.example.expertschedule.io.model.ExpertData;
+import com.example.expertschedule.io.model.ExpertScheduleData;
+import com.example.expertschedule.io.model.LocationData;
+import com.example.expertschedule.io.model.OrderData;
+import com.example.expertschedule.io.model.PlanningDatasetData;
+import com.example.expertschedule.io.model.ScheduleItemData;
+import com.example.expertschedule.io.model.SkillData;
+import com.example.expertschedule.io.model.TimeSlotData;
+import com.example.expertschedule.planner.domain.BackOffice;
+import com.example.expertschedule.planner.domain.Customer;
+import com.example.expertschedule.planner.domain.Expert;
+import com.example.expertschedule.planner.domain.ExpertSchedule;
+import com.example.expertschedule.planner.domain.Location;
+import com.example.expertschedule.planner.domain.Order;
+import com.example.expertschedule.planner.domain.OrderPriority;
+import com.example.expertschedule.planner.domain.ScheduleItem;
+import com.example.expertschedule.planner.domain.Skill;
 import com.example.expertschedule.planner.domain.refs.BackOfficeRef;
 import com.example.expertschedule.planner.domain.refs.CustomerRef;
 import com.example.expertschedule.planner.domain.refs.ExpertRef;
@@ -10,6 +29,7 @@ import com.example.expertschedule.planner.domain.time.Absence;
 import com.example.expertschedule.planner.domain.time.Availability;
 import com.example.expertschedule.planner.domain.time.TimeSlot;
 import com.example.expertschedule.planner.solution.ExpertPlanningSolution;
+import com.example.expertschedule.planner.solution.SolutionContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -17,7 +37,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Period;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Loads planning data from a single JSON file (see {@link PlanningDatasetData}) and builds an {@link ExpertPlanningSolution}.
@@ -185,13 +210,19 @@ public class ExpertPlanningSolutionLoader {
             expertSchedules.add(es);
         }
 
+        SolutionContext context = new SolutionContext();
+        context.setSkillList(new ArrayList<>(skillByName.values()));
+        context.setBackOfficeList(new ArrayList<>(backOfficeById.values()));
+        context.setCustomerList(new ArrayList<>(customerById.values()));
+        context.setExpertList(new ArrayList<>(expertById.values()));
+        context.setOrderList(new ArrayList<>(orderById.values()));
+
+
         ExpertPlanningSolution solution = new ExpertPlanningSolution();
-        solution.setSkillList(new ArrayList<>(skillByName.values()));
-        solution.setBackOfficeList(new ArrayList<>(backOfficeById.values()));
-        solution.setExpertList(new ArrayList<>(expertById.values()));
-        solution.setCustomerList(new ArrayList<>(customerById.values()));
-        solution.setOrderList(new ArrayList<>(orderById.values()));
+        solution.setExpertRefList(new ArrayList<>(expertById.values().stream().map(Expert::getId).toList()));
+        solution.setOrderRefList(new ArrayList<>(orderById.values().stream().map(Order::getId).toList()));
         solution.setExpertScheduleList(expertSchedules);
+        solution.setContext(context);
         return solution;
     }
 

@@ -5,6 +5,7 @@ import com.example.expertschedule.planner.cp.TaskScheduleConstraintProvider;
 import com.example.expertschedule.planner.domain.ExpertSchedule;
 import com.example.expertschedule.planner.domain.Order;
 import com.example.expertschedule.planner.domain.ScheduleItem;
+import com.example.expertschedule.planner.domain.refs.OrderRef;
 import com.example.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -40,13 +41,11 @@ public class TaskScheduleApp {
                     schedule.getItems() != null ? schedule.getItems().size() : 0);
             if (schedule.getItems() != null) {
                 for (ScheduleItem item : schedule.getItems()) {
-                    Order order = item.getOrder();
+                    OrderRef order = item.getOrderRef();
                     if (order != null) {
-                        System.out.printf("  seq %d -> order %d at (%.2f, %.2f)%n",
-                                item.getSequence(),
-                                order.getId().getId(),
-                                order.getLocation() != null ? order.getLocation().getLatitude() : 0,
-                                order.getLocation() != null ? order.getLocation().getLongitude() : 0);
+                        System.out.println("OrderRef " + order.getId() + "Travel: " + item.getTravelDuration() +
+                                " Slot: W" + item.getSlot().getCalendarWeek() + " Day: " + item.getSlot().getDayOfWeek() +
+                                "[" + item.getSlot().getStartTime() + " - " + item.getSlot().getEndTime() + "]");
                     }
                 }
             }
