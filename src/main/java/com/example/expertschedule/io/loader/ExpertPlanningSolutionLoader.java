@@ -1,4 +1,4 @@
-package com.example.expertschedule.loader;
+package com.example.expertschedule.io.loader;
 
 import com.example.expertschedule.io.model.AbsenceData;
 import com.example.expertschedule.io.model.AvailabilityData;
@@ -83,13 +83,28 @@ public class ExpertPlanningSolutionLoader {
                                             List<ExpertData> expertData,
                                             List<OrderData> orderData,
                                             List<ExpertScheduleData> expertScheduleData) {
+        Map<String, Skill> skillByName = buildSkillMap(skillData);
+        Map<Long, BackOffice> backOfficeById = buildBackOfficeMap(backOfficeData);
+        Map<Long, Customer> customerById = buildCustomerMap(customerData);
+        Map<Long, Expert> expertById = buildExpertMap(expertData, skillByName);
+        Map<Long, Order> orderById = buildOrderMap(orderData, skillByName);
+        List<ExpertSchedule> expertSchedules = buildExpertScheduleList(expertScheduleData);
+
+        SolutionContext context = buildContext(skillByName, backOfficeById, customerById, expertById, orderById);
+        return buildSolution(expertById, orderById, expertSchedules, context);
+    }
+
+    private Map<String, Skill> buildSkillMap(List<SkillData> skillData) {
         Map<String, Skill> skillByName = new HashMap<>();
         for (SkillData sd : skillData) {
             Skill skill = new Skill();
             skill.setName(sd.getName());
             skillByName.put(sd.getName(), skill);
         }
+        return skillByName;
+    }
 
+    private Map<Long, BackOffice> buildBackOfficeMap(List<BackOfficeData> backOfficeData) {
         Map<Long, BackOffice> backOfficeById = new HashMap<>();
         for (BackOfficeData bd : backOfficeData) {
             BackOffice bo = new BackOffice();
@@ -100,7 +115,10 @@ public class ExpertPlanningSolutionLoader {
             bo.setLocation(toLocation(bd.getLocation()));
             backOfficeById.put(bd.getId(), bo);
         }
+        return backOfficeById;
+    }
 
+    private Map<Long, Customer> buildCustomerMap(List<CustomerData> customerData) {
         Map<Long, Customer> customerById = new HashMap<>();
         for (CustomerData cd : customerData) {
             Customer customer = new Customer();
@@ -110,7 +128,10 @@ public class ExpertPlanningSolutionLoader {
             customer.setName(cd.getName());
             customerById.put(cd.getId(), customer);
         }
+        return customerById;
+    }
 
+    private Map<Long, Expert> buildExpertMap(List<ExpertData> expertData, Map<String, Skill> skillByName) {
         Map<Long, Expert> expertById = new HashMap<>();
         for (ExpertData ed : expertData) {
             Expert expert = new Expert();
@@ -122,44 +143,57 @@ public class ExpertPlanningSolutionLoader {
             boRef.setId(ed.getBackOfficeId());
             expert.setBackOfficeRef(boRef);
             expert.setBackOfficeLocation(toLocation(ed.getBackOfficeLocation()));
-
-            Set<Skill> skills = new HashSet<>();
-            if (ed.getSkills() != null) {
-                for (String skillName : ed.getSkills()) {
-                    Skill skill = skillByName.get(skillName);
-                    if (skill != null) skills.add(skill);
-                }
-            }
-            expert.setSkills(skills);
-
+            expert.setSkills(resolveSkills(ed.getSkills(), skillByName));
             if (ed.getAvailabilities() != null && !ed.getAvailabilities().isEmpty()) {
-                List<Availability> availabilities = new ArrayList<>();
-                for (AvailabilityData ad : ed.getAvailabilities()) {
-                    Availability a = new Availability();
-                    a.setCalendarWeek(ad.getCalendarWeek());
-                    a.setDayOfWeek(ad.getDayOfWeek());
-                    a.setStartTime(ad.getStartTime());
-                    a.setEndTime(ad.getEndTime());
-                    availabilities.add(a);
-                }
-                expert.setAvailabilities(availabilities);
+                expert.setAvailabilities(toAvailabilities(ed.getAvailabilities()));
             }
             if (ed.getAbsences() != null && !ed.getAbsences().isEmpty()) {
-                List<Absence> absences = new ArrayList<>();
-                for (AbsenceData ad : ed.getAbsences()) {
-                    Absence a = new Absence();
-                    a.setCalendarWeek(ad.getCalendarWeek());
-                    a.setDayOfWeek(ad.getDayOfWeek());
-                    a.setStartTime(ad.getStartTime());
-                    a.setEndTime(ad.getEndTime());
-                    a.setReason(ad.getReason());
-                    absences.add(a);
-                }
-                expert.setAbsences(absences);
+                expert.setAbsences(toAbsences(ed.getAbsences()));
             }
             expertById.put(ed.getId(), expert);
         }
+        return expertById;
+    }
 
+    private Set<Skill> resolveSkills(List<String> skillNames, Map<String, Skill> skillByName) {
+        Set<Skill> skills = new HashSet<>();
+        if (skillNames != null) {
+            for (String skillName : skillNames) {
+                Skill skill = skillByName.get(skillName);
+                if (skill != null) skills.add(skill);
+            }
+        }
+        return skills;
+    }
+
+    private List<Availability> toAvailabilities(List<AvailabilityData> list) {
+        List<Availability> result = new ArrayList<>();
+        for (AvailabilityData ad : list) {
+            Availability a = new Availability();
+            a.setCalendarWeek(ad.getCalendarWeek());
+            a.setDayOfWeek(ad.getDayOfWeek());
+            a.setStartTime(ad.getStartTime());
+            a.setEndTime(ad.getEndTime());
+            result.add(a);
+        }
+        return result;
+    }
+
+    private List<Absence> toAbsences(List<AbsenceData> list) {
+        List<Absence> result = new ArrayList<>();
+        for (AbsenceData ad : list) {
+            Absence a = new Absence();
+            a.setCalendarWeek(ad.getCalendarWeek());
+            a.setDayOfWeek(ad.getDayOfWeek());
+            a.setStartTime(ad.getStartTime());
+            a.setEndTime(ad.getEndTime());
+            a.setReason(ad.getReason());
+            result.add(a);
+        }
+        return result;
+    }
+
+    private Map<Long, Order> buildOrderMap(List<OrderData> orderData, Map<String, Skill> skillByName) {
         Map<Long, Order> orderById = new HashMap<>();
         for (OrderData od : orderData) {
             Order order = new Order();
@@ -173,18 +207,13 @@ public class ExpertPlanningSolutionLoader {
             order.setDueDate(od.getDueDate());
             order.setPriority(parsePriority(od.getPriority()));
             order.setDiagnosisDuration(parseDuration(od.getDiagnosisDuration()));
-
-            Set<Skill> required = new HashSet<>();
-            if (od.getRequiredSkills() != null) {
-                for (String skillName : od.getRequiredSkills()) {
-                    Skill skill = skillByName.get(skillName);
-                    if (skill != null) required.add(skill);
-                }
-            }
-            order.setRequiredSkills(required);
+            order.setRequiredSkills(resolveSkills(od.getRequiredSkills(), skillByName));
             orderById.put(od.getId(), order);
         }
+        return orderById;
+    }
 
+    private List<ExpertSchedule> buildExpertScheduleList(List<ExpertScheduleData> expertScheduleData) {
         List<ExpertSchedule> expertSchedules = new ArrayList<>();
         for (ExpertScheduleData esd : expertScheduleData) {
             ExpertSchedule es = new ExpertSchedule();
@@ -192,32 +221,44 @@ public class ExpertPlanningSolutionLoader {
             eRef.setId(esd.getExpertId());
             es.setExpertRef(eRef);
             es.setDate(esd.getDate());
-            if (esd.getItems() != null) {
-                List<ScheduleItem> items = new ArrayList<>();
-                for (ScheduleItemData sid : esd.getItems()) {
-                    ScheduleItem si = new ScheduleItem();
-                    OrderRef oRef = new OrderRef();
-                    oRef.setId(sid.getOrderId());
-                    si.setOrderRef(oRef);
-                    si.setTravelDuration(parsePeriod(sid.getTravelDuration()));
-                    si.setSlot(toTimeSlot(sid.getSlot()));
-                    items.add(si);
-                }
-                es.setItems(items);
-            } else {
-                es.setItems(new ArrayList<>());
-            }
+            es.setItems(esd.getItems() != null ? toScheduleItems(esd.getItems()) : new ArrayList<>());
             expertSchedules.add(es);
         }
+        return expertSchedules;
+    }
 
+    private List<ScheduleItem> toScheduleItems(List<ScheduleItemData> items) {
+        List<ScheduleItem> result = new ArrayList<>();
+        for (ScheduleItemData sid : items) {
+            ScheduleItem si = new ScheduleItem();
+            OrderRef oRef = new OrderRef();
+            oRef.setId(sid.getOrderId());
+            si.setOrderRef(oRef);
+            si.setTravelDuration(parsePeriod(sid.getTravelDuration()));
+            si.setSlot(toTimeSlot(sid.getSlot()));
+            result.add(si);
+        }
+        return result;
+    }
+
+    private SolutionContext buildContext(Map<String, Skill> skillByName,
+                                         Map<Long, BackOffice> backOfficeById,
+                                         Map<Long, Customer> customerById,
+                                         Map<Long, Expert> expertById,
+                                         Map<Long, Order> orderById) {
         SolutionContext context = new SolutionContext();
         context.setSkillList(new ArrayList<>(skillByName.values()));
         context.setBackOfficeList(new ArrayList<>(backOfficeById.values()));
         context.setCustomerList(new ArrayList<>(customerById.values()));
         context.setExpertList(new ArrayList<>(expertById.values()));
         context.setOrderList(new ArrayList<>(orderById.values()));
+        return context;
+    }
 
-
+    private ExpertPlanningSolution buildSolution(Map<Long, Expert> expertById,
+                                                  Map<Long, Order> orderById,
+                                                  List<ExpertSchedule> expertSchedules,
+                                                  SolutionContext context) {
         ExpertPlanningSolution solution = new ExpertPlanningSolution();
         solution.setExpertRefList(new ArrayList<>(expertById.values().stream().map(Expert::getId).toList()));
         solution.setOrderRefList(new ArrayList<>(orderById.values().stream().map(Order::getId).toList()));

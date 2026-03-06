@@ -1,9 +1,8 @@
 package com.example.expertschedule;
 
-import com.example.expertschedule.loader.ExpertPlanningSolutionLoader;
+import com.example.expertschedule.io.loader.ExpertPlanningSolutionLoader;
 import com.example.expertschedule.planner.cp.TaskScheduleConstraintProvider;
 import com.example.expertschedule.planner.domain.ExpertSchedule;
-import com.example.expertschedule.planner.domain.Order;
 import com.example.expertschedule.planner.domain.ScheduleItem;
 import com.example.expertschedule.planner.domain.refs.OrderRef;
 import com.example.expertschedule.planner.solution.ExpertPlanningSolution;
