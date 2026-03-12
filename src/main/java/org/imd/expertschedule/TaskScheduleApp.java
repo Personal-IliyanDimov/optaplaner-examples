@@ -1,7 +1,6 @@
 package org.imd.expertschedule;
 
 import org.imd.expertschedule.io.loader.ExpertPlanningSolutionLoader;
-import org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider;
 import org.imd.expertschedule.planner.domain.ExpertSchedule;
 import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
@@ -17,15 +16,13 @@ import java.nio.file.Path;
 public class TaskScheduleApp {
 
     public static void main(String[] args) throws IOException {
-        Path dataDir = Path.of("data");
-        ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        ExpertPlanningSolution problem = loader.loadFromDirectory(dataDir);
+        final Path dataDir = Path.of("data");
+        final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
+        final ExpertPlanningSolution problem = loader.loadFromDirectory(dataDir, "dataset.json");
 
-        SolverConfig solverConfig = new SolverConfig()
-                .withSolutionClass(ExpertPlanningSolution.class)
-                .withEntityClasses(ExpertSchedule.class)
-                .withConstraintProviderClass(ExpertPlanningConstraintProvider.class)
-                .withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(15L));
+        final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
+                "org/imd/expertschedule/expert-schedule-solver-config.xml");
+        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(15L));
 
         SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
         Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();

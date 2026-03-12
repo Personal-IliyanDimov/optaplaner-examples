@@ -42,15 +42,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Loads planning data from a single JSON file (see {@link PlanningDatasetData}) and builds an {@link ExpertPlanningSolution}.
  */
 public class ExpertPlanningSolutionLoader {
-
-    private static final String DEFAULT_FILENAME = "dataset.json";
-
     private final ObjectMapper objectMapper;
 
     public ExpertPlanningSolutionLoader() {
@@ -73,8 +71,12 @@ public class ExpertPlanningSolutionLoader {
         );
     }
 
-    public ExpertPlanningSolution loadFromDirectory(Path dataDir) throws IOException {
-        return load(dataDir.resolve(DEFAULT_FILENAME));
+    public ExpertPlanningSolution loadFromDirectory(final Path dataDir,
+                                                    final String fileName) throws IOException {
+        Objects.requireNonNull(dataDir);
+        Objects.requireNonNull(fileName);
+
+        return load(dataDir.resolve(fileName));
     }
 
     private ExpertPlanningSolution toDomain(List<SkillData> skillData,
