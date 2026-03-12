@@ -1,0 +1,1 @@
+1. Turn on debug logging for the category org.optaplanner
