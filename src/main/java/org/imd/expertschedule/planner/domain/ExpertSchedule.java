@@ -12,15 +12,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@PlanningEntity
 public class ExpertSchedule {
-    @PlanningVariable(valueRangeProviderRefs = "expertRefRange")
     private ExpertRef expertRef;
-
-    @PlanningVariable(valueRangeProviderRefs = "planningDateRangeProvider")
     private LocalDate date;
-
-    @PlanningEntityCollectionProperty
-    private List<ScheduleItem> items;
 }
 

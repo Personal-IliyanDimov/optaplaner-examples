@@ -18,15 +18,13 @@ public class GeneratorConfig {
     private int numCustomers;
     private int numOrders;
 
-    /** Number of back offices (experts are assigned to one office each). */
-    @Builder.Default
-    private int numOffices = 1;
+    private int numOffices;
+    private int expertsWithAvailability;
+    private int expertsWithAbsence;
 
-    /** Number of experts that will have at least one availability entry. */
-    @Builder.Default
-    private int expertsWithAvailability = 0;
+    private String[] orderPriorities;
+    private String[] orderDurations;
 
-    /** Number of experts that will have at least one absence entry. */
-    @Builder.Default
-    private int expertsWithAbsence = 0;
+    private int calendarWeek;
+    private int weekDays;
 }

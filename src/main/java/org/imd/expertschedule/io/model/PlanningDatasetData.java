@@ -2,6 +2,7 @@ package org.imd.expertschedule.io.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.imd.expertschedule.io.generator.GeneratorConfig;
 
 import java.util.List;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 public class PlanningDatasetData {
-
     private List<SkillData> skills;
     private List<BackOfficeData> backOffices;
     private List<CustomerData> customers;

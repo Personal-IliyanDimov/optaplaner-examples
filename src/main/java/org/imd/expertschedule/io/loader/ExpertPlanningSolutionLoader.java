@@ -144,7 +144,6 @@ public class ExpertPlanningSolutionLoader {
             BackOfficeRef boRef = new BackOfficeRef();
             boRef.setId(ed.getBackOfficeId());
             expert.setBackOfficeRef(boRef);
-            expert.setBackOfficeLocation(toLocation(ed.getBackOfficeLocation()));
             expert.setSkills(resolveSkills(ed.getSkills(), skillByName));
             if (ed.getAvailabilities() != null && !ed.getAvailabilities().isEmpty()) {
                 expert.setAvailabilities(toAvailabilities(ed.getAvailabilities()));
@@ -223,21 +222,18 @@ public class ExpertPlanningSolutionLoader {
             eRef.setId(esd.getExpertId());
             es.setExpertRef(eRef);
             es.setDate(esd.getDate());
-            es.setItems(esd.getItems() != null ? toScheduleItems(esd.getItems()) : new ArrayList<>());
             expertSchedules.add(es);
         }
         return expertSchedules;
     }
 
     private List<ScheduleItem> toScheduleItems(List<ScheduleItemData> items) {
-        List<ScheduleItem> result = new ArrayList<>();
+        final List<ScheduleItem> result = new ArrayList<>();
         for (ScheduleItemData sid : items) {
             ScheduleItem si = new ScheduleItem();
             OrderRef oRef = new OrderRef();
             oRef.setId(sid.getOrderId());
             si.setOrderRef(oRef);
-            si.setTravelDuration(parsePeriod(sid.getTravelDuration()));
-            si.setSlot(toTimeSlot(sid.getSlot()));
             result.add(si);
         }
         return result;
@@ -298,11 +294,8 @@ public class ExpertPlanningSolutionLoader {
 
     private static TimeSlot toTimeSlot(TimeSlotData data) {
         if (data == null) return null;
-        TimeSlot slot = new TimeSlot();
-        slot.setCalendarWeek(data.getCalendarWeek());
-        slot.setDayOfWeek(data.getDayOfWeek());
+        final TimeSlot slot = new TimeSlot();
         slot.setStartTime(data.getStartTime());
-        slot.setEndTime(data.getEndTime());
         return slot;
     }
 

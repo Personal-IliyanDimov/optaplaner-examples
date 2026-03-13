@@ -36,7 +36,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * with the corresponding preset. Default is {@code small}.
  */
 public class TestDataGenerator {
-    private static final String[] PERIODS = { "PT30M", "PT1H", "PT1H30M", "PT2H" };
 
     private static final String DEFAULT_FILENAME = "dataset.json";
     private static final ObjectMapper MAPPER = new ObjectMapper()
@@ -66,7 +65,7 @@ public class TestDataGenerator {
         List<CustomerData> customers = buildCustomers(config.getNumCustomers());
         List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices,
                 config.getExpertsWithAvailability(), config.getExpertsWithAbsence());
-        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills);
+        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills, config.getOrderPriorities(), config.getOrderDurations());
         List<ExpertScheduleData> expertSchedules = buildExpertSchedules(experts);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
@@ -130,14 +129,15 @@ public class TestDataGenerator {
                                                   List<BackOfficeData> backOffices,
                                                   int withAvailability, int withAbsence) {
         List<ExpertData> list = new ArrayList<>();
-        String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace", "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah", "Olivia"};
+        String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace",
+                          "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah",
+                          "Olivia"};
         for (int i = 0; i < count; i++) {
             ExpertData e = new ExpertData();
             e.setId(i + 1);
             e.setName(i < names.length ? names[i] : "Expert-" + (i + 1));
             BackOfficeData office = backOffices.get(i % backOffices.size());
             e.setBackOfficeId(office.getId());
-            e.setBackOfficeLocation(office.getLocation());
             e.setSkills(pickSkillNamesFromSkillData(skills));
 
             if (i < withAvailability) {
@@ -166,8 +166,8 @@ public class TestDataGenerator {
             AvailabilityData a = new AvailabilityData();
             a.setCalendarWeek(week);
             a.setDayOfWeek(day);
-            a.setStartTime(LocalTime.of(8, 0));
-            a.setEndTime(LocalTime.of(17, 0));
+            a.setStartTime(LocalTime.of(9, 0));
+            a.setEndTime(LocalTime.of(18, 0));
             list.add(a);
         }
         return list;
@@ -184,11 +184,15 @@ public class TestDataGenerator {
         return List.of(a);
     }
 
-    private static List<OrderData> buildOrders(int count, List<CustomerData> customers, List<SkillData> skills) {
+    private static List<OrderData> buildOrders(final int count,
+                                               final List<CustomerData> customers,
+                                               final List<SkillData> skills,
+                                               final String[] orderPriorities,
+                                               final String[] orderDurations) {
         List<OrderData> list = new ArrayList<>();
         List<String> skillNames = skills.stream().map(SkillData::getName).toList();
         if (skillNames.isEmpty()) skillNames = List.of("Electrical");
-        String[] priorities = {"LOW", "MEDIUM", "HIGH"};
+
         ThreadLocalRandom r = ThreadLocalRandom.current();
         for (int i = 0; i < count; i++) {
             OrderData o = new OrderData();
@@ -197,8 +201,8 @@ public class TestDataGenerator {
             o.setCustomerId(customers.get(r.nextInt(customers.size())).getId());
             o.setLocation(randomLocation(0, 20, 0, 20));
             o.setDueDate(LocalDate.now().plusDays(r.nextInt(15)));
-            o.setPriority(priorities[r.nextInt(priorities.length)]);
-            o.setDiagnosisDuration(randomDiagnosisDuration());
+            o.setPriority(orderPriorities[r.nextInt(orderPriorities.length)]);
+            o.setDiagnosisDuration(randomDiagnosisDuration(orderDurations));
             int skillCount = Math.max(1, r.nextInt(2) + 1);
             Set<String> required = new HashSet<>();
             while (required.size() < skillCount && required.size() < skillNames.size()) {
@@ -223,8 +227,8 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static String randomDiagnosisDuration() {
-        return PERIODS[ThreadLocalRandom.current().nextInt(PERIODS.length)];
+    private static String randomDiagnosisDuration(final String[] orderDurations) {
+        return orderDurations[ThreadLocalRandom.current().nextInt(orderDurations.length)];
     }
 
     private static LocationData randomLocation(double minLat, double maxLat, double minLon, double maxLon) {

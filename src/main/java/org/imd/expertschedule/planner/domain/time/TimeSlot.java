@@ -5,13 +5,11 @@ import lombok.Setter;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 
 @Getter
 @Setter
 public class TimeSlot {
-    private int calendarWeek;
-    private DayOfWeek dayOfWeek;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalTime startTime;
 }

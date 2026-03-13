@@ -34,14 +34,15 @@ public class TaskScheduleApp {
             System.out.printf("Expert %d on %s: %d items%n",
                     schedule.getExpertRef().getId(),
                     schedule.getDate(),
-                    schedule.getItems() != null ? schedule.getItems().size() : 0);
-            if (schedule.getItems() != null) {
-                for (ScheduleItem item : schedule.getItems()) {
+                    solution.getScheduleItemList() != null ? solution.getScheduleItemList().size() : 0);
+            if (solution.getScheduleItemList() != null) {
+                for (ScheduleItem item : solution.getScheduleItemList()) {
                     OrderRef order = item.getOrderRef();
                     if (order != null) {
-                        System.out.println("OrderRef " + order.getId() + "Travel: " + item.getTravelDuration() +
-                                " Slot: W" + item.getSlot().getCalendarWeek() + " Day: " + item.getSlot().getDayOfWeek() +
-                                "[" + item.getSlot().getStartTime() + " - " + item.getSlot().getEndTime() + "]");
+                        System.out.println("OrderRef " + order.getId() +
+                                " Slot: W" + (item.getExpertSchedule().getDate().getDayOfYear() / 7) +
+                                " Day: " + item.getExpertSchedule().getDate().getDayOfWeek() +
+                                " Time: " + item.getTimeSlot().getStartTime());
                     }
                 }
             }

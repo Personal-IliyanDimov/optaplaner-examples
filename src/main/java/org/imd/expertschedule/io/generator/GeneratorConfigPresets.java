@@ -18,6 +18,8 @@ public final class GeneratorConfigPresets {
                 .numOffices(1)
                 .expertsWithAvailability(5)
                 .expertsWithAbsence(1)
+                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
+                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
                 .build();
     }
 
@@ -30,6 +32,8 @@ public final class GeneratorConfigPresets {
                 .numOffices(3)
                 .expertsWithAvailability(15)
                 .expertsWithAbsence(3)
+                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
+                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
                 .build();
     }
 
@@ -42,6 +46,8 @@ public final class GeneratorConfigPresets {
                 .numOffices(6)
                 .expertsWithAvailability(30)
                 .expertsWithAbsence(5)
+                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
+                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
                 .build();
     }
 
@@ -54,7 +60,8 @@ public final class GeneratorConfigPresets {
                 .numOffices(10)
                 .expertsWithAvailability(50)
                 .expertsWithAbsence(10)
+                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
+                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
                 .build();
     }
-
 }

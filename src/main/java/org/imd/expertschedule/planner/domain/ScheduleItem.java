@@ -13,11 +13,13 @@ import java.time.Period;
 @Setter
 @PlanningEntity
 public class ScheduleItem {
-    private Period travelDuration;
 
-    @PlanningVariable(valueRangeProviderRefs = "orderRefRange")
     private OrderRef orderRef;
 
-    private TimeSlot slot;
+    @PlanningVariable(valueRangeProviderRefs = "expertScheduleRange")
+    private ExpertSchedule expertSchedule;
+
+    @PlanningVariable(valueRangeProviderRefs = "timeSlotRange")
+    private TimeSlot timeSlot;
 }
 
