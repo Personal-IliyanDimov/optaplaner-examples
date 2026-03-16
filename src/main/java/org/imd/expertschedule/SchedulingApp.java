@@ -1,5 +1,6 @@
 package org.imd.expertschedule;
 
+import org.imd.expertschedule.io.generator.GeneratorConfigPresets;
 import org.imd.expertschedule.io.loader.ExpertPlanningSolutionLoader;
 import org.imd.expertschedule.planner.domain.ExpertSchedule;
 import org.imd.expertschedule.planner.domain.ScheduleItem;
@@ -13,12 +14,12 @@ import org.optaplanner.core.config.solver.termination.TerminationConfig;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class TaskScheduleApp {
+public class SchedulingApp {
 
     public static void main(String[] args) throws IOException {
         final Path dataDir = Path.of("data");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        final ExpertPlanningSolution problem = loader.loadFromDirectory(dataDir, "dataset.json");
+        final ExpertPlanningSolution problem = loader.loadFromDirectory(dataDir, GeneratorConfigPresets.small().getFileName());
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
                 "org/imd/expertschedule/expert-schedule-solver-config.xml");

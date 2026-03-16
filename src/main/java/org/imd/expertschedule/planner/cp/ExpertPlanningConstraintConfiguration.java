@@ -7,7 +7,6 @@ import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore
 @ConstraintConfiguration
 public class ExpertPlanningConstraintConfiguration {
 
-
     @ConstraintWeight("Speaker conflict")
     private HardMediumSoftScore speakerConflict = null;
 

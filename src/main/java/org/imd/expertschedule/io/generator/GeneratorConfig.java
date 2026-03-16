@@ -2,6 +2,7 @@ package org.imd.expertschedule.io.generator;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -10,7 +11,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Builder
 public class GeneratorConfig {
 
     private String fileName;

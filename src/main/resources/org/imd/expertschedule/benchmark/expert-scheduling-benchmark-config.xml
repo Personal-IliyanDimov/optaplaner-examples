@@ -7,7 +7,7 @@
     <inheritedSolverBenchmark>
         <solver>
             <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
-            <entityClass>org.imd.expertschedule.planner.domain.ExpertSchedule</entityClass>
+            <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
             <scoreDirectorFactory>
                 <constraintProviderClass>org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider</constraintProviderClass>
                 <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>

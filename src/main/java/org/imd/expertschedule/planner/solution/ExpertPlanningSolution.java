@@ -15,6 +15,7 @@ import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.ProblemFactCollectionProperty;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
+import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 
 import java.time.LocalDate;
@@ -52,5 +53,5 @@ public class ExpertPlanningSolution {
     private ExpertPlanningConstraintConfiguration constraintConfiguration;
 
     @PlanningScore
-    private HardSoftScore score;
+    private HardMediumSoftScore score;
 }

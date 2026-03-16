@@ -17,73 +17,81 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig small() {
         final int numExperts = 5;
-        return GeneratorConfig.builder()
-                .fileName("dataset-small.json")
-                .numSkills(15)
-                .numExperts(numExperts)
-                .numCustomers(10)
-                .numOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY)
-                .numOffices(1)
-                .expertsWithAvailability(5)
-                .expertsWithAbsence(1)
-                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
-                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
-                .calendarWeek(CALENDAR_WEEK)
-                .weekWorkingDays(WEEK_WORKING_DAYS)
-                .build();
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-small.json");
+        config.setNumSkills(15);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(10);
+        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(1);
+        config.setExpertsWithAvailability(5);
+        config.setExpertsWithAbsence(1);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+
+        return config;
     }
 
     public static GeneratorConfig medium() {
         final int numExperts = 15;
-        return GeneratorConfig.builder()
-                .fileName("dataset-medium.json")
-                .numSkills(15)
-                .numExperts(numExperts)
-                .numCustomers(20)
-                .numOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY)
-                .numOffices(3)
-                .expertsWithAvailability(15)
-                .expertsWithAbsence(3)
-                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
-                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
-                .calendarWeek(CALENDAR_WEEK)
-                .weekWorkingDays(WEEK_WORKING_DAYS)
-                .build();
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-medium.json");
+        config.setNumSkills(15);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(20);
+        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(3);
+        config.setExpertsWithAvailability(15);
+        config.setExpertsWithAbsence(3);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+
+        return config;
     }
 
     public static GeneratorConfig large() {
         final int numExperts = 30;
-        return GeneratorConfig.builder()
-                .fileName("dataset-large.json")
-                .numSkills(15)
-                .numExperts(numExperts)
-                .numCustomers(100)
-                .numOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY)
-                .numOffices(6)
-                .expertsWithAvailability(30)
-                .expertsWithAbsence(5)
-                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
-                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
-                .calendarWeek(CALENDAR_WEEK)
-                .weekWorkingDays(WEEK_WORKING_DAYS)
-                .build();
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-large.json");
+        config.setNumSkills(15);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(100);
+        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(6);
+        config.setExpertsWithAvailability(30);
+        config.setExpertsWithAbsence(5);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+
+        return config;
     }
 
     public static GeneratorConfig extraLarge() {
         final int numExperts = 50;
-        return GeneratorConfig.builder()
-                .fileName("dataset-extra-large.json")
-                .numSkills(15)
-                .numExperts(numExperts)
-                .numCustomers(1000)
-                .numOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY)
-                .numOffices(10)
-                .expertsWithAvailability(50)
-                .expertsWithAbsence(10)
-                .orderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"})
-                .orderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" })
-                .calendarWeek(CALENDAR_WEEK)
-                .weekWorkingDays(WEEK_WORKING_DAYS)
-                .build();
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-large.json");
+        config.setNumSkills(15);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(1000);
+        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(10);
+        config.setExpertsWithAvailability(50);
+        config.setExpertsWithAbsence(10);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+
+        return config;
     }
 }

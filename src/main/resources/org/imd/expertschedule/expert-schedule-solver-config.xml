@@ -8,7 +8,7 @@
 
   <!-- Domain model configuration -->
   <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
-  <entityClass>org.imd.expertschedule.planner.domain.ExpertSchedule</entityClass>
+  <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
 
   <!-- Score configuration -->
   <scoreDirectorFactory>
