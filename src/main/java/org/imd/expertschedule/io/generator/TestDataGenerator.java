@@ -62,10 +62,8 @@ public class TestDataGenerator {
         List<SkillData> skills = buildSkills(config.getNumSkills());
         List<BackOfficeData> backOffices = buildBackOffices(config.getNumOffices());
         List<CustomerData> customers = buildCustomers(config.getNumCustomers());
-        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices,
-                config.getExpertsWithAvailability(), config.getExpertsWithAbsence());
-        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills, config.getOrderPriorities(), config.getOrderDurations());
-        List<ExpertScheduleData> expertSchedules = buildExpertSchedules(experts);
+        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices, config);
+        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills, config);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setMetadata(config);
@@ -117,11 +115,13 @@ public class TestDataGenerator {
 
     private static List<ExpertData> buildExperts(int count, List<SkillData> skills,
                                                   List<BackOfficeData> backOffices,
-                                                  int withAvailability, int withAbsence) {
+                                                  GeneratorConfig config) {
         List<ExpertData> list = new ArrayList<>();
         String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace",
                           "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah",
                           "Olivia"};
+        int calendarWeek = config.getCalendarWeek();
+        int[] weekWorkingDays = config.getWeekWorkingDays() != null ? config.getWeekWorkingDays() : new int[]{1, 2, 3, 4, 5};
         for (int i = 0; i < count; i++) {
             ExpertData e = new ExpertData();
             e.setId(i + 1);
@@ -130,11 +130,11 @@ public class TestDataGenerator {
             e.setBackOfficeId(office.getId());
             e.setSkills(pickSkillNamesFromSkillData(skills));
 
-            if (i < withAvailability) {
-                e.setAvailabilities(sampleAvailabilities());
+            if (i < config.getExpertsWithAvailability()) {
+                e.setAvailabilities(sampleAvailabilities(calendarWeek, weekWorkingDays));
             }
-            if (i < withAbsence) {
-                e.setAbsences(sampleAbsences());
+            if (i < config.getExpertsWithAbsence()) {
+                e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays));
             }
             list.add(e);
         }
@@ -149,13 +149,12 @@ public class TestDataGenerator {
         return names.subList(0, Math.min(howMany, names.size()));
     }
 
-    private static List<AvailabilityData> sampleAvailabilities() {
-        int week = LocalDate.now().get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
+    private static List<AvailabilityData> sampleAvailabilities(int calendarWeek, int[] weekWorkingDays) {
         List<AvailabilityData> list = new ArrayList<>();
-        for (DayOfWeek day : new DayOfWeek[]{DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY, DayOfWeek.FRIDAY}) {
+        for (int wd : weekWorkingDays) {
             AvailabilityData a = new AvailabilityData();
-            a.setCalendarWeek(week);
-            a.setDayOfWeek(day);
+            a.setCalendarWeek(calendarWeek);
+            a.setDayOfWeek(DayOfWeek.of(wd));
             a.setStartTime(LocalTime.of(9, 0));
             a.setEndTime(LocalTime.of(18, 0));
             list.add(a);
@@ -163,11 +162,12 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<AbsenceData> sampleAbsences() {
-        int week = LocalDate.now().plusWeeks(1).get(java.time.temporal.WeekFields.ISO.weekOfWeekBasedYear());
+    private static List<AbsenceData> sampleAbsences(int calendarWeek, int[] weekWorkingDays) {
+        if (weekWorkingDays.length == 0) return List.of();
+        int wd = weekWorkingDays[ThreadLocalRandom.current().nextInt(weekWorkingDays.length)];
         AbsenceData a = new AbsenceData();
-        a.setCalendarWeek(week);
-        a.setDayOfWeek(DayOfWeek.WEDNESDAY);
+        a.setCalendarWeek(calendarWeek);
+        a.setDayOfWeek(DayOfWeek.of(wd));
         a.setStartTime(LocalTime.of(0, 0));
         a.setEndTime(LocalTime.of(23, 59));
         a.setReason("Leave");
@@ -177,22 +177,26 @@ public class TestDataGenerator {
     private static List<OrderData> buildOrders(final int count,
                                                final List<CustomerData> customers,
                                                final List<SkillData> skills,
-                                               final String[] orderPriorities,
-                                               final String[] orderDurations) {
+                                               final GeneratorConfig config) {
         List<OrderData> list = new ArrayList<>();
         List<String> skillNames = skills.stream().map(SkillData::getName).toList();
         if (skillNames.isEmpty()) skillNames = List.of("Electrical");
 
+        int[] weekWorkingDays = config.getWeekWorkingDays();
+        List<LocalDate> planningDates = planningDates(config.getCalendarWeek(), weekWorkingDays);
+
         ThreadLocalRandom r = ThreadLocalRandom.current();
+        String[] priorities = config.getOrderPriorities();
+        String[] durations = config.getOrderDurations();
         for (int i = 0; i < count; i++) {
             OrderData o = new OrderData();
             o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
             o.setCustomerId(customers.get(r.nextInt(customers.size())).getId());
             o.setLocation(randomLocation(0, 20, 0, 20));
-            o.setDueDate(LocalDate.now().plusDays(r.nextInt(15)));
-            o.setPriority(orderPriorities[r.nextInt(orderPriorities.length)]);
-            o.setDiagnosisDuration(randomDiagnosisDuration(orderDurations));
+            o.setDueDate(planningDates.get(r.nextInt(planningDates.size())));
+            o.setPriority(priorities[r.nextInt(priorities.length)]);
+            o.setDiagnosisDuration(randomDiagnosisDuration(durations));
             int skillCount = Math.max(1, r.nextInt(2) + 1);
             Set<String> required = new HashSet<>();
             while (required.size() < skillCount && required.size() < skillNames.size()) {
@@ -204,17 +208,20 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<ExpertScheduleData> buildExpertSchedules(List<ExpertData> experts) {
-        LocalDate scheduleDate = LocalDate.now();
-        List<ExpertScheduleData> list = new ArrayList<>();
-        for (final ExpertData e : experts) {
-            ExpertScheduleData es = new ExpertScheduleData();
-            es.setExpertId(e.getId());
-            es.setDate(scheduleDate);
-            es.setItems(new ArrayList<>());
-            list.add(es);
+    /** Dates in the planning window: one per working day in the given calendar week (matches loader's calculateDate). */
+    private static List<LocalDate> planningDates(int calendarWeek, int[] weekWorkingDays) {
+        List<LocalDate> list = new ArrayList<>();
+        for (int wd : weekWorkingDays) {
+            list.add(dateInPlanningWeek(calendarWeek, wd));
         }
         return list;
+    }
+
+    /** Monday of week 1 = Jan 1; wd 1..7 = day of week. Matches loader's calculateDate. */
+    private static LocalDate dateInPlanningWeek(int calendarWeek, int wd) {
+        return LocalDate.of(LocalDate.now().getYear(), 1, 1)
+                .plusWeeks(calendarWeek - 1)
+                .plusDays(wd - 1);
     }
 
     private static String randomDiagnosisDuration(final String[] orderDurations) {
