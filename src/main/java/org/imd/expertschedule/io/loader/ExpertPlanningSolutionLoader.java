@@ -1,11 +1,13 @@
 package org.imd.expertschedule.io.loader;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.imd.expertschedule.io.generator.GeneratorConfig;
 import org.imd.expertschedule.io.model.AbsenceData;
 import org.imd.expertschedule.io.model.AvailabilityData;
 import org.imd.expertschedule.io.model.BackOfficeData;
 import org.imd.expertschedule.io.model.CustomerData;
 import org.imd.expertschedule.io.model.ExpertData;
-import org.imd.expertschedule.io.model.ExpertScheduleData;
 import org.imd.expertschedule.io.model.LocationData;
 import org.imd.expertschedule.io.model.OrderData;
 import org.imd.expertschedule.io.model.PlanningDatasetData;
@@ -30,12 +32,11 @@ import org.imd.expertschedule.planner.domain.time.Availability;
 import org.imd.expertschedule.planner.domain.time.TimeSlot;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.SolutionContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class ExpertPlanningSolutionLoader {
                 data.getCustomers() != null ? data.getCustomers() : List.of(),
                 data.getExperts() != null ? data.getExperts() : List.of(),
                 data.getOrders() != null ? data.getOrders() : List.of(),
-                data.getExpertSchedules() != null ? data.getExpertSchedules() : List.of()
+                data.getMetadata()
         );
     }
 
@@ -84,13 +85,13 @@ public class ExpertPlanningSolutionLoader {
                                             List<CustomerData> customerData,
                                             List<ExpertData> expertData,
                                             List<OrderData> orderData,
-                                            List<ExpertScheduleData> expertScheduleData) {
+                                            GeneratorConfig metaData) {
         Map<String, Skill> skillByName = buildSkillMap(skillData);
         Map<Long, BackOffice> backOfficeById = buildBackOfficeMap(backOfficeData);
         Map<Long, Customer> customerById = buildCustomerMap(customerData);
         Map<Long, Expert> expertById = buildExpertMap(expertData, skillByName);
         Map<Long, Order> orderById = buildOrderMap(orderData, skillByName);
-        List<ExpertSchedule> expertSchedules = buildExpertScheduleList(expertScheduleData);
+        List<ExpertSchedule> expertSchedules = buildExpertScheduleList(metaData,expertData);
 
         SolutionContext context = buildContext(skillByName, backOfficeById, customerById, expertById, orderById);
         return buildSolution(expertById, orderById, expertSchedules, context);
@@ -214,17 +215,32 @@ public class ExpertPlanningSolutionLoader {
         return orderById;
     }
 
-    private List<ExpertSchedule> buildExpertScheduleList(List<ExpertScheduleData> expertScheduleData) {
-        List<ExpertSchedule> expertSchedules = new ArrayList<>();
-        for (ExpertScheduleData esd : expertScheduleData) {
-            ExpertSchedule es = new ExpertSchedule();
-            ExpertRef eRef = new ExpertRef();
-            eRef.setId(esd.getExpertId());
-            es.setExpertRef(eRef);
-            es.setDate(esd.getDate());
-            expertSchedules.add(es);
+    private List<ExpertSchedule> buildExpertScheduleList(final GeneratorConfig metaData,
+                                                         final List<ExpertData> expertData) {
+        final int calendarWeek = metaData.getCalendarWeek();
+        final int[] weekWorkingDays = metaData.getWeekWorkingDays();
+
+        final List<ExpertSchedule> expertSchedules = new ArrayList<>();
+
+        for (final ExpertData expert: expertData) {
+            for (int wd: weekWorkingDays) {
+                ExpertRef eRef = new ExpertRef();
+                eRef.setId(expert.getId());
+
+                ExpertSchedule es = new ExpertSchedule();
+                es.setExpertRef(eRef);
+                es.setDate(calculateDate(calendarWeek, wd));
+
+                expertSchedules.add(es);
+            }
         }
         return expertSchedules;
+    }
+
+    private LocalDate calculateDate(int calendarWeek, int wd) {
+        return LocalDate.of(LocalDate.now().getYear(), 1, 1)
+                        .plusWeeks(calendarWeek - 1)
+                        .plusDays(wd - 1);
     }
 
     private List<ScheduleItem> toScheduleItems(List<ScheduleItemData> items) {

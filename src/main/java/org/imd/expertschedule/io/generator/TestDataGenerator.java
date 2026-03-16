@@ -68,6 +68,7 @@ public class TestDataGenerator {
         List<ExpertScheduleData> expertSchedules = buildExpertSchedules(experts);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
+        dataset.setMetadata(config);
         dataset.setSkills(skills);
         dataset.setBackOffices(backOffices);
         dataset.setCustomers(customers);

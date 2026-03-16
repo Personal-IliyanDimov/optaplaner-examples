@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PlanningDatasetData {
+    private GeneratorConfig metadata;
     private List<SkillData> skills;
     private List<BackOfficeData> backOffices;
     private List<CustomerData> customers;
