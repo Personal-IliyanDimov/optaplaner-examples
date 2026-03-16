@@ -37,7 +37,6 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class TestDataGenerator {
 
-    private static final String DEFAULT_FILENAME = "dataset.json";
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .enable(SerializationFeature.INDENT_OUTPUT);
@@ -46,15 +45,15 @@ public class TestDataGenerator {
         String presetName = args.length > 0 ? args[0].toLowerCase(Locale.ROOT) : "small";
         Path outputDir = Path.of("data");
         Files.createDirectories(outputDir);
-        Path outputFile = outputDir.resolve(DEFAULT_FILENAME);
 
-        GeneratorConfig config = presetFromName(presetName);
+        final GeneratorConfig config = GeneratorConfigPresets.small();
+        final Path outputFile = outputDir.resolve(config.getFileName());
         generate(config, outputFile);
 
         System.out.println("Generated " + presetName + " dataset: " + outputFile.toAbsolutePath());
     }
 
-    public static void generate(GeneratorConfig config, Path outputFile) throws IOException {
+    public static void generate(final GeneratorConfig config, final Path outputFile) throws IOException {
         PlanningDatasetData dataset = buildDataset(config);
         MAPPER.writeValue(outputFile.toFile(), dataset);
     }
@@ -74,17 +73,7 @@ public class TestDataGenerator {
         dataset.setCustomers(customers);
         dataset.setExperts(experts);
         dataset.setOrders(orders);
-        dataset.setExpertSchedules(expertSchedules);
         return dataset;
-    }
-
-    private static GeneratorConfig presetFromName(String name) {
-        return switch (name) {
-            case "medium" -> GeneratorConfigPresets.medium();
-            case "large" -> GeneratorConfigPresets.large();
-            case "extraLarge" -> GeneratorConfigPresets.extraLarge();
-            default -> GeneratorConfigPresets.small();
-        };
     }
 
     private static List<SkillData> buildSkills(int count) {

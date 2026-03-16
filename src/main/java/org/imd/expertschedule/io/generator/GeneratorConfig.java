@@ -13,6 +13,8 @@ import lombok.Setter;
 @Builder
 public class GeneratorConfig {
 
+    private String fileName;
+
     private int numSkills;
     private int numExperts;
     private int numCustomers;
@@ -26,5 +28,5 @@ public class GeneratorConfig {
     private String[] orderDurations;
 
     private int calendarWeek;
-    private int weekDays;
+    private int[] weekWorkingDays;
 }
