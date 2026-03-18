@@ -43,7 +43,7 @@ public class TestDataGenerator {
 
     public static void main(String[] args) throws IOException {
         String presetName = args.length > 0 ? args[0].toLowerCase(Locale.ROOT) : "small";
-        Path outputDir = Path.of("data");
+        Path outputDir = Path.of("data/expertschedule/");
         Files.createDirectories(outputDir);
 
         final GeneratorConfig config = GeneratorConfigPresets.small();

@@ -16,7 +16,7 @@ import java.util.Set;
 @PlanningEntity
 public class Order {
     private OrderRef id;
-    private CustomerRef customerRef;
+    private Customer customer;
     private Location location;
     private Set<Skill> requiredSkills;
     private LocalDate dueDate;

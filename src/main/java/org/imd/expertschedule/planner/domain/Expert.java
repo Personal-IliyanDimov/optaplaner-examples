@@ -17,7 +17,7 @@ public class Expert {
     private ExpertRef id;
     private String name;
 
-    private BackOfficeRef backOfficeRef;
+    private BackOffice backOffice;
     private Location backOfficeLocation;
     private Set<Skill> skills;
 

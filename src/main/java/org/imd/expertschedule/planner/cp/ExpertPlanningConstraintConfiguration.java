@@ -20,9 +20,9 @@ public class ExpertPlanningConstraintConfiguration {
     private HardMediumSoftScore constraintFairlyDistributeScheduledItems = HardMediumSoftScore.ONE_MEDIUM;
 
     public static final class WeightNames {
-        private static final String EA_VS_OA_AVAILABILITY_CONFLICT = "ExpertAvailability Vs OrderAvailability";
-        private static final String ES_VS_OS_SKILL_CONFLICT = "ExpertSkills Vs OrderSkills";
-        private static final String O_DUE_DATE_CONFLICT = "OrderDueDate";
-        private static final String FD_SI_CONFLICT = "Fairly Distribute Scheduled Items";
+        public static final String EA_VS_OA_AVAILABILITY_CONFLICT = "ExpertAvailability Vs OrderAvailability";
+        public static final String ES_VS_OS_SKILL_CONFLICT = "ExpertSkills Vs OrderSkills";
+        public static final String O_DUE_DATE_CONFLICT = "OrderDueDate";
+        public static final String FD_SI_CONFLICT = "Fairly Distribute Scheduled Items";
     }
 }

@@ -1,5 +1,7 @@
 package org.imd.expertschedule.planner.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.TimeSlot;
 import lombok.Getter;
@@ -11,10 +13,11 @@ import java.time.Period;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 @PlanningEntity
 public class ScheduleItem {
 
-    private OrderRef orderRef;
+    private final Order order;
 
     @PlanningVariable(valueRangeProviderRefs = "expertScheduleRange")
     private ExpertSchedule expertSchedule;

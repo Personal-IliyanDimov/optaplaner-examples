@@ -1,5 +1,6 @@
 package org.imd.expertschedule.planner.domain;
 
+import lombok.EqualsAndHashCode;
 import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ExpertSchedule {
-    private ExpertRef expertRef;
+    private Expert expert;
     private LocalDate date;
 }
 
