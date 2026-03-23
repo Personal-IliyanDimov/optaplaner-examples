@@ -7,8 +7,11 @@ import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore
 @ConstraintConfiguration
 public class ExpertPlanningConstraintConfiguration {
 
-    @ConstraintWeight(WeightNames.EA_VS_OA_AVAILABILITY_CONFLICT)
-    private HardMediumSoftScore constraintExpertAvailabilityVsOrderAvailability = HardMediumSoftScore.ONE_HARD;
+    @ConstraintWeight(WeightNames.EA_AVAILABILITY_CONFLICT)
+    private HardMediumSoftScore constraintExpertAvailability = HardMediumSoftScore.ONE_HARD;
+
+    @ConstraintWeight(WeightNames.OA_AVAILABILITY_CONFLICT)
+    private HardMediumSoftScore constraintOrderAvailability = HardMediumSoftScore.ONE_HARD;
 
     @ConstraintWeight(WeightNames.ES_VS_OS_SKILL_CONFLICT)
     private HardMediumSoftScore constraintExpertSkillsVsOrderSkills = HardMediumSoftScore.ONE_HARD;
@@ -20,9 +23,10 @@ public class ExpertPlanningConstraintConfiguration {
     private HardMediumSoftScore constraintFairlyDistributeScheduledItems = HardMediumSoftScore.ONE_MEDIUM;
 
     public static final class WeightNames {
-        public static final String EA_VS_OA_AVAILABILITY_CONFLICT = "ExpertAvailability Vs OrderAvailability";
-        public static final String ES_VS_OS_SKILL_CONFLICT = "ExpertSkills Vs OrderSkills";
-        public static final String O_DUE_DATE_CONFLICT = "OrderDueDate";
-        public static final String FD_SI_CONFLICT = "Fairly Distribute Scheduled Items";
+        public static final String EA_AVAILABILITY_CONFLICT = "Expert Availability Conflict";
+        public static final String OA_AVAILABILITY_CONFLICT = "Order Availability Conflict";
+        public static final String ES_VS_OS_SKILL_CONFLICT = "ExpertSkills Vs OrderSkills Conflict";
+        public static final String O_DUE_DATE_CONFLICT = "OrderDueDate Conflict";
+        public static final String FD_SI_CONFLICT = "Fairly Distribute Scheduled Items Conflict";
     }
 }

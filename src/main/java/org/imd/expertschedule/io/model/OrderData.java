@@ -2,6 +2,7 @@ package org.imd.expertschedule.io.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.imd.expertschedule.planner.domain.time.Availability;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,6 @@ public class OrderData {
     private List<String> requiredSkills;
     private LocalDate dueDate;
     private String priority;
-    /** ISO-8601 duration (e.g. PT30M, PT1H, PT2H) - between 30m and 2h. */
     private String diagnosisDuration;
+    private List<Availability> customerAvailabilities;
 }

@@ -25,4 +25,3 @@ public class ScheduleItem {
     @PlanningVariable(valueRangeProviderRefs = "timeSlotRange")
     private TimeSlot timeSlot;
 }
-

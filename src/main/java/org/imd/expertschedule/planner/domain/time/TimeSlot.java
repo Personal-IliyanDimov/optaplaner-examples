@@ -1,15 +1,14 @@
 package org.imd.expertschedule.planner.domain.time;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class TimeSlot {
-    private LocalTime startTime;
+    private final LocalTime startTime;
 }

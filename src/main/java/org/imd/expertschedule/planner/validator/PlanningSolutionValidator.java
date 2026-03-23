@@ -6,13 +6,14 @@ import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 
 import java.util.Collection;
 
-public class ExpertPlanningValidator {
+public class PlanningSolutionValidator {
 
     public Collection<Violation> validate(ExpertPlanningSolution solution) {
         final Collection<Violation> result = new java.util.ArrayList<>();
 
         // each expert must have none null availability
         validateExpertAvailabilityIsNotNullOrEmpty(solution, result);
+        // validateExpertAvailabilitySlotsAreValid(solution, result);
 
         return result;
     }

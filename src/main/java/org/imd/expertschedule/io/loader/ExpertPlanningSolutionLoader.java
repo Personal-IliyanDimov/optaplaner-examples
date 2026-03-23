@@ -246,13 +246,12 @@ public class ExpertPlanningSolutionLoader {
     }
 
     private static TimeSlot toTimeSlot(TimeSlotData data) {
-        if (data == null) return null;
-        final TimeSlot slot = new TimeSlot();
-        slot.setStartTime(data.getStartTime());
-        return slot;
+        TimeSlot result = null;
+        if (data != null) {
+            result = new TimeSlot(data.getStartTime());
+        }
+        return result;
     }
-
-
 
     private Location toLocation(LocationData data) {
         if (data == null) return null;

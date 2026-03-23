@@ -9,6 +9,7 @@ import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.solution.SolutionContext;
+import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
@@ -16,6 +17,7 @@ import org.optaplanner.core.config.solver.termination.TerminationConfig;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collection;
 
 public class SchedulingApp {
 
@@ -25,6 +27,13 @@ public class SchedulingApp {
         final SolutionContext context = loader.loadFromDirectory(dataDir, GeneratorConfigPresets.small().getFileName());
         final ExpertPlanningSolution unsolvedSolution = new ExpertPlanningSolution(new PlannerParameters(),
             new ExpertPlanningConstraintConfiguration(), context);
+
+        final PlanningSolutionValidator validator = new PlanningSolutionValidator();
+        final Collection<PlanningSolutionValidator.Violation> validationResults = validator.validate(unsolvedSolution);
+        if (! validationResults.isEmpty()) {
+            validationResults.forEach(violation -> System.out.println("Validation violation: " + violation.getMessage()));
+            return ;
+        }
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
                 "org/imd/expertschedule/expert-schedule-solver-config.xml");
