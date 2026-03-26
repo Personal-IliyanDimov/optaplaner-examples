@@ -8,16 +8,17 @@ import org.imd.expertschedule.io.model.AvailabilityData;
 import org.imd.expertschedule.io.model.BackOfficeData;
 import org.imd.expertschedule.io.model.CustomerData;
 import org.imd.expertschedule.io.model.ExpertData;
-import org.imd.expertschedule.io.model.ExpertScheduleData;
 import org.imd.expertschedule.io.model.LocationData;
 import org.imd.expertschedule.io.model.OrderData;
 import org.imd.expertschedule.io.model.PlanningDatasetData;
 import org.imd.expertschedule.io.model.SkillData;
+import org.imd.expertschedule.planner.domain.time.Availability;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -32,8 +33,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * Generates a single planning dataset file from a {@link GeneratorConfig}.
  * Use presets from {@link GeneratorConfigPresets} or pass a custom config.
  * <p>
- * Example: run with args {@code small}, {@code medium}, or {@code large} to generate data/dataset.json
- * with the corresponding preset. Default is {@code small}.
+ * Example: run with a preset name (default {@code small}): {@code ultrasmall}, {@code small},
+ * {@code medium}, {@code large}, {@code extralarge}. Output goes under {@code data/expertschedule/}
+ * using the preset's file name.
  */
 public class TestDataGenerator {
 
@@ -42,15 +44,28 @@ public class TestDataGenerator {
             .enable(SerializationFeature.INDENT_OUTPUT);
 
     public static void main(String[] args) throws IOException {
-        String presetName = args.length > 0 ? args[0].toLowerCase(Locale.ROOT) : "small";
+        String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "small";
         Path outputDir = Path.of("data/expertschedule/");
         Files.createDirectories(outputDir);
 
-        final GeneratorConfig config = GeneratorConfigPresets.small();
+        final GeneratorConfig config = resolvePreset(presetName);
         final Path outputFile = outputDir.resolve(config.getFileName());
         generate(config, outputFile);
 
         System.out.println("Generated " + presetName + " dataset: " + outputFile.toAbsolutePath());
+    }
+
+    private static GeneratorConfig resolvePreset(String presetName) {
+        return switch (presetName) {
+            case "ultrasmall" -> GeneratorConfigPresets.ultrasmall();
+            case "small" -> GeneratorConfigPresets.small();
+            case "medium" -> GeneratorConfigPresets.medium();
+            case "large" -> GeneratorConfigPresets.large();
+            case "extralarge" -> GeneratorConfigPresets.extraLarge();
+            default -> throw new IllegalArgumentException(
+                    "Unknown preset '" + presetName
+                            + "'. Use: ultrasmall | small | medium | large | extralarge");
+        };
     }
 
     public static void generate(final GeneratorConfig config, final Path outputFile) throws IOException {
@@ -203,7 +218,50 @@ public class TestDataGenerator {
                 required.add(skillNames.get(r.nextInt(skillNames.size())));
             }
             o.setRequiredSkills(new ArrayList<>(required));
+            o.setCustomerAvailabilities(
+                    customerAvailabilitiesForPlanningWeek(config, weekWorkingDays, r));
             list.add(o);
+        }
+        return list;
+    }
+
+    /** Same bounds as generated expert availability ({@link #sampleAvailabilities}). */
+    private static final LocalTime CUSTOMER_AVAILABILITY_DAY_START = LocalTime.of(9, 0);
+    private static final LocalTime CUSTOMER_AVAILABILITY_DAY_END = LocalTime.of(18, 0);
+
+    /**
+     * Per order: on each planning working day, customer is available for a contiguous window of length
+     * {@link GeneratorConfig#getCustomerAvailabilityTimeWindowInMinutes()}, placed at a random offset inside
+     * 09:00–18:00 (same day bounds as generated expert availability) so
+     * {@link org.imd.expertschedule.planner.util.PlannerHelper#orderIsServable} can still match feasible slots.
+     */
+    private static List<Availability> customerAvailabilitiesForPlanningWeek(
+            GeneratorConfig config, int[] weekWorkingDays, ThreadLocalRandom r) {
+        if (weekWorkingDays == null || weekWorkingDays.length == 0) {
+            return List.of();
+        }
+        int calendarWeek = config.getCalendarWeek();
+        int daySpanMinutes = (int) Duration.between(CUSTOMER_AVAILABILITY_DAY_START, CUSTOMER_AVAILABILITY_DAY_END).toMinutes();
+
+        int requestedWindow = config.getCustomerAvailabilityTimeWindowInMinutes();
+        int effectiveWindowMinutes = requestedWindow <= 0
+                ? daySpanMinutes
+                : Math.min(requestedWindow, daySpanMinutes);
+
+        int latestStartOffset = daySpanMinutes - effectiveWindowMinutes;
+
+        List<Availability> list = new ArrayList<>(weekWorkingDays.length);
+        for (int wd : weekWorkingDays) {
+            int startOffset = latestStartOffset <= 0 ? 0 : r.nextInt(latestStartOffset + 1);
+            LocalTime start = CUSTOMER_AVAILABILITY_DAY_START.plusMinutes(startOffset);
+            LocalTime end = start.plusMinutes(effectiveWindowMinutes);
+
+            Availability a = new Availability();
+            a.setCalendarWeek(calendarWeek);
+            a.setDayOfWeek(DayOfWeek.of(wd));
+            a.setStartTime(start);
+            a.setEndTime(end);
+            list.add(a);
         }
         return list;
     }

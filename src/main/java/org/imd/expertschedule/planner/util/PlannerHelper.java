@@ -8,6 +8,7 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public class PlannerHelper {
 
@@ -54,5 +55,14 @@ public class PlannerHelper {
                 .toList();
 
         return (!availabilityList.isEmpty() && absenceList.isEmpty());
+    }
+
+    public boolean orderIsServable(final DayInterval meetingInterval, final List<Availability> customerAvailabilities) {
+        final Optional<Availability> result = customerAvailabilities.stream()
+            .filter(ca -> meetingInterval.getDate().equals(calculateDate(ca.getCalendarWeek(), ca.getDayOfWeek().getValue())))
+            .filter(ca -> lessOrEqual(ca.getStartTime(), meetingInterval.getFrom()) && lessOrEqual(meetingInterval.getTo(), ca.getEndTime()))
+            .findFirst();
+
+        return result.isPresent();
     }
 }

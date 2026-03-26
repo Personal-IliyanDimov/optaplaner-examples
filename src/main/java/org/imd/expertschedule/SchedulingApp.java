@@ -3,12 +3,10 @@ package org.imd.expertschedule;
 import org.imd.expertschedule.io.generator.GeneratorConfigPresets;
 import org.imd.expertschedule.io.loader.ExpertPlanningSolutionLoader;
 import org.imd.expertschedule.planner.cp.ExpertPlanningConstraintConfiguration;
-import org.imd.expertschedule.planner.domain.ExpertSchedule;
-import org.imd.expertschedule.planner.domain.Order;
-import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.solution.SolutionContext;
+import org.imd.expertschedule.planner.solution.ExpertPlanningSolutionPrinter;
 import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -44,23 +42,7 @@ public class SchedulingApp {
 
         ExpertPlanningSolution solution = solver.solve(unsolvedSolution);
 
-        System.out.println("Best score: " + solution.getScore());
-        for (ExpertSchedule schedule : solution.getExpertScheduleList()) {
-            System.out.printf("Expert %d on %s: %d items%n",
-                    schedule.getExpert().getId(),
-                    schedule.getDate(),
-                    solution.getScheduleItemList() != null ? solution.getScheduleItemList().size() : 0);
-            if (solution.getScheduleItemList() != null) {
-                for (ScheduleItem item : solution.getScheduleItemList()) {
-                    Order order = item.getOrder();
-                    if (order != null) {
-                        System.out.println("OrderRef " + order.getId() +
-                                " Slot: W" + (item.getExpertSchedule().getDate().getDayOfYear() / 7) +
-                                " Day: " + item.getExpertSchedule().getDate().getDayOfWeek() +
-                                " Time: " + item.getTimeSlot().getStartTime());
-                    }
-                }
-            }
-        }
+        ExpertPlanningSolutionPrinter printer = new ExpertPlanningSolutionPrinter();
+        printer.print(solution);
     }
 }

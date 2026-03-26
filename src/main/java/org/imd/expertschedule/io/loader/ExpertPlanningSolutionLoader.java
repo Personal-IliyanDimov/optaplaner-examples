@@ -213,6 +213,11 @@ public class ExpertPlanningSolutionLoader {
             order.setPriority(parsePriority(od.getPriority()));
             order.setDiagnosisDuration(parseDuration(od.getDiagnosisDuration()));
             order.setRequiredSkills(resolveSkills(od.getRequiredSkills(), skillByName));
+            if (od.getCustomerAvailabilities() != null && !od.getCustomerAvailabilities().isEmpty()) {
+                order.setCustomerAvailabilities(new ArrayList<>(od.getCustomerAvailabilities()));
+            } else {
+                order.setCustomerAvailabilities(List.of());
+            }
             orderById.put(od.getId(), order);
         }
         return orderById;

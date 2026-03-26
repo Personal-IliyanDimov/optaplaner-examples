@@ -15,6 +15,27 @@ public final class GeneratorConfigPresets {
     private GeneratorConfigPresets() {
     }
 
+    public static GeneratorConfig ultrasmall() {
+        final int numExperts = 3;
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-ultrasmall.json");
+        config.setNumSkills(5);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(10);
+        config.setNumOrders(20);
+        config.setNumOffices(1);
+        config.setExpertsWithAvailability(2);
+        config.setExpertsWithAbsence(1);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCustomerAvailabilityTimeWindowInMinutes(240);
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+
+        return config;
+    }
+
     public static GeneratorConfig small() {
         final int numExperts = 5;
 
@@ -29,6 +50,7 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithAbsence(1);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -49,6 +71,7 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithAbsence(3);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -69,6 +92,7 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithAbsence(5);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -79,7 +103,7 @@ public final class GeneratorConfigPresets {
         final int numExperts = 50;
 
         GeneratorConfig config = new GeneratorConfig();
-        config.setFileName("dataset-large.json");
+        config.setFileName("dataset-extralarge.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
         config.setNumCustomers(1000);
@@ -89,6 +113,7 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithAbsence(10);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 

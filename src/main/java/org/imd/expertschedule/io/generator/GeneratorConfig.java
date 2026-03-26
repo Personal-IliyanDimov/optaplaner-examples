@@ -27,6 +27,8 @@ public class GeneratorConfig {
     private String[] orderPriorities;
     private String[] orderDurations;
 
+    private int customerAvailabilityTimeWindowInMinutes = 240;
+
     private int calendarWeek;
     private int[] weekWorkingDays;
 }

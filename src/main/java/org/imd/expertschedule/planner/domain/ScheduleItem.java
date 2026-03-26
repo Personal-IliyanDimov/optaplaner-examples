@@ -1,6 +1,7 @@
 package org.imd.expertschedule.planner.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.TimeSlot;
@@ -14,6 +15,7 @@ import java.time.Period;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@EqualsAndHashCode
 @PlanningEntity
 public class ScheduleItem {
 
