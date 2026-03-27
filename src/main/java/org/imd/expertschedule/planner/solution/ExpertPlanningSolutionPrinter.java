@@ -27,6 +27,8 @@ import java.util.stream.Collectors;
 
 public final class ExpertPlanningSolutionPrinter {
 
+    private final PlannerHelper helper = new PlannerHelper();
+
     public void print(ExpertPlanningSolution solution) {
         print(solution, System.out);
     }
@@ -35,7 +37,6 @@ public final class ExpertPlanningSolutionPrinter {
         out.println("Best score: " + solution.getScore());
         out.println();
 
-        PlannerHelper helper = solution.getHelper();
         TreeMap<LocalDate, List<ExpertSchedule>> byDate = new TreeMap<>();
         for (ExpertSchedule schedule : solution.getExpertScheduleList()) {
             byDate.computeIfAbsent(schedule.getDate(), d -> new ArrayList<>()).add(schedule);

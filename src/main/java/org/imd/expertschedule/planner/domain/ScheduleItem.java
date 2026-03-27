@@ -14,12 +14,11 @@ import java.time.Period;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @EqualsAndHashCode
 @PlanningEntity
 public class ScheduleItem {
 
-    private final Order order;
+    private Order order;
 
     @PlanningVariable(valueRangeProviderRefs = "expertScheduleRange")
     private ExpertSchedule expertSchedule;

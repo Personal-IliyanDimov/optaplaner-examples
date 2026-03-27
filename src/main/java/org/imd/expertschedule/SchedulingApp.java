@@ -7,6 +7,7 @@ import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.solution.SolutionContext;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolutionPrinter;
+import org.imd.expertschedule.planner.solution.SolutionInitializer;
 import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -27,8 +28,9 @@ public class SchedulingApp {
         plannerParameters.getPlannerRelated().setCalendarWeek(10);
         plannerParameters.getPlannerRelated().setWorkingDays(new int[] {1, 2, 3, 4, 5});
 
-        final ExpertPlanningSolution unsolvedSolution = new ExpertPlanningSolution(plannerParameters,
-            new ExpertPlanningConstraintConfiguration(), context);
+        final SolutionInitializer solutionInitializer = new SolutionInitializer();
+        final ExpertPlanningSolution unsolvedSolution = solutionInitializer.initialize(plannerParameters,
+                new ExpertPlanningConstraintConfiguration(), context);
 
         final PlanningSolutionValidator validator = new PlanningSolutionValidator(plannerParameters);
         final Collection<PlanningSolutionValidator.Violation> validationResults = validator.validate(unsolvedSolution);

@@ -149,10 +149,16 @@ public class ExpertPlanningSolutionLoader {
             expert.setSkills(resolveSkills(ed.getSkills(), skillByName));
             if (ed.getAvailabilities() != null && !ed.getAvailabilities().isEmpty()) {
                 expert.setAvailabilities(toAvailabilities(ed.getAvailabilities()));
+            } else {
+                expert.setAvailabilities(new ArrayList<>());
             }
+
             if (ed.getAbsences() != null && !ed.getAbsences().isEmpty()) {
                 expert.setAbsences(toAbsences(ed.getAbsences()));
+            } else {
+                expert.setAbsences(new ArrayList<>());
             }
+
             expertById.put(ed.getId(), expert);
         }
         return expertById;

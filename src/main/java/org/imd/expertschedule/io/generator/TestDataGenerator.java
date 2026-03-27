@@ -148,8 +148,10 @@ public class TestDataGenerator {
 
             if (i < config.getExpertsWithUndefaultAvailability()) {
                 e.setAvailabilities(sampleUndefaultAvailabilities(calendarWeek, weekWorkingDays, random));
+                e.setAbsences(new ArrayList<>());
             } else {
                 e.setAvailabilities(sampleDefaultAvailabilities(calendarWeek, weekWorkingDays));
+                e.setAbsences(new ArrayList<>());
 
                 if (i + config.getExpertsWithAbsence() >= count) {
                     e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays, random));
@@ -256,7 +258,6 @@ public class TestDataGenerator {
         return list;
     }
 
-    /** Same bounds as generated expert availability ({@link #sampleAvailabilities}). */
     private static final LocalTime CUSTOMER_AVAILABILITY_DAY_START = LocalTime.of(9, 0);
     private static final LocalTime CUSTOMER_AVAILABILITY_DAY_END = LocalTime.of(18, 0);
 
