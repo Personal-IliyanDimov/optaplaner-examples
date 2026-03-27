@@ -21,7 +21,7 @@ public class GeneratorConfig {
     private int numOrders;
 
     private int numOffices;
-    private int expertsWithAvailability;
+    private int expertsWithUndefaultAvailability;
     private int expertsWithAbsence;
 
     private String[] orderPriorities;

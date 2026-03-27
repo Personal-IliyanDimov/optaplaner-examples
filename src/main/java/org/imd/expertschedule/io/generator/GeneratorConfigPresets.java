@@ -25,7 +25,7 @@ public final class GeneratorConfigPresets {
         config.setNumCustomers(10);
         config.setNumOrders(20);
         config.setNumOffices(1);
-        config.setExpertsWithAvailability(2);
+        config.setExpertsWithUndefaultAvailability(1);
         config.setExpertsWithAbsence(1);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
@@ -46,7 +46,7 @@ public final class GeneratorConfigPresets {
         config.setNumCustomers(10);
         config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
         config.setNumOffices(1);
-        config.setExpertsWithAvailability(5);
+        config.setExpertsWithUndefaultAvailability(2);
         config.setExpertsWithAbsence(1);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
@@ -67,7 +67,7 @@ public final class GeneratorConfigPresets {
         config.setNumCustomers(20);
         config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
         config.setNumOffices(3);
-        config.setExpertsWithAvailability(15);
+        config.setExpertsWithUndefaultAvailability(5);
         config.setExpertsWithAbsence(3);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
@@ -88,7 +88,7 @@ public final class GeneratorConfigPresets {
         config.setNumCustomers(100);
         config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
         config.setNumOffices(6);
-        config.setExpertsWithAvailability(30);
+        config.setExpertsWithUndefaultAvailability(10);
         config.setExpertsWithAbsence(5);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
@@ -109,7 +109,7 @@ public final class GeneratorConfigPresets {
         config.setNumCustomers(1000);
         config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
         config.setNumOffices(10);
-        config.setExpertsWithAvailability(50);
+        config.setExpertsWithUndefaultAvailability(10);
         config.setExpertsWithAbsence(10);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });

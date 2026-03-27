@@ -65,7 +65,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 .filter(this.populatedScheduleItem())
                 .filter(si -> !this.orderIsServable(si))
                 .penalizeConfigurable(si -> FIXED_PENALTY)
-                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.EA_AVAILABILITY_CONFLICT);
+                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.OA_AVAILABILITY_CONFLICT);
     }
 
     private boolean orderIsServable(ScheduleItem si) {

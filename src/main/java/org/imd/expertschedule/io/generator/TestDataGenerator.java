@@ -146,12 +146,16 @@ public class TestDataGenerator {
             e.setBackOfficeId(office.getId());
             e.setSkills(pickSkillNamesFromSkillData(skills, random));
 
-            if (i < config.getExpertsWithAvailability()) {
-                e.setAvailabilities(sampleAvailabilities(calendarWeek, weekWorkingDays));
+            if (i < config.getExpertsWithUndefaultAvailability()) {
+                e.setAvailabilities(sampleUndefaultAvailabilities(calendarWeek, weekWorkingDays, random));
+            } else {
+                e.setAvailabilities(sampleDefaultAvailabilities(calendarWeek, weekWorkingDays));
+
+                if (i + config.getExpertsWithAbsence() >= count) {
+                    e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays, random));
+                }
             }
-            if (i < config.getExpertsWithAbsence()) {
-                e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays, random));
-            }
+
             list.add(e);
         }
         return list;
@@ -165,7 +169,22 @@ public class TestDataGenerator {
         return names.subList(0, Math.min(howMany, names.size()));
     }
 
-    private static List<AvailabilityData> sampleAvailabilities(int calendarWeek, int[] weekWorkingDays) {
+    private static List<AvailabilityData> sampleUndefaultAvailabilities(int calendarWeek,
+                                                                        int[] weekWorkingDays,
+                                                                        Random random) {
+        List<AvailabilityData> list = new ArrayList<>();
+        for (int wd : weekWorkingDays) {
+            AvailabilityData a = new AvailabilityData();
+            a.setCalendarWeek(calendarWeek);
+            a.setDayOfWeek(DayOfWeek.of(wd));
+            a.setStartTime(LocalTime.of(9 + random.nextInt(2), random.nextInt(3)*15));
+            a.setEndTime(LocalTime.of(13 + random.nextInt(2), 0));
+            list.add(a);
+        }
+        return list;
+    }
+
+    private static List<AvailabilityData> sampleDefaultAvailabilities(int calendarWeek, int[] weekWorkingDays) {
         List<AvailabilityData> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData a = new AvailabilityData();
@@ -184,8 +203,8 @@ public class TestDataGenerator {
         AbsenceData a = new AbsenceData();
         a.setCalendarWeek(calendarWeek);
         a.setDayOfWeek(DayOfWeek.of(wd));
-        a.setStartTime(LocalTime.of(0, 0));
-        a.setEndTime(LocalTime.of(23, 59));
+        a.setStartTime(LocalTime.of(9 + random.nextInt(1), random.nextInt(3)*15));
+        a.setEndTime(LocalTime.of(12 - random.nextInt(1), 0));
         a.setReason("Leave");
         return List.of(a);
     }
