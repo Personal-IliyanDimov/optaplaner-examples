@@ -22,11 +22,15 @@ public class SchedulingApp {
     public static void main(String[] args) throws IOException {
         final Path dataDir = Path.of("data/expertschedule/");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        final SolutionContext context = loader.loadFromDirectory(dataDir, GeneratorConfigPresets.small().getFileName());
-        final ExpertPlanningSolution unsolvedSolution = new ExpertPlanningSolution(new PlannerParameters(),
+        final SolutionContext context = loader.loadFromDirectory(dataDir, GeneratorConfigPresets.ultrasmall().getFileName());
+        final PlannerParameters plannerParameters = new PlannerParameters();
+        plannerParameters.getPlannerRelated().setCalendarWeek(10);
+        plannerParameters.getPlannerRelated().setWorkingDays(new int[] {1, 2, 3, 4, 5});
+
+        final ExpertPlanningSolution unsolvedSolution = new ExpertPlanningSolution(plannerParameters,
             new ExpertPlanningConstraintConfiguration(), context);
 
-        final PlanningSolutionValidator validator = new PlanningSolutionValidator();
+        final PlanningSolutionValidator validator = new PlanningSolutionValidator(plannerParameters);
         final Collection<PlanningSolutionValidator.Violation> validationResults = validator.validate(unsolvedSolution);
         if (! validationResults.isEmpty()) {
             validationResults.forEach(violation -> System.out.println("Validation violation: " + violation.getMessage()));

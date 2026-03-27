@@ -21,13 +21,12 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 /**
  * Generates a single planning dataset file from a {@link GeneratorConfig}.
@@ -44,7 +43,7 @@ public class TestDataGenerator {
             .enable(SerializationFeature.INDENT_OUTPUT);
 
     public static void main(String[] args) throws IOException {
-        String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "small";
+        String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "ultrasmall";
         Path outputDir = Path.of("data/expertschedule/");
         Files.createDirectories(outputDir);
 
@@ -74,11 +73,12 @@ public class TestDataGenerator {
     }
 
     public static PlanningDatasetData buildDataset(GeneratorConfig config) {
+        Random random = new Random();
         List<SkillData> skills = buildSkills(config.getNumSkills());
-        List<BackOfficeData> backOffices = buildBackOffices(config.getNumOffices());
+        List<BackOfficeData> backOffices = buildBackOffices(config.getNumOffices(), random);
         List<CustomerData> customers = buildCustomers(config.getNumCustomers());
-        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices, config);
-        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, skills, config);
+        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices, config, random);
+        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, experts, config, random);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setMetadata(config);
@@ -116,13 +116,13 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<BackOfficeData> buildBackOffices(int count) {
+    private static List<BackOfficeData> buildBackOffices(int count, Random random) {
         List<BackOfficeData> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             BackOfficeData b = new BackOfficeData();
             b.setId(i + 1);
             b.setName("BackOffice-" + (i + 1));
-            b.setLocation(randomLocation(0, 10, 0, 5));
+            b.setLocation(randomLocation(0, 10, 0, 5, random));
             list.add(b);
         }
         return list;
@@ -130,7 +130,8 @@ public class TestDataGenerator {
 
     private static List<ExpertData> buildExperts(int count, List<SkillData> skills,
                                                   List<BackOfficeData> backOffices,
-                                                  GeneratorConfig config) {
+                                                  GeneratorConfig config,
+                                                  Random random) {
         List<ExpertData> list = new ArrayList<>();
         String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace",
                           "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah",
@@ -143,24 +144,24 @@ public class TestDataGenerator {
             e.setName(i < names.length ? names[i] : "Expert-" + (i + 1));
             BackOfficeData office = backOffices.get(i % backOffices.size());
             e.setBackOfficeId(office.getId());
-            e.setSkills(pickSkillNamesFromSkillData(skills));
+            e.setSkills(pickSkillNamesFromSkillData(skills, random));
 
             if (i < config.getExpertsWithAvailability()) {
                 e.setAvailabilities(sampleAvailabilities(calendarWeek, weekWorkingDays));
             }
             if (i < config.getExpertsWithAbsence()) {
-                e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays));
+                e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays, random));
             }
             list.add(e);
         }
         return list;
     }
 
-    private static List<String> pickSkillNamesFromSkillData(List<SkillData> skills) {
+    private static List<String> pickSkillNamesFromSkillData(List<SkillData> skills, Random random) {
         if (skills.isEmpty()) return List.of("Electrical");
-        int howMany = Math.max(1, ThreadLocalRandom.current().nextInt(skills.size()) + 1);
+        int howMany = Math.max(1, random.nextInt(skills.size()) + 1);
         List<String> names = new ArrayList<>(skills.stream().map(SkillData::getName).toList());
-        Collections.shuffle(names);
+        Collections.shuffle(names, random);
         return names.subList(0, Math.min(howMany, names.size()));
     }
 
@@ -177,9 +178,9 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<AbsenceData> sampleAbsences(int calendarWeek, int[] weekWorkingDays) {
+    private static List<AbsenceData> sampleAbsences(int calendarWeek, int[] weekWorkingDays, Random random) {
         if (weekWorkingDays.length == 0) return List.of();
-        int wd = weekWorkingDays[ThreadLocalRandom.current().nextInt(weekWorkingDays.length)];
+        int wd = weekWorkingDays[random.nextInt(weekWorkingDays.length)];
         AbsenceData a = new AbsenceData();
         a.setCalendarWeek(calendarWeek);
         a.setDayOfWeek(DayOfWeek.of(wd));
@@ -189,37 +190,48 @@ public class TestDataGenerator {
         return List.of(a);
     }
 
+    /**
+     * Chooses a non-empty random subset of skills from a randomly picked generated expert, so every order can be
+     * served by at least that expert (skill-wise).
+     */
+    private static List<String> pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, Random random) {
+        List<ExpertData> withSkills = experts.stream()
+                .filter(e -> e.getSkills() != null && !e.getSkills().isEmpty())
+                .toList();
+        if (withSkills.isEmpty()) {
+            return List.of("Electrical");
+        }
+        ExpertData expert = withSkills.get(random.nextInt(withSkills.size()));
+        List<String> pool = new ArrayList<>(expert.getSkills());
+        int subsetSize = random.nextInt(pool.size()) + 1;
+        Collections.shuffle(pool, random);
+        return new ArrayList<>(pool.subList(0, subsetSize));
+    }
+
     private static List<OrderData> buildOrders(final int count,
                                                final List<CustomerData> customers,
-                                               final List<SkillData> skills,
-                                               final GeneratorConfig config) {
+                                               final List<ExpertData> experts,
+                                               final GeneratorConfig config,
+                                               final Random random) {
         List<OrderData> list = new ArrayList<>();
-        List<String> skillNames = skills.stream().map(SkillData::getName).toList();
-        if (skillNames.isEmpty()) skillNames = List.of("Electrical");
 
         int[] weekWorkingDays = config.getWeekWorkingDays();
         List<LocalDate> planningDates = planningDates(config.getCalendarWeek(), weekWorkingDays);
 
-        ThreadLocalRandom r = ThreadLocalRandom.current();
         String[] priorities = config.getOrderPriorities();
         String[] durations = config.getOrderDurations();
         for (int i = 0; i < count; i++) {
             OrderData o = new OrderData();
             o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
-            o.setCustomerId(customers.get(r.nextInt(customers.size())).getId());
-            o.setLocation(randomLocation(0, 20, 0, 20));
-            o.setDueDate(planningDates.get(r.nextInt(planningDates.size())));
-            o.setPriority(priorities[r.nextInt(priorities.length)]);
-            o.setDiagnosisDuration(randomDiagnosisDuration(durations));
-            int skillCount = Math.max(1, r.nextInt(2) + 1);
-            Set<String> required = new HashSet<>();
-            while (required.size() < skillCount && required.size() < skillNames.size()) {
-                required.add(skillNames.get(r.nextInt(skillNames.size())));
-            }
-            o.setRequiredSkills(new ArrayList<>(required));
+            o.setCustomerId(customers.get(random.nextInt(customers.size())).getId());
+            o.setLocation(randomLocation(0, 20, 0, 20, random));
+            o.setDueDate(planningDates.get(random.nextInt(planningDates.size())));
+            o.setPriority(priorities[random.nextInt(priorities.length)]);
+            o.setDiagnosisDuration(randomDiagnosisDuration(durations, random));
+            o.setRequiredSkills(pickRequiredSkillsSubsetFromExpert(experts, random));
             o.setCustomerAvailabilities(
-                    customerAvailabilitiesForPlanningWeek(config, weekWorkingDays, r));
+                    customerAvailabilitiesForPlanningWeek(config, weekWorkingDays, random));
             list.add(o);
         }
         return list;
@@ -230,13 +242,19 @@ public class TestDataGenerator {
     private static final LocalTime CUSTOMER_AVAILABILITY_DAY_END = LocalTime.of(18, 0);
 
     /**
+     * Matches {@link org.imd.expertschedule.planner.solution.PlannerParameters.ExpertRelated#getSlotDuration()}:
+     * customer availability starts only on :00, :15, :30, :45.
+     */
+    private static final Duration SLOT_DURATION = Duration.of(15, ChronoUnit.MINUTES);
+
+    /**
      * Per order: on each planning working day, customer is available for a contiguous window of length
-     * {@link GeneratorConfig#getCustomerAvailabilityTimeWindowInMinutes()}, placed at a random offset inside
-     * 09:00–18:00 (same day bounds as generated expert availability) so
+     * {@link GeneratorConfig#getCustomerAvailabilityTimeWindowInMinutes()}, with start time aligned to
+     * {@link #SLOT_DURATION} within 09:00–18:00 (same day bounds as generated expert availability) so
      * {@link org.imd.expertschedule.planner.util.PlannerHelper#orderIsServable} can still match feasible slots.
      */
     private static List<Availability> customerAvailabilitiesForPlanningWeek(
-            GeneratorConfig config, int[] weekWorkingDays, ThreadLocalRandom r) {
+            GeneratorConfig config, int[] weekWorkingDays, Random random) {
         if (weekWorkingDays == null || weekWorkingDays.length == 0) {
             return List.of();
         }
@@ -249,10 +267,11 @@ public class TestDataGenerator {
                 : Math.min(requestedWindow, daySpanMinutes);
 
         int latestStartOffset = daySpanMinutes - effectiveWindowMinutes;
+        int slotMinutes = (int) SLOT_DURATION.toMinutes();
 
         List<Availability> list = new ArrayList<>(weekWorkingDays.length);
         for (int wd : weekWorkingDays) {
-            int startOffset = latestStartOffset <= 0 ? 0 : r.nextInt(latestStartOffset + 1);
+            int startOffset = pickSlotAlignedStartOffsetMinutes(latestStartOffset, slotMinutes, random);
             LocalTime start = CUSTOMER_AVAILABILITY_DAY_START.plusMinutes(startOffset);
             LocalTime end = start.plusMinutes(effectiveWindowMinutes);
 
@@ -264,6 +283,20 @@ public class TestDataGenerator {
             list.add(a);
         }
         return list;
+    }
+
+    /**
+     * Random start offset from day start, in minutes, that is a multiple of {@code slotMinutes}
+     * (so clock minute is 0, 15, 30, or 45) and fits before {@code latestStartOffset} inclusive.
+     */
+    private static int pickSlotAlignedStartOffsetMinutes(int latestStartOffset, int slotMinutes, Random random) {
+        if (latestStartOffset <= 0) {
+            return 0;
+        }
+        int maxAligned = (latestStartOffset / slotMinutes) * slotMinutes;
+        int maxSlotIndex = maxAligned / slotMinutes;
+        int slotIndex = random.nextInt(maxSlotIndex + 1);
+        return slotIndex * slotMinutes;
     }
 
     /** Dates in the planning window: one per working day in the given calendar week (matches loader's calculateDate). */
@@ -282,15 +315,14 @@ public class TestDataGenerator {
                 .plusDays(wd - 1);
     }
 
-    private static String randomDiagnosisDuration(final String[] orderDurations) {
-        return orderDurations[ThreadLocalRandom.current().nextInt(orderDurations.length)];
+    private static String randomDiagnosisDuration(final String[] orderDurations, Random random) {
+        return orderDurations[random.nextInt(orderDurations.length)];
     }
 
-    private static LocationData randomLocation(double minLat, double maxLat, double minLon, double maxLon) {
-        ThreadLocalRandom r = ThreadLocalRandom.current();
+    private static LocationData randomLocation(double minLat, double maxLat, double minLon, double maxLon, Random random) {
         LocationData loc = new LocationData();
-        loc.setLatitude(minLat + (maxLat - minLat) * r.nextDouble());
-        loc.setLongitude(minLon + (maxLon - minLon) * r.nextDouble());
+        loc.setLatitude(minLat + (maxLat - minLat) * random.nextDouble());
+        loc.setLongitude(minLon + (maxLon - minLon) * random.nextDouble());
         return loc;
     }
 }
