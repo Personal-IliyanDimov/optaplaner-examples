@@ -41,7 +41,7 @@ public class SchedulingApp {
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
                 "org/imd/expertschedule/expert-schedule-solver-config.xml");
-        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(15L));
+        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(60L));
 
         SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
         Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();

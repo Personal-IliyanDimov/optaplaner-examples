@@ -8,14 +8,42 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class PlannerHelper {
 
-    public LocalDate calculateDate(final int calendarWeek, final int wd) {
-        return LocalDate.of(LocalDate.now().getYear(), 1, 1)
+    public LocalDate calculateDate(final int year, final int calendarWeek, final int calendarWeekDay) {
+        if (calendarWeek < 1) {
+            throw new IllegalArgumentException("Calendar week must be greater than 0. ");
+        }
+
+        if ((calendarWeekDay < 1) || (calendarWeek > 7)) {
+            throw new IllegalArgumentException("Calendar week day must be in [1,7] range. ");
+        }
+
+        final LocalDate firstDayOfYear = LocalDate.of(year, 1, 1);
+        final int fdoyWeek = 1;
+        final int fdoyWeekDay = firstDayOfYear.getDayOfWeek().getValue();
+
+        LocalDate result = null;
+        if (calendarWeek == 1) {
+            final int deltaInDays = calendarWeekDay - fdoyWeekDay;
+
+            if (deltaInDays > 0) {
+                result = firstDayOfYear.plusDays(deltaInDays);
+            } else {
+                result = firstDayOfYear;
+            }
+        } else {
+            final int deltaInDays = calendarWeekDay - fdoyWeekDay;
+
+            result = firstDayOfYear
                 .plusWeeks(calendarWeek - 1)
-                .plusDays(wd - 1);
+                .plusDays(deltaInDays);
+        }
+
+        return result;
     }
 
     public boolean duringLunchTime(final LocalTime testedLocalTime, final PlannerParameters.ExpertRelated expertRelated) {

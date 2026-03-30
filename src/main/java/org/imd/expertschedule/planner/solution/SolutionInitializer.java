@@ -48,7 +48,10 @@ public class SolutionInitializer {
         final List<ExpertSchedule> result = new ArrayList<>();
         for (final Expert expert : expertList) {
             for (int day: plannerParameters.getPlannerRelated().getWorkingDays()) {
-                result.add(new ExpertSchedule(expert, helper.calculateDate(plannerParameters.getPlannerRelated().getCalendarWeek(), day)));
+                result.add(new ExpertSchedule(expert, helper.calculateDate(
+                        plannerParameters.getPlannerRelated().getYear(),
+                        plannerParameters.getPlannerRelated().getCalendarWeek(),
+                        day)));
             }
         }
 

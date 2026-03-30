@@ -25,6 +25,7 @@ public class PlannerParameters {
     @Getter
     @Setter
     public static class PlannerRelated {
+        private int year;
         private int calendarWeek;
         private int[] workingDays;
     }

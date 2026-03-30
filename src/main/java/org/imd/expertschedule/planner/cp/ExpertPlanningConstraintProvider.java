@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -112,10 +113,10 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
     private int calculateDelayInDays(final ScheduleItem si) {
         final LocalDate orderDueDate = si.getOrder().getDueDate();
         final LocalDate scheduledDate = si.getExpertSchedule().getDate();
-        final Duration difference = Duration.between(scheduledDate, orderDueDate);
+        final long difference = ChronoUnit.DAYS.between(scheduledDate, orderDueDate);
         int result = 0;
-        if (difference.isNegative()) {
-            result = (int) difference.toDays();
+        if (difference < 0) {
+            result = (int) difference;
         }
 
         return result;
