@@ -181,7 +181,7 @@ public class ExpertPlanningSolutionLoader {
         for (AvailabilityData ad : list) {
             Availability a = new Availability();
             a.setCalendarWeek(ad.getCalendarWeek());
-            a.setDayOfWeek(ad.getDayOfWeek());
+            a.setWorkDay(ad.getDayOfWeek());
             a.setStartTime(ad.getStartTime());
             a.setEndTime(ad.getEndTime());
             result.add(a);
@@ -194,7 +194,7 @@ public class ExpertPlanningSolutionLoader {
         for (AbsenceData ad : list) {
             Absence a = new Absence();
             a.setCalendarWeek(ad.getCalendarWeek());
-            a.setDayOfWeek(ad.getDayOfWeek());
+            a.setWorkDay(ad.getDayOfWeek());
             a.setStartTime(ad.getStartTime());
             a.setEndTime(ad.getEndTime());
             a.setReason(ad.getReason());

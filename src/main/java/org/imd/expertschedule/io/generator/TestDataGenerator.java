@@ -297,7 +297,7 @@ public class TestDataGenerator {
 
             Availability a = new Availability();
             a.setCalendarWeek(calendarWeek);
-            a.setDayOfWeek(DayOfWeek.of(wd));
+            a.setWorkDay(DayOfWeek.of(wd));
             a.setStartTime(start);
             a.setEndTime(end);
             list.add(a);

@@ -8,7 +8,6 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class PlannerHelper {
@@ -23,10 +22,9 @@ public class PlannerHelper {
         }
 
         final LocalDate firstDayOfYear = LocalDate.of(year, 1, 1);
-        final int fdoyWeek = 1;
         final int fdoyWeekDay = firstDayOfYear.getDayOfWeek().getValue();
 
-        LocalDate result = null;
+        LocalDate result;
         if (calendarWeek == 1) {
             final int deltaInDays = calendarWeekDay - fdoyWeekDay;
 
@@ -73,13 +71,13 @@ public class PlannerHelper {
         final List<Absence> expertAbsences = expert.getAbsences();
 
         final List<Availability> availabilityList = expertAvailabilities.stream()
-            .filter(ea -> meetingInterval.getDate().equals(calculateDate(ea.getCalendarWeek(), ea.getDayOfWeek().getValue())))
+            .filter(ea -> meetingInterval.getDate().equals(calculateDate(ea.getYear(), ea.getCalendarWeek(), ea.getWorkDay())))
             .filter(ea -> lessOrEqual(ea.getStartTime(), meetingInterval.getFrom()) && lessOrEqual(meetingInterval.getTo(), ea.getEndTime()))
             .toList();
 
         final List<Absence> absenceList = expertAbsences.stream()
-                .filter(absence -> intersect(meetingInterval, new DayInterval(calculateDate(absence.getCalendarWeek(),
-                        absence.getDayOfWeek().getValue()), absence.getStartTime(), absence.getEndTime())))
+                .filter(absence -> intersect(meetingInterval, new DayInterval(calculateDate(absence.getWorkDay(), absence.getCalendarWeek(),
+                        absence.getWorkDay()), absence.getStartTime(), absence.getEndTime())))
                 .toList();
 
         return (!availabilityList.isEmpty() && absenceList.isEmpty());
@@ -87,7 +85,7 @@ public class PlannerHelper {
 
     public boolean orderIsServable(final DayInterval meetingInterval, final List<Availability> customerAvailabilities) {
         final Optional<Availability> result = customerAvailabilities.stream()
-            .filter(ca -> meetingInterval.getDate().equals(calculateDate(ca.getCalendarWeek(), ca.getDayOfWeek().getValue())))
+            .filter(ca -> meetingInterval.getDate().equals(calculateDate(ca.getYear(), ca.getCalendarWeek(), ca.getWorkDay())))
             .filter(ca -> lessOrEqual(ca.getStartTime(), meetingInterval.getFrom()) && lessOrEqual(meetingInterval.getTo(), ca.getEndTime()))
             .findFirst();
 

@@ -103,7 +103,7 @@ class PlannerHelperTest {
     private Availability createAvailability(int calendarWeek, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
         final Availability result = new Availability();
         result.setCalendarWeek(calendarWeek);
-        result.setDayOfWeek(dayOfWeek);
+        result.setWorkDay(dayOfWeek);
         result.setStartTime(startTime);
         result.setEndTime(endTime);
 
