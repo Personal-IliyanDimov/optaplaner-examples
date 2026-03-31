@@ -136,8 +136,8 @@ public final class ExpertPlanningSolutionPrinter {
             return List.of();
         }
         return list.stream()
-                .filter(a -> a.getWorkDay() != null
-                        && date.equals(helper.calculateDate(a.getCalendarWeek(), a.getWorkDay().getValue())))
+                .filter(a -> a.getWorkDay() != -1
+                        && date.equals(helper.calculateDate(a.getYear(), a.getCalendarWeek(), a.getWorkDay())))
                 .toList();
     }
 
@@ -146,8 +146,8 @@ public final class ExpertPlanningSolutionPrinter {
             return List.of();
         }
         return list.stream()
-                .filter(a -> a.getWorkDay() != null
-                        && date.equals(helper.calculateDate(a.getCalendarWeek(), a.getWorkDay().getValue())))
+                .filter(a -> a.getWorkDay() != -1
+                        && date.equals(helper.calculateDate(a.getYear(), a.getCalendarWeek(), a.getWorkDay())))
                 .toList();
     }
 

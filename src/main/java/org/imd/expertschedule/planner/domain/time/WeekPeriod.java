@@ -10,7 +10,7 @@ import java.time.LocalTime;
 public class WeekPeriod {
     private int year;
     private int calendarWeek;
-    private int workDay;
+    private int workDay = -1;
     private LocalTime startTime;
     private LocalTime endTime;
 }
