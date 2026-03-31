@@ -21,7 +21,7 @@ class PlannerHelperTest {
     @BeforeEach
     void setUp() {
         plannerHelper = new PlannerHelper();
-        final PlannerParameters plannerParameters = new PlannerParameters();
+        plannerParameters = new PlannerParameters();
         plannerParameters.getPlannerRelated().setCalendarWeek(10);
         plannerParameters.getPlannerRelated().setWorkingDays(new int[] {1, 2, 3, 4, 5}); // Example lunch times
     }
@@ -38,11 +38,11 @@ class PlannerHelperTest {
         assertTrue(jan1st.isEqual(LocalDate.of(2026, 1, 1)));
 
         final LocalDate jan5th = plannerHelper.calculateDate(2026, 2, 1);
-        assertTrue(jan1st.isEqual(LocalDate.of(2026, 1, 5)));
+        assertTrue(jan5th.isEqual(LocalDate.of(2026, 1, 5)));
 
 
         final LocalDate jan6th = plannerHelper.calculateDate(2026, 2, 2);
-        assertTrue(jan1st.isEqual(LocalDate.of(2026, 1, 6)));
+        assertTrue(jan6th.isEqual(LocalDate.of(2026, 1, 6)));
     }
 
     @Test
@@ -66,7 +66,7 @@ class PlannerHelperTest {
         DayInterval interval3 = new DayInterval(LocalDate.now(), LocalTime.of(12, 45), LocalTime.of(13, 15));
         assertTrue(plannerHelper.overlapLunchTime(interval3, plannerParameters.getExpertRelated()));
 
-        DayInterval interval4 = new DayInterval(LocalDate.now(), LocalTime.of(11, 00), LocalTime.of(14, 00));
+        DayInterval interval4 = new DayInterval(LocalDate.now(), LocalTime.of(11, 30), LocalTime.of(12, 30));
         assertTrue(plannerHelper.overlapLunchTime(interval4, plannerParameters.getExpertRelated()));
     }
 
@@ -89,6 +89,7 @@ class PlannerHelperTest {
         // Mock Expert, Availability, Absence as needed
         Expert expert = new Expert();
         expert.setAvailabilities(List.of(createAvailability(1, DayOfWeek.MONDAY, LocalTime.of(9, 0), LocalTime.of(17, 0))));
+        expert.setAbsences(List.of());
         DayInterval meeting = new DayInterval(plannerHelper.calculateDate(2026, 1, 1), LocalTime.of(10, 0), LocalTime.of(11, 0));
         assertTrue(plannerHelper.expertIsAvailable(meeting, expert));
     }
@@ -102,11 +103,12 @@ class PlannerHelperTest {
 
     private Availability createAvailability(int calendarWeek, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime) {
         final Availability result = new Availability();
+        result.setYear(2026);
         result.setCalendarWeek(calendarWeek);
-        result.setWorkDay(dayOfWeek);
+        result.setWorkDay(dayOfWeek.getValue());
         result.setStartTime(startTime);
         result.setEndTime(endTime);
 
-        return  result;
+        return result;
     }
 }

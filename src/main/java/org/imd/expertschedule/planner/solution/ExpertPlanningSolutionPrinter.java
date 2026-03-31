@@ -161,8 +161,8 @@ public final class ExpertPlanningSolutionPrinter {
     }
 
     private String formatWeekPeriodLine(WeekPeriod p) {
-        return String.format("%s–%s (calendar week %d)",
-                p.getStartTime(), p.getEndTime(), p.getCalendarWeek());
+        return String.format("%d | CW%d wd=%d | %s–%s",
+                p.getYear(), p.getCalendarWeek(), p.getWorkDay(), p.getStartTime(), p.getEndTime());
     }
 
     private String formatAbsences(List<Absence> absences) {

@@ -9,6 +9,7 @@ public final class GeneratorConfigPresets {
     private static final int WEEK_DAYS = 5;
     private static final int AVERAGE_ORDERS_PER_DAY = 4;
 
+    private static final int PLANNING_YEAR = 2026;
     private static final int CALENDAR_WEEK = 10;
     private static final int[] WEEK_WORKING_DAYS = new int[] {1,2,3,4,5};
 
@@ -30,6 +31,7 @@ public final class GeneratorConfigPresets {
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(240);
+        config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -51,6 +53,7 @@ public final class GeneratorConfigPresets {
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -72,6 +75,7 @@ public final class GeneratorConfigPresets {
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -93,6 +97,7 @@ public final class GeneratorConfigPresets {
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 
@@ -114,6 +119,7 @@ public final class GeneratorConfigPresets {
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
 

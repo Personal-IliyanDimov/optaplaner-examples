@@ -11,6 +11,7 @@
     "orderPriorities" : [ "LOW", "MEDIUM", "HIGH" ],
     "orderDurations" : [ "PT30M", "PT1H", "PT1H30M", "PT2H" ],
     "customerAvailabilityTimeWindowInMinutes" : 240,
+    "year" : 2026,
     "calendarWeek" : 10,
     "weekWorkingDays" : [ 1, 2, 3, 4, 5 ]
   },
@@ -29,8 +30,8 @@
     "id" : 1,
     "name" : "BackOffice-1",
     "location" : {
-      "latitude" : 2.0048506755749287,
-      "longitude" : 0.4261822433869322
+      "latitude" : 4.82948571670872,
+      "longitude" : 1.1964967248241898
     }
   } ],
   "customers" : [ {
@@ -68,60 +69,70 @@
     "id" : 1,
     "name" : "Alice",
     "backOfficeId" : 1,
-    "skills" : [ "Engine-Diesel", "Electrical", "Painting-Scratches", "Engine-Petrol" ],
+    "skills" : [ "Electrical" ],
     "availabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 0 ]
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 10, 0 ],
+      "startTime" : [ 9, 15 ],
       "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 10, 0 ],
+      "startTime" : [ 10, 15 ],
       "endTime" : [ 13, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 14, 0 ]
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 13, 0 ]
     } ],
     "absences" : [ ]
   }, {
     "id" : 2,
     "name" : "Bob",
     "backOfficeId" : 1,
-    "skills" : [ "Engine-Petrol", "Painting-Scratches", "Engine-Diesel", "Exclusive", "Electrical" ],
+    "skills" : [ "Exclusive", "Engine-Diesel", "Engine-Petrol" ],
     "availabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "TUESDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "WEDNESDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "THURSDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "FRIDAY",
       "startTime" : [ 9, 0 ],
@@ -132,37 +143,43 @@
     "id" : 3,
     "name" : "Carol",
     "backOfficeId" : 1,
-    "skills" : [ "Exclusive", "Engine-Petrol", "Painting-Scratches" ],
+    "skills" : [ "Painting-Scratches", "Electrical", "Exclusive", "Engine-Diesel" ],
     "availabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "TUESDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "WEDNESDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "THURSDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "FRIDAY",
       "startTime" : [ 9, 0 ],
       "endTime" : [ 18, 0 ]
     } ],
     "absences" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 9, 30 ],
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 9, 0 ],
       "endTime" : [ 12, 0 ],
       "reason" : "Leave"
     } ]
@@ -172,760 +189,860 @@
     "code" : "ORDER-1",
     "customerId" : 2,
     "location" : {
-      "latitude" : 15.227973133626865,
-      "longitude" : 12.76922498959524
+      "latitude" : 16.930746864331407,
+      "longitude" : 2.754884333617895
     },
-    "requiredSkills" : [ "Engine-Petrol", "Exclusive", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 8 ],
-    "priority" : "LOW",
-    "diagnosisDuration" : "PT2H",
+    "requiredSkills" : [ "Electrical", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 16, 30 ]
+      "workDay" : 1,
+      "startTime" : [ 12, 45 ],
+      "endTime" : [ 16, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
+      "workDay" : 2,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 17, 45 ]
+      "workDay" : 3,
+      "startTime" : [ 11, 0 ],
+      "endTime" : [ 15, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 17, 45 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
+      "workDay" : 4,
       "startTime" : [ 10, 0 ],
       "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 16, 0 ]
     } ]
   }, {
     "id" : 2,
     "code" : "ORDER-2",
-    "customerId" : 3,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 0.6237293453223058,
-      "longitude" : 1.3217610025073
+      "latitude" : 14.013170856706502,
+      "longitude" : 14.125432128707228
     },
-    "requiredSkills" : [ "Engine-Petrol", "Exclusive", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 9 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H30M",
+    "requiredSkills" : [ "Engine-Petrol", "Engine-Diesel", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
+      "workDay" : 1,
       "startTime" : [ 12, 15 ],
       "endTime" : [ 16, 15 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 45 ],
+      "endTime" : [ 13, 45 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 30 ],
+      "endTime" : [ 16, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 10, 15 ],
+      "endTime" : [ 14, 15 ]
     } ]
   }, {
     "id" : 3,
     "code" : "ORDER-3",
-    "customerId" : 2,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 19.2696181384999,
-      "longitude" : 14.336254211935454
+      "latitude" : 18.166833693762086,
+      "longitude" : 8.630176256758041
     },
-    "requiredSkills" : [ "Electrical", "Painting-Scratches" ],
+    "requiredSkills" : [ "Electrical" ],
     "dueDate" : [ 2026, 3, 5 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
+      "workDay" : 1,
+      "startTime" : [ 11, 30 ],
+      "endTime" : [ 15, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
       "startTime" : [ 12, 0 ],
       "endTime" : [ 16, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
+      "workDay" : 3,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
+      "workDay" : 4,
       "startTime" : [ 12, 0 ],
       "endTime" : [ 16, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
     } ]
   }, {
     "id" : 4,
     "code" : "ORDER-4",
-    "customerId" : 7,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 6.8816786943559745,
-      "longitude" : 7.861873641316375
+      "latitude" : 17.860775583236496,
+      "longitude" : 9.46541421939548
     },
-    "requiredSkills" : [ "Exclusive", "Engine-Petrol", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 6 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H30M",
+    "requiredSkills" : [ "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 15, 45 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
+      "workDay" : 1,
       "startTime" : [ 11, 15 ],
       "endTime" : [ 15, 15 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 30 ],
+      "endTime" : [ 16, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 13, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 13, 45 ],
+      "endTime" : [ 17, 45 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 15 ],
+      "endTime" : [ 16, 15 ]
     } ]
   }, {
     "id" : 5,
     "code" : "ORDER-5",
-    "customerId" : 8,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 15.213191626724944,
-      "longitude" : 8.615621557913311
+      "latitude" : 15.130743721595794,
+      "longitude" : 19.48211483570699
     },
-    "requiredSkills" : [ "Engine-Petrol", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 9 ],
-    "priority" : "MEDIUM",
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
     "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
+      "workDay" : 1,
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 13, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 14, 45 ]
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 13, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 14, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
+      "workDay" : 3,
       "startTime" : [ 13, 45 ],
       "endTime" : [ 17, 45 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 30 ],
+      "endTime" : [ 16, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 13, 30 ]
     } ]
   }, {
     "id" : 6,
     "code" : "ORDER-6",
-    "customerId" : 10,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 2.3752355261835945,
-      "longitude" : 15.827188836068636
+      "latitude" : 0.4357840157543591,
+      "longitude" : 7.794886273999808
     },
-    "requiredSkills" : [ "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 8 ],
-    "priority" : "LOW",
-    "diagnosisDuration" : "PT1H",
+    "requiredSkills" : [ "Painting-Scratches", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
+      "workDay" : 1,
       "startTime" : [ 12, 45 ],
       "endTime" : [ 16, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 15, 30 ]
+      "workDay" : 2,
+      "startTime" : [ 11, 0 ],
+      "endTime" : [ 15, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 15, 15 ]
+      "workDay" : 3,
+      "startTime" : [ 11, 45 ],
+      "endTime" : [ 15, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
+      "workDay" : 4,
+      "startTime" : [ 13, 0 ],
+      "endTime" : [ 17, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
+      "workDay" : 5,
+      "startTime" : [ 14, 0 ],
+      "endTime" : [ 18, 0 ]
     } ]
   }, {
     "id" : 7,
     "code" : "ORDER-7",
-    "customerId" : 10,
+    "customerId" : 5,
     "location" : {
-      "latitude" : 4.782731604181622,
-      "longitude" : 18.48785372933278
+      "latitude" : 10.864969436798917,
+      "longitude" : 15.19481104811473
     },
-    "requiredSkills" : [ "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 9 ],
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 2 ],
     "priority" : "LOW",
-    "diagnosisDuration" : "PT1H30M",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
+      "workDay" : 1,
       "startTime" : [ 12, 0 ],
       "endTime" : [ 16, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 16, 15 ]
+      "workDay" : 2,
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 13, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 15, 30 ]
+      "workDay" : 3,
+      "startTime" : [ 14, 0 ],
+      "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 13, 15 ]
+      "workDay" : 4,
+      "startTime" : [ 10, 15 ],
+      "endTime" : [ 14, 15 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 11, 0 ],
+      "endTime" : [ 15, 0 ]
     } ]
   }, {
     "id" : 8,
     "code" : "ORDER-8",
-    "customerId" : 9,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 14.637905618846336,
-      "longitude" : 3.421190489476209
+      "latitude" : 17.725968133907863,
+      "longitude" : 17.301893360095498
     },
-    "requiredSkills" : [ "Engine-Diesel", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 7 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 13, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
+      "workDay" : 2,
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 15, 0 ]
+      "workDay" : 3,
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 13, 45 ]
+      "workDay" : 4,
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 13, 15 ]
+      "workDay" : 5,
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 30 ]
     } ]
   }, {
     "id" : 9,
     "code" : "ORDER-9",
-    "customerId" : 7,
+    "customerId" : 1,
     "location" : {
-      "latitude" : 17.668259439178534,
-      "longitude" : 13.57137013107704
+      "latitude" : 16.25072580907361,
+      "longitude" : 9.43171864456537
     },
-    "requiredSkills" : [ "Exclusive", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 7 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
+    "requiredSkills" : [ "Engine-Diesel", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 17, 15 ]
+      "workDay" : 1,
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 13, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
+      "workDay" : 2,
       "startTime" : [ 10, 45 ],
       "endTime" : [ 14, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
+      "workDay" : 3,
+      "startTime" : [ 9, 45 ],
+      "endTime" : [ 13, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 15, 30 ]
+      "workDay" : 4,
+      "startTime" : [ 9, 45 ],
+      "endTime" : [ 13, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 16, 15 ]
+      "workDay" : 5,
+      "startTime" : [ 9, 45 ],
+      "endTime" : [ 13, 45 ]
     } ]
   }, {
     "id" : 10,
     "code" : "ORDER-10",
     "customerId" : 10,
     "location" : {
-      "latitude" : 6.609438185910768,
-      "longitude" : 11.970812534003636
+      "latitude" : 3.497021068722319,
+      "longitude" : 4.561352171688138
     },
-    "requiredSkills" : [ "Engine-Diesel", "Electrical" ],
-    "dueDate" : [ 2026, 3, 7 ],
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 3 ],
     "priority" : "HIGH",
-    "diagnosisDuration" : "PT30M",
+    "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
+      "workDay" : 1,
       "startTime" : [ 13, 0 ],
       "endTime" : [ 17, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 16, 30 ]
+      "workDay" : 2,
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 13, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
+      "workDay" : 3,
+      "startTime" : [ 13, 15 ],
+      "endTime" : [ 17, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 12, 0 ],
-      "endTime" : [ 16, 0 ]
+      "workDay" : 4,
+      "startTime" : [ 13, 45 ],
+      "endTime" : [ 17, 45 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 11, 45 ],
+      "endTime" : [ 15, 45 ]
     } ]
   }, {
     "id" : 11,
     "code" : "ORDER-11",
-    "customerId" : 8,
+    "customerId" : 10,
     "location" : {
-      "latitude" : 7.958541623194448,
-      "longitude" : 2.665850743871203
+      "latitude" : 5.407635806991569,
+      "longitude" : 4.642272491724542
     },
-    "requiredSkills" : [ "Engine-Diesel", "Painting-Scratches", "Electrical", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 7 ],
+    "requiredSkills" : [ "Exclusive", "Electrical" ],
+    "dueDate" : [ 2026, 3, 3 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H",
+    "diagnosisDuration" : "PT2H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 13, 45 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 15, 45 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 1,
       "startTime" : [ 12, 15 ],
       "endTime" : [ 16, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 14, 45 ]
+      "workDay" : 2,
+      "startTime" : [ 13, 0 ],
+      "endTime" : [ 17, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 15 ],
+      "endTime" : [ 16, 15 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 16, 0 ]
     } ]
   }, {
     "id" : 12,
     "code" : "ORDER-12",
-    "customerId" : 2,
+    "customerId" : 10,
     "location" : {
-      "latitude" : 13.559093833930389,
-      "longitude" : 7.095195962893548
+      "latitude" : 1.8403541830805015,
+      "longitude" : 15.360467480322612
     },
-    "requiredSkills" : [ "Electrical", "Painting-Scratches", "Engine-Diesel", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 6 ],
-    "priority" : "LOW",
+    "requiredSkills" : [ "Engine-Petrol", "Exclusive", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 16, 15 ]
+      "workDay" : 1,
+      "startTime" : [ 13, 0 ],
+      "endTime" : [ 17, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 13, 15 ]
+      "workDay" : 2,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 18, 0 ]
+      "workDay" : 3,
+      "startTime" : [ 10, 45 ],
+      "endTime" : [ 14, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 4,
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
       "startTime" : [ 13, 15 ],
       "endTime" : [ 17, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
     } ]
   }, {
     "id" : 13,
     "code" : "ORDER-13",
-    "customerId" : 7,
+    "customerId" : 3,
     "location" : {
-      "latitude" : 15.551095972615501,
-      "longitude" : 10.513571734314864
+      "latitude" : 6.384915860070352,
+      "longitude" : 14.432548589345153
     },
-    "requiredSkills" : [ "Electrical", "Engine-Petrol", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 6 ],
-    "priority" : "HIGH",
+    "requiredSkills" : [ "Engine-Diesel", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 16, 15 ]
+      "workDay" : 1,
+      "startTime" : [ 13, 0 ],
+      "endTime" : [ 17, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
+      "workDay" : 2,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 11, 0 ],
+      "endTime" : [ 15, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
       "startTime" : [ 11, 45 ],
       "endTime" : [ 15, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 12, 0 ],
-      "endTime" : [ 16, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 16, 30 ]
+      "workDay" : 5,
+      "startTime" : [ 13, 30 ],
+      "endTime" : [ 17, 30 ]
     } ]
   }, {
     "id" : 14,
     "code" : "ORDER-14",
-    "customerId" : 8,
+    "customerId" : 9,
     "location" : {
-      "latitude" : 17.85352931962176,
-      "longitude" : 1.6403611331111234
+      "latitude" : 1.389036647025732,
+      "longitude" : 2.1675866057251447
     },
-    "requiredSkills" : [ "Exclusive", "Engine-Diesel" ],
+    "requiredSkills" : [ "Painting-Scratches", "Engine-Diesel", "Exclusive", "Electrical" ],
     "dueDate" : [ 2026, 3, 5 ],
     "priority" : "LOW",
-    "diagnosisDuration" : "PT1H",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 15, 0 ]
+      "workDay" : 1,
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 13, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 2,
       "startTime" : [ 9, 30 ],
       "endTime" : [ 13, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 13, 15 ]
+      "workDay" : 3,
+      "startTime" : [ 12, 30 ],
+      "endTime" : [ 16, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 45 ],
+      "endTime" : [ 13, 45 ]
     } ]
   }, {
     "id" : 15,
     "code" : "ORDER-15",
-    "customerId" : 7,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 2.176110051978928,
-      "longitude" : 18.738421136144304
+      "latitude" : 18.017569341180224,
+      "longitude" : 7.563537573848982
     },
-    "requiredSkills" : [ "Exclusive", "Painting-Scratches", "Engine-Diesel", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 6 ],
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 5 ],
     "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
+    "diagnosisDuration" : "PT2H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
+      "workDay" : 1,
+      "startTime" : [ 11, 30 ],
+      "endTime" : [ 15, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 13, 45 ]
+      "workDay" : 2,
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 13, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 17, 30 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 3,
       "startTime" : [ 10, 0 ],
       "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 15, 45 ]
+      "workDay" : 4,
+      "startTime" : [ 11, 30 ],
+      "endTime" : [ 15, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 14, 0 ],
+      "endTime" : [ 18, 0 ]
     } ]
   }, {
     "id" : 16,
     "code" : "ORDER-16",
-    "customerId" : 9,
+    "customerId" : 8,
     "location" : {
-      "latitude" : 19.944218159394985,
-      "longitude" : 4.225655495683698
+      "latitude" : 0.9569088324894981,
+      "longitude" : 17.248725841446706
     },
-    "requiredSkills" : [ "Exclusive", "Engine-Diesel" ],
-    "dueDate" : [ 2026, 3, 5 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
+    "requiredSkills" : [ "Engine-Diesel", "Engine-Petrol", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
+      "workDay" : 1,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 17, 30 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 2,
       "startTime" : [ 9, 15 ],
       "endTime" : [ 13, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 14, 15 ]
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 16, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 14, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 11, 0 ],
+      "endTime" : [ 15, 0 ]
     } ]
   }, {
     "id" : 17,
     "code" : "ORDER-17",
-    "customerId" : 6,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 8.83261988587811,
-      "longitude" : 18.53589211297672
+      "latitude" : 17.272877607458565,
+      "longitude" : 6.049187291644502
     },
-    "requiredSkills" : [ "Painting-Scratches", "Exclusive", "Engine-Diesel" ],
-    "dueDate" : [ 2026, 3, 8 ],
-    "priority" : "LOW",
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
     "diagnosisDuration" : "PT2H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 13, 0 ],
-      "endTime" : [ 17, 0 ]
+      "workDay" : 1,
+      "startTime" : [ 13, 45 ],
+      "endTime" : [ 17, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
+      "workDay" : 2,
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 14, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
       "startTime" : [ 11, 45 ],
       "endTime" : [ 15, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 12, 0 ],
-      "endTime" : [ 16, 0 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 17, 15 ]
+      "workDay" : 5,
+      "startTime" : [ 11, 0 ],
+      "endTime" : [ 15, 0 ]
     } ]
   }, {
     "id" : 18,
     "code" : "ORDER-18",
-    "customerId" : 8,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 15.274871576658803,
-      "longitude" : 6.287073418009495
+      "latitude" : 8.366432155328091,
+      "longitude" : 4.460564287434082
     },
-    "requiredSkills" : [ "Exclusive", "Engine-Diesel", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 9 ],
+    "requiredSkills" : [ "Engine-Petrol", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 3 ],
     "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H30M",
+    "diagnosisDuration" : "PT2H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
+      "workDay" : 1,
       "startTime" : [ 9, 15 ],
       "endTime" : [ 13, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 15, 30 ]
+      "workDay" : 2,
+      "startTime" : [ 13, 15 ],
+      "endTime" : [ 17, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 15, 30 ]
+      "workDay" : 3,
+      "startTime" : [ 12, 45 ],
+      "endTime" : [ 16, 45 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 4,
       "startTime" : [ 9, 30 ],
       "endTime" : [ 13, 30 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 17, 15 ]
+      "workDay" : 5,
+      "startTime" : [ 11, 45 ],
+      "endTime" : [ 15, 45 ]
     } ]
   }, {
     "id" : 19,
     "code" : "ORDER-19",
-    "customerId" : 10,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 1.7881674916510226,
-      "longitude" : 12.16323520340408
+      "latitude" : 17.60515833598633,
+      "longitude" : 11.445534998412512
     },
-    "requiredSkills" : [ "Electrical", "Painting-Scratches", "Engine-Diesel", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 9 ],
-    "priority" : "HIGH",
+    "requiredSkills" : [ "Engine-Diesel", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
     "diagnosisDuration" : "PT2H",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 18, 0 ]
+      "workDay" : 1,
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
+      "workDay" : 2,
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 14, 45 ]
+      "workDay" : 3,
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 13, 30 ]
+      "workDay" : 4,
+      "startTime" : [ 11, 15 ],
+      "endTime" : [ 15, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 16, 30 ]
+      "workDay" : 5,
+      "startTime" : [ 13, 30 ],
+      "endTime" : [ 17, 30 ]
     } ]
   }, {
     "id" : 20,
     "code" : "ORDER-20",
-    "customerId" : 8,
+    "customerId" : 5,
     "location" : {
-      "latitude" : 13.485622929686814,
-      "longitude" : 8.159400878714129
+      "latitude" : 18.83799672050539,
+      "longitude" : 14.264478414550851
     },
-    "requiredSkills" : [ "Engine-Petrol", "Electrical", "Engine-Diesel", "Painting-Scratches" ],
-    "dueDate" : [ 2026, 3, 7 ],
+    "requiredSkills" : [ "Exclusive" ],
+    "dueDate" : [ 2026, 3, 4 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT2H",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
+      "workDay" : 1,
+      "startTime" : [ 10, 15 ],
+      "endTime" : [ 14, 15 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 15, 45 ]
+      "workDay" : 2,
+      "startTime" : [ 14, 0 ],
+      "endTime" : [ 18, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
-      "calendarWeek" : 10,
-      "dayOfWeek" : "THURSDAY",
+      "workDay" : 3,
       "startTime" : [ 10, 0 ],
       "endTime" : [ 14, 0 ]
     }, {
+      "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "FRIDAY",
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 16, 45 ]
+      "workDay" : 4,
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 30 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 13, 45 ],
+      "endTime" : [ 17, 45 ]
     } ]
   } ]
 }

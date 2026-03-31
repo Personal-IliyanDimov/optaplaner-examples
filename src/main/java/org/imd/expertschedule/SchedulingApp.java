@@ -25,6 +25,7 @@ public class SchedulingApp {
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
         final SolutionContext context = loader.loadFromDirectory(dataDir, GeneratorConfigPresets.ultrasmall().getFileName());
         final PlannerParameters plannerParameters = new PlannerParameters();
+        plannerParameters.getPlannerRelated().setYear(2026);
         plannerParameters.getPlannerRelated().setCalendarWeek(10);
         plannerParameters.getPlannerRelated().setWorkingDays(new int[] {1, 2, 3, 4, 5});
 

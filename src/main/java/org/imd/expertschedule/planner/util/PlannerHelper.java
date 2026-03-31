@@ -17,7 +17,7 @@ public class PlannerHelper {
             throw new IllegalArgumentException("Calendar week must be greater than 0. ");
         }
 
-        if ((calendarWeekDay < 1) || (calendarWeek > 7)) {
+        if ((calendarWeekDay < 1) || (calendarWeekDay > 7)) {
             throw new IllegalArgumentException("Calendar week day must be in [1,7] range. ");
         }
 
@@ -76,8 +76,9 @@ public class PlannerHelper {
             .toList();
 
         final List<Absence> absenceList = expertAbsences.stream()
-                .filter(absence -> intersect(meetingInterval, new DayInterval(calculateDate(absence.getWorkDay(), absence.getCalendarWeek(),
-                        absence.getWorkDay()), absence.getStartTime(), absence.getEndTime())))
+                .filter(absence -> intersect(meetingInterval, new DayInterval(
+                        calculateDate(absence.getYear(), absence.getCalendarWeek(), absence.getWorkDay()),
+                        absence.getStartTime(), absence.getEndTime())))
                 .toList();
 
         return (!availabilityList.isEmpty() && absenceList.isEmpty());

@@ -13,6 +13,7 @@ import org.imd.expertschedule.io.model.OrderData;
 import org.imd.expertschedule.io.model.PlanningDatasetData;
 import org.imd.expertschedule.io.model.SkillData;
 import org.imd.expertschedule.planner.domain.time.Availability;
+import org.imd.expertschedule.planner.util.PlannerHelper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -38,12 +39,14 @@ import java.util.Random;
  */
 public class TestDataGenerator {
 
+    private static final PlannerHelper PLANNING_DATE_HELPER = new PlannerHelper();
+
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .enable(SerializationFeature.INDENT_OUTPUT);
 
     public static void main(String[] args) throws IOException {
-        String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "ultrasmall";
+        String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "small";
         Path outputDir = Path.of("data/expertschedule/");
         Files.createDirectories(outputDir);
 
@@ -136,6 +139,7 @@ public class TestDataGenerator {
         String[] names = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace",
                           "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah",
                           "Olivia"};
+        int year = config.getYear();
         int calendarWeek = config.getCalendarWeek();
         int[] weekWorkingDays = config.getWeekWorkingDays() != null ? config.getWeekWorkingDays() : new int[]{1, 2, 3, 4, 5};
         for (int i = 0; i < count; i++) {
@@ -147,14 +151,14 @@ public class TestDataGenerator {
             e.setSkills(pickSkillNamesFromSkillData(skills, random));
 
             if (i < config.getExpertsWithUndefaultAvailability()) {
-                e.setAvailabilities(sampleUndefaultAvailabilities(calendarWeek, weekWorkingDays, random));
+                e.setAvailabilities(sampleUndefaultAvailabilities(year, calendarWeek, weekWorkingDays, random));
                 e.setAbsences(new ArrayList<>());
             } else {
-                e.setAvailabilities(sampleDefaultAvailabilities(calendarWeek, weekWorkingDays));
+                e.setAvailabilities(sampleDefaultAvailabilities(year, calendarWeek, weekWorkingDays));
                 e.setAbsences(new ArrayList<>());
 
                 if (i + config.getExpertsWithAbsence() >= count) {
-                    e.setAbsences(sampleAbsences(calendarWeek, weekWorkingDays, random));
+                    e.setAbsences(sampleAbsences(year, calendarWeek, weekWorkingDays, random));
                 }
             }
 
@@ -171,12 +175,14 @@ public class TestDataGenerator {
         return names.subList(0, Math.min(howMany, names.size()));
     }
 
-    private static List<AvailabilityData> sampleUndefaultAvailabilities(int calendarWeek,
+    private static List<AvailabilityData> sampleUndefaultAvailabilities(int year,
+                                                                        int calendarWeek,
                                                                         int[] weekWorkingDays,
                                                                         Random random) {
         List<AvailabilityData> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData a = new AvailabilityData();
+            a.setYear(year);
             a.setCalendarWeek(calendarWeek);
             a.setDayOfWeek(DayOfWeek.of(wd));
             a.setStartTime(LocalTime.of(9 + random.nextInt(2), random.nextInt(3)*15));
@@ -186,10 +192,11 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<AvailabilityData> sampleDefaultAvailabilities(int calendarWeek, int[] weekWorkingDays) {
+    private static List<AvailabilityData> sampleDefaultAvailabilities(int year, int calendarWeek, int[] weekWorkingDays) {
         List<AvailabilityData> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData a = new AvailabilityData();
+            a.setYear(year);
             a.setCalendarWeek(calendarWeek);
             a.setDayOfWeek(DayOfWeek.of(wd));
             a.setStartTime(LocalTime.of(9, 0));
@@ -199,10 +206,11 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<AbsenceData> sampleAbsences(int calendarWeek, int[] weekWorkingDays, Random random) {
+    private static List<AbsenceData> sampleAbsences(int year, int calendarWeek, int[] weekWorkingDays, Random random) {
         if (weekWorkingDays.length == 0) return List.of();
         int wd = weekWorkingDays[random.nextInt(weekWorkingDays.length)];
         AbsenceData a = new AbsenceData();
+        a.setYear(year);
         a.setCalendarWeek(calendarWeek);
         a.setDayOfWeek(DayOfWeek.of(wd));
         a.setStartTime(LocalTime.of(9 + random.nextInt(1), random.nextInt(3)*15));
@@ -237,7 +245,7 @@ public class TestDataGenerator {
         List<OrderData> list = new ArrayList<>();
 
         int[] weekWorkingDays = config.getWeekWorkingDays();
-        List<LocalDate> planningDates = planningDates(config.getCalendarWeek(), weekWorkingDays);
+        List<LocalDate> planningDates = planningDates(config.getYear(), config.getCalendarWeek(), weekWorkingDays);
 
         String[] priorities = config.getOrderPriorities();
         String[] durations = config.getOrderDurations();
@@ -252,7 +260,7 @@ public class TestDataGenerator {
             o.setDiagnosisDuration(randomDiagnosisDuration(durations, random));
             o.setRequiredSkills(pickRequiredSkillsSubsetFromExpert(experts, random));
             o.setCustomerAvailabilities(
-                    customerAvailabilitiesForPlanningWeek(config, weekWorkingDays, random));
+                    customerAvailabilitiesForPlanningWeek(config, config.getYear(), weekWorkingDays, random));
             list.add(o);
         }
         return list;
@@ -274,7 +282,7 @@ public class TestDataGenerator {
      * {@link org.imd.expertschedule.planner.util.PlannerHelper#orderIsServable} can still match feasible slots.
      */
     private static List<Availability> customerAvailabilitiesForPlanningWeek(
-            GeneratorConfig config, int[] weekWorkingDays, Random random) {
+            GeneratorConfig config, int year, int[] weekWorkingDays, Random random) {
         if (weekWorkingDays == null || weekWorkingDays.length == 0) {
             return List.of();
         }
@@ -296,6 +304,7 @@ public class TestDataGenerator {
             LocalTime end = start.plusMinutes(effectiveWindowMinutes);
 
             Availability a = new Availability();
+            a.setYear(year);
             a.setCalendarWeek(calendarWeek);
             a.setWorkDay(wd);
             a.setStartTime(start);
@@ -319,20 +328,13 @@ public class TestDataGenerator {
         return slotIndex * slotMinutes;
     }
 
-    /** Dates in the planning window: one per working day in the given calendar week (matches loader's calculateDate). */
-    private static List<LocalDate> planningDates(int calendarWeek, int[] weekWorkingDays) {
+    /** Dates in the planning window: one per working day (matches {@link PlannerHelper#calculateDate}). */
+    private static List<LocalDate> planningDates(int year, int calendarWeek, int[] weekWorkingDays) {
         List<LocalDate> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
-            list.add(dateInPlanningWeek(calendarWeek, wd));
+            list.add(PLANNING_DATE_HELPER.calculateDate(year, calendarWeek, wd));
         }
         return list;
-    }
-
-    /** Monday of week 1 = Jan 1; wd 1..7 = day of week. Matches loader's calculateDate. */
-    private static LocalDate dateInPlanningWeek(int calendarWeek, int wd) {
-        return LocalDate.of(LocalDate.now().getYear(), 1, 1)
-                .plusWeeks(calendarWeek - 1)
-                .plusDays(wd - 1);
     }
 
     private static String randomDiagnosisDuration(final String[] orderDurations, Random random) {

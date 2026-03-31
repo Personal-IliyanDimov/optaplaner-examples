@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Setter
 public class WeekPeriodData {
 
+    private int year;
     private int calendarWeek;
     private DayOfWeek dayOfWeek;
     private LocalTime startTime;

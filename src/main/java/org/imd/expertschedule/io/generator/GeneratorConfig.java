@@ -29,6 +29,7 @@ public class GeneratorConfig {
 
     private int customerAvailabilityTimeWindowInMinutes = 240;
 
+    private int year;
     private int calendarWeek;
     private int[] weekWorkingDays;
 }

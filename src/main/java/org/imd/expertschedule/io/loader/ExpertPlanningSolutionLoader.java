@@ -2,6 +2,7 @@ package org.imd.expertschedule.io.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.imd.expertschedule.io.generator.GeneratorConfig;
 import org.imd.expertschedule.io.model.AbsenceData;
 import org.imd.expertschedule.io.model.AvailabilityData;
 import org.imd.expertschedule.io.model.BackOfficeData;
@@ -11,7 +12,6 @@ import org.imd.expertschedule.io.model.LocationData;
 import org.imd.expertschedule.io.model.OrderData;
 import org.imd.expertschedule.io.model.PlanningDatasetData;
 import org.imd.expertschedule.io.model.SkillData;
-import org.imd.expertschedule.io.model.TimeSlotData;
 import org.imd.expertschedule.planner.domain.BackOffice;
 import org.imd.expertschedule.planner.domain.Customer;
 import org.imd.expertschedule.planner.domain.Expert;
@@ -25,14 +25,13 @@ import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.Absence;
 import org.imd.expertschedule.planner.domain.time.Availability;
-import org.imd.expertschedule.planner.domain.time.TimeSlot;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.SolutionContext;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.time.Period;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,6 +77,7 @@ public class ExpertPlanningSolutionLoader {
         final Map<String, Skill> skillByName = buildSkillMap(data.getSkills());
         final Map<Long, BackOffice> backOfficeById = buildBackOfficeMap(data.getBackOffices());
         final Map<Long, Customer> customerById = buildCustomerMap(data.getCustomers());
+
         final Map<Long, Expert> expertById = buildExpertMap(data.getExperts(), skillByName, backOfficeById);
         final Map<Long, Order> orderById = buildOrderMap(data.getOrders(), skillByName, customerById);
 
@@ -90,8 +90,6 @@ public class ExpertPlanningSolutionLoader {
 
         return result;
     }
-
-
 
     private Map<String, Skill> buildSkillMap(List<SkillData> skillData) {
         Map<String, Skill> skillByName = new HashMap<>();
@@ -180,12 +178,14 @@ public class ExpertPlanningSolutionLoader {
         List<Availability> result = new ArrayList<>();
         for (AvailabilityData ad : list) {
             Availability a = new Availability();
+            a.setYear(ad.getYear());
             a.setCalendarWeek(ad.getCalendarWeek());
             a.setWorkDay(ad.getDayOfWeek().getValue());
             a.setStartTime(ad.getStartTime());
             a.setEndTime(ad.getEndTime());
             result.add(a);
         }
+
         return result;
     }
 
@@ -193,6 +193,7 @@ public class ExpertPlanningSolutionLoader {
         List<Absence> result = new ArrayList<>();
         for (AbsenceData ad : list) {
             Absence a = new Absence();
+            a.setYear(ad.getYear());
             a.setCalendarWeek(ad.getCalendarWeek());
             a.setWorkDay(ad.getDayOfWeek().getValue());
             a.setStartTime(ad.getStartTime());
@@ -220,7 +221,8 @@ public class ExpertPlanningSolutionLoader {
             order.setDiagnosisDuration(parseDuration(od.getDiagnosisDuration()));
             order.setRequiredSkills(resolveSkills(od.getRequiredSkills(), skillByName));
             if (od.getCustomerAvailabilities() != null && !od.getCustomerAvailabilities().isEmpty()) {
-                order.setCustomerAvailabilities(new ArrayList<>(od.getCustomerAvailabilities()));
+                List<Availability> customerAv = new ArrayList<>(od.getCustomerAvailabilities());
+                order.setCustomerAvailabilities(customerAv);
             } else {
                 order.setCustomerAvailabilities(List.of());
             }
@@ -238,15 +240,6 @@ public class ExpertPlanningSolutionLoader {
         };
     }
 
-    private static Period parsePeriod(String s) {
-        if (s == null || s.isBlank()) return Period.ZERO;
-        try {
-            return Period.parse(s);
-        } catch (Exception e) {
-            return Period.ZERO;
-        }
-    }
-
     private static Duration parseDuration(String s) {
         if (s == null || s.isBlank()) return Duration.ZERO;
         try {
@@ -254,14 +247,6 @@ public class ExpertPlanningSolutionLoader {
         } catch (Exception e) {
             return Duration.ZERO;
         }
-    }
-
-    private static TimeSlot toTimeSlot(TimeSlotData data) {
-        TimeSlot result = null;
-        if (data != null) {
-            result = new TimeSlot(data.getStartTime());
-        }
-        return result;
     }
 
     private Location toLocation(LocationData data) {
