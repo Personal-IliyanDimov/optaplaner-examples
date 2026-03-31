@@ -7,26 +7,26 @@ import java.math.BigInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FairnessTest {
+class FairnessDetectorTest {
 
     private record Row(String group, BigInteger weight) {}
 
-    private static UniConstraintCollector<Row, Fairness.LoadBalanceData, Fairness.LoadBalanceData> collector() {
-        return Fairness.loadBalance(Row::group, Row::weight);
+    private static UniConstraintCollector<Row, FairnessDetector.LoadBalanceData, FairnessDetector.LoadBalanceData> collector() {
+        return FairnessDetector.loadBalance(Row::group, Row::weight);
     }
 
     @Test
     void emptyAccumulator_reportsZeroRoot() {
-        UniConstraintCollector<Row, Fairness.LoadBalanceData, Fairness.LoadBalanceData> collector = collector();
-        Fairness.LoadBalanceData data = collector.supplier().get();
+        UniConstraintCollector<Row, FairnessDetector.LoadBalanceData, FairnessDetector.LoadBalanceData> collector = collector();
+        FairnessDetector.LoadBalanceData data = collector.supplier().get();
 
         assertEquals(BigInteger.ZERO, data.getZeroDeviationSquaredSumRoot());
     }
 
     @Test
     void singleGroup_rootEqualsIntegerSqrtOfSquaredTotal() {
-        UniConstraintCollector<Row, Fairness.LoadBalanceData, Fairness.LoadBalanceData> collector = collector();
-        Fairness.LoadBalanceData data = collector.supplier().get();
+        UniConstraintCollector<Row, FairnessDetector.LoadBalanceData, FairnessDetector.LoadBalanceData> collector = collector();
+        FairnessDetector.LoadBalanceData data = collector.supplier().get();
         var acc = collector.accumulator();
 
         acc.apply(data, new Row("A", BigInteger.valueOf(3)));
@@ -37,8 +37,8 @@ class FairnessTest {
 
     @Test
     void twoGroups_rootIsFloorSqrtOfSumOfSquaredGroupTotals() {
-        UniConstraintCollector<Row, Fairness.LoadBalanceData, Fairness.LoadBalanceData> collector = collector();
-        Fairness.LoadBalanceData data = collector.supplier().get();
+        UniConstraintCollector<Row, FairnessDetector.LoadBalanceData, FairnessDetector.LoadBalanceData> collector = collector();
+        FairnessDetector.LoadBalanceData data = collector.supplier().get();
         var acc = collector.accumulator();
 
         acc.apply(data, new Row("A", BigInteger.valueOf(5)));
@@ -49,8 +49,8 @@ class FairnessTest {
 
     @Test
     void undoRestoresMetric() {
-        UniConstraintCollector<Row, Fairness.LoadBalanceData, Fairness.LoadBalanceData> collector = collector();
-        Fairness.LoadBalanceData data = collector.supplier().get();
+        UniConstraintCollector<Row, FairnessDetector.LoadBalanceData, FairnessDetector.LoadBalanceData> collector = collector();
+        FairnessDetector.LoadBalanceData data = collector.supplier().get();
         var acc = collector.accumulator();
 
         Runnable undo = acc.apply(data, new Row("A", BigInteger.valueOf(10)));

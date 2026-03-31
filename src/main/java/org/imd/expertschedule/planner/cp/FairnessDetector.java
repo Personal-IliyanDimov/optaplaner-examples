@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class Fairness {
+public class FairnessDetector {
 
     public static <A> UniConstraintCollector<A, LoadBalanceData, LoadBalanceData> loadBalance(
             Function<A, Object> groupKey,

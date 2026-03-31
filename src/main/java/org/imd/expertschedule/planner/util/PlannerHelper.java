@@ -8,6 +8,7 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class PlannerHelper {
@@ -91,5 +92,12 @@ public class PlannerHelper {
             .findFirst();
 
         return result.isPresent();
+    }
+
+    public int countIntervalIntersects(Map<LocalDate, List<DayInterval>> dateToDayIntervalsMap) {
+        int result = 0;
+
+        return dateToDayIntervalsMap.entrySet().stream().
+
     }
 }

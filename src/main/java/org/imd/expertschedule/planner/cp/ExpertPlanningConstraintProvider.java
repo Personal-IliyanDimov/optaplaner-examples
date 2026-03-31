@@ -4,6 +4,7 @@ import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.Order;
 import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.domain.Skill;
+import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import org.imd.expertschedule.planner.domain.time.Availability;
 import org.imd.expertschedule.planner.util.DayInterval;
 import org.imd.expertschedule.planner.util.Pair;
@@ -11,16 +12,24 @@ import org.imd.expertschedule.planner.util.PlannerHelper;
 import org.optaplanner.core.api.score.stream.Constraint;
 import org.optaplanner.core.api.score.stream.ConstraintFactory;
 import org.optaplanner.core.api.score.stream.ConstraintProvider;
+import org.optaplanner.core.api.score.stream.uni.UniConstraintCollector;
 
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+
+import java.util.function.ToIntBiFunction;
+import java.util.stream.Collectors;
 
 public class ExpertPlanningConstraintProvider implements ConstraintProvider {
     private static final int FIXED_PENALTY = 1;
@@ -31,6 +40,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[]{
                 matchExpertAvailability(constraintFactory),
+                matchNoOverlapsExpertOtherMeetings(constraintFactory),
                 matchOrderAvailability(constraintFactory),
                 matchExpertSkillsAndOrderSkills(constraintFactory),
                 matchOrderDueDate(constraintFactory),
@@ -53,12 +63,37 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
 
     private boolean expertIsAvailable(final ScheduleItem si) {
         final List<Availability> customerAvailabilities = si.getOrder().getCustomerAvailabilities();
+        final DayInterval meetingInterval = extractDayInterval(si);
+        return helper.expertIsAvailable(meetingInterval, si.getExpertSchedule().getExpert());
+    }
+
+    private static DayInterval extractDayInterval(ScheduleItem si) {
         final LocalDate meetingDate = si.getExpertSchedule().getDate();
         final LocalTime meetingStartTime = si.getTimeSlot().getStartTime();
         final Duration meetingDuration = si.getOrder().getDiagnosisDuration();
         final DayInterval meetingInterval = new DayInterval(meetingDate, meetingStartTime, meetingStartTime.plus(meetingDuration));
-        return helper.expertIsAvailable(meetingInterval, si.getExpertSchedule().getExpert());
+        return meetingInterval;
     }
+
+    private Constraint matchNoOverlapsExpertOtherMeetings(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEach(ScheduleItem.class)
+                .filter(this.populatedScheduleItem())
+                .groupBy(si -> si.getExpertSchedule().getExpert().getId(), OverlapDetector.buildCollector(
+                 si -> si.getExpertSchedule().getExpert().getId(), si -> extractDayInterval(si)))
+                .penalizeConfigurable(buildMatchWeigher())
+                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.OVERLAPS_WITH_OTHER_MEETING_CONFLICT);
+    }
+
+    private ToIntBiFunction<ExpertRef, OverlapDetector.OverlapData> buildMatchWeigher() {
+        return (er, od) -> {
+            final List<DayInterval> expertDayIntervals = od.extractExpertDayIntervals(er);
+            final Map<LocalDate, List<DayInterval>> dateToDayIntervalsMap = expertDayIntervals.stream()
+                    .collect(Collectors.groupingBy(DayInterval::getDate));
+
+            return helper.countIntervalIntersects(dateToDayIntervalsMap);
+        };
+    }
+
 
     private Constraint matchOrderAvailability(ConstraintFactory factory) {
         // hard constraint - hard penalize per (availability difference in hours between expert and time)
@@ -71,10 +106,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
 
     private boolean orderIsServable(ScheduleItem si) {
         final List<Availability> customerAvailabilities = si.getOrder().getCustomerAvailabilities();
-        final LocalDate meetingDate = si.getExpertSchedule().getDate();
-        final LocalTime meetingStartTime = si.getTimeSlot().getStartTime();
-        final Duration meetingDuration = si.getOrder().getDiagnosisDuration();
-        final DayInterval meetingInterval = new DayInterval(meetingDate, meetingStartTime, meetingStartTime.plus(meetingDuration));
+        final DayInterval meetingInterval = extractDayInterval(si);
         return helper.orderIsServable(meetingInterval, customerAvailabilities);
     }
 
@@ -128,7 +160,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
         return factory
                 .forEach(ScheduleItem.class)
                 .filter(this.populatedScheduleItem())
-                .groupBy(Fairness.loadBalance( si -> si.getExpertSchedule().getExpert(),
+                .groupBy(FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
                                                si -> BigInteger.valueOf(si.getOrder().getDiagnosisDuration().toMinutes())))
                 .penalizeConfigurable(result -> result.getZeroDeviationSquaredSumRoot()
                         .min(BigInteger.valueOf(Integer.MAX_VALUE))
@@ -149,12 +181,5 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
         if (order.getRequiredSkills() == null) return true;
         if (expert.getSkills() == null) return false;
         return expert.getSkills().containsAll(order.getRequiredSkills());
-    }
-
-    private static int extraSkillsCount(final Order order, final Expert expert) {
-        if (!expertHasAllRequired(order, expert)) return 0;
-        if (expert.getSkills() == null) return 0;
-        if (order.getRequiredSkills() == null) return expert.getSkills().size();
-        return expert.getSkills().size() - order.getRequiredSkills().size();
     }
 }
