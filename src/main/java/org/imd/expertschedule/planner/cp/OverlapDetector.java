@@ -45,7 +45,11 @@ public class OverlapDetector {
         private final Map<ExpertRef, List<DayInterval>> expertToDayIntervalsMap = new LinkedHashMap<>(0);
 
         private Runnable apply(final ExpertRef expertRef, final DayInterval value) {
-            List<DayInterval> expertDayIntervals = expertToDayIntervalsMap.getOrDefault(expertRef, new ArrayList<>(Arrays.asList(value)));
+            List<DayInterval> expertDayIntervals = expertToDayIntervalsMap.get(expertRef);
+            if (expertDayIntervals == null) {
+                expertDayIntervals = new ArrayList<>();
+                expertToDayIntervalsMap.put(expertRef, expertDayIntervals);
+            }
             expertDayIntervals.add(value);
 
             return () -> {
@@ -55,6 +59,9 @@ public class OverlapDetector {
                 }
 
                 latestExpertDayIntervals.remove(value);
+                if (latestExpertDayIntervals.isEmpty()) {
+                    expertToDayIntervalsMap.remove(expertRef);
+                }
             };
         }
 
