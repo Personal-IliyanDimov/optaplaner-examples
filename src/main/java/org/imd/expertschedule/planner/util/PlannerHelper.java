@@ -97,7 +97,21 @@ public class PlannerHelper {
     public int countIntervalIntersects(Map<LocalDate, List<DayInterval>> dateToDayIntervalsMap) {
         int result = 0;
 
-        return dateToDayIntervalsMap.entrySet().stream().
+        for (Map.Entry<LocalDate, List<DayInterval>> entry : dateToDayIntervalsMap.entrySet()) {
+            final List<DayInterval> expertDayIntervals = entry.getValue();
+            if (expertDayIntervals == null || expertDayIntervals.size() < 2) {
+                continue;
+            }
 
+            for (int i = 0; i < expertDayIntervals.size(); i++) {
+                for (int j = i + 1; j < expertDayIntervals.size(); j++) {
+                    if (intersect(expertDayIntervals.get(i), expertDayIntervals.get(j))) {
+                        result++;
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }

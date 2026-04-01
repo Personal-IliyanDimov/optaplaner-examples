@@ -71,7 +71,8 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
         final LocalDate meetingDate = si.getExpertSchedule().getDate();
         final LocalTime meetingStartTime = si.getTimeSlot().getStartTime();
         final Duration meetingDuration = si.getOrder().getDiagnosisDuration();
-        final DayInterval meetingInterval = new DayInterval(meetingDate, meetingStartTime, meetingStartTime.plus(meetingDuration));
+        final DayInterval meetingInterval = new DayInterval(meetingDate, meetingStartTime,
+            meetingStartTime.plus(meetingDuration).minusMinutes(1));
         return meetingInterval;
     }
 

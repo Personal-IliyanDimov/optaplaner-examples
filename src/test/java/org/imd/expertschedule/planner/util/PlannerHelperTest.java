@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,6 +87,82 @@ class PlannerHelperTest {
     }
 
     @Test
+    void countIntervalIntersects_emptyMap_returnsZero() {
+        assertEquals(0, plannerHelper.countIntervalIntersects(Map.of()));
+    }
+
+    @Test
+    void countIntervalIntersects_fewerThanTwoIntervalsPerDay_returnsZero() {
+        LocalDate d = LocalDate.of(2026, 3, 10);
+        Map<LocalDate, List<DayInterval>> map = new HashMap<>();
+        map.put(d, List.of());
+        map.put(LocalDate.of(2026, 3, 11), List.of(iv(d, 9, 0, 10, 0)));
+        assertEquals(0, plannerHelper.countIntervalIntersects(map));
+    }
+
+    @Test
+    void countIntervalIntersects_twoDisjointIntervalsSameDay_returnsZero() {
+        LocalDate d = LocalDate.of(2026, 3, 10);
+        Map<LocalDate, List<DayInterval>> map = Map.of(d,
+                List.of(iv(d, 9, 0, 10, 0), iv(d, 11, 0, 12, 0)));
+        assertEquals(0, plannerHelper.countIntervalIntersects(map));
+    }
+
+    @Test
+    void countIntervalIntersects_twoOverlappingIntervalsSameDay_returnsOne() {
+        LocalDate d = LocalDate.of(2026, 3, 10);
+        Map<LocalDate, List<DayInterval>> map = Map.of(d,
+                List.of(iv(d, 9, 0, 10, 0), iv(d, 9, 30, 10, 30)));
+        assertEquals(1, plannerHelper.countIntervalIntersects(map));
+    }
+
+    @Test
+    void countIntervalIntersects_threeIntervals_oneOverlapPair_countsOne() {
+        LocalDate d = LocalDate.of(2026, 3, 10);
+        Map<LocalDate, List<DayInterval>> map = Map.of(d,
+                List.of(
+                        iv(d, 9, 0, 10, 0),
+                        iv(d, 9, 30, 10, 30),
+                        iv(d, 14, 0, 15, 0)));
+        assertEquals(1, plannerHelper.countIntervalIntersects(map));
+    }
+
+    @Test
+    void countIntervalIntersects_threeIntervals_allPairsOverlap_countsThree() {
+        LocalDate d = LocalDate.of(2026, 3, 10);
+        Map<LocalDate, List<DayInterval>> map = Map.of(d,
+                List.of(
+                        iv(d, 9, 0, 11, 0),
+                        iv(d, 10, 0, 12, 0),
+                        iv(d, 11, 0, 13, 0)));
+        assertEquals(3, plannerHelper.countIntervalIntersects(map));
+    }
+
+    @Test
+    void countIntervalIntersects_twoDays_sumsAcrossDays() {
+        LocalDate d1 = LocalDate.of(2026, 3, 10);
+        LocalDate d2 = LocalDate.of(2026, 3, 11);
+        Map<LocalDate, List<DayInterval>> map = new HashMap<>();
+        map.put(d1, List.of(iv(d1, 9, 0, 10, 0), iv(d1, 9, 30, 10, 30)));
+        map.put(d2, List.of(iv(d2, 14, 0, 15, 0), iv(d2, 14, 30, 15, 30)));
+        assertEquals(2, plannerHelper.countIntervalIntersects(map));
+    }
+
+    @Test
+    void countIntervalIntersects_differentDates_noCountAcrossDates() {
+        LocalDate d1 = LocalDate.of(2026, 3, 10);
+        LocalDate d2 = LocalDate.of(2026, 3, 11);
+        Map<LocalDate, List<DayInterval>> map = new HashMap<>();
+        map.put(d1, List.of(iv(d1, 9, 0, 17, 0)));
+        map.put(d2, List.of(iv(d2, 9, 0, 17, 0)));
+        assertEquals(0, plannerHelper.countIntervalIntersects(map));
+    }
+
+    private static DayInterval iv(LocalDate date, int fromH, int fromM, int toH, int toM) {
+        return new DayInterval(date, LocalTime.of(fromH, fromM), LocalTime.of(toH, toM));
+    }
+
+    @Test
     void testExpertIsAvailable() {
         // Mock Expert, Availability, Absence as needed
         Expert expert = new Expert();
@@ -111,4 +189,6 @@ class PlannerHelperTest {
 
         return result;
     }
+
+
 }
