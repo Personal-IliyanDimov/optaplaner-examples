@@ -6,6 +6,7 @@ import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.domain.Skill;
 import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import org.imd.expertschedule.planner.domain.time.Availability;
+import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.util.DayInterval;
 import org.imd.expertschedule.planner.util.Pair;
 import org.imd.expertschedule.planner.util.PlannerHelper;
@@ -29,11 +30,13 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
     private static final int FIXED_PENALTY = 1;
 
     private final PlannerHelper helper = new PlannerHelper();
+    private final PlannerParameters plannerParameters = new PlannerParameters();
 
     @Override
     public Constraint[] defineConstraints(ConstraintFactory constraintFactory) {
         return new Constraint[]{
                 matchExpertAvailability(constraintFactory),
+                matchExpertAvailabilityNoLunchOverlap(constraintFactory),
                 matchNoOverlapsExpertOtherMeetings(constraintFactory),
                 matchOrderAvailability(constraintFactory),
                 matchExpertSkillsAndOrderSkills(constraintFactory),
@@ -60,6 +63,14 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
         final List<Availability> customerAvailabilities = si.getOrder().getCustomerAvailabilities();
         final DayInterval meetingInterval = extractDayInterval(si);
         return helper.expertIsAvailable(meetingInterval, si.getExpertSchedule().getExpert());
+    }
+
+    private Constraint matchExpertAvailabilityNoLunchOverlap(ConstraintFactory factory) {
+        return factory.forEach(ScheduleItem.class)
+                .filter(this.populatedScheduleItem())
+                .filter(si -> helper.overlapLunchTime(extractDayInterval(si), plannerParameters.getExpertRelated()))
+                .penalizeConfigurable(si -> FIXED_PENALTY)
+                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.EA_LUNCH_TIME_CONFLICT);
     }
 
     private static DayInterval extractDayInterval(ScheduleItem si) {

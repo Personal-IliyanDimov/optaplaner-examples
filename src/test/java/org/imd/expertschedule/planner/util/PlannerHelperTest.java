@@ -49,7 +49,7 @@ class PlannerHelperTest {
 
     @Test
     void testDuringLunchTime() {
-        assertTrue(plannerHelper.duringLunchTime(LocalTime.of(12, 00), plannerParameters.getExpertRelated()));
+        assertTrue(plannerHelper.duringLunchTime(LocalTime.of(12, 0), plannerParameters.getExpertRelated()));
         assertTrue(plannerHelper.duringLunchTime(LocalTime.of(12, 30), plannerParameters.getExpertRelated()));
         assertTrue(plannerHelper.duringLunchTime(LocalTime.of(12, 59), plannerParameters.getExpertRelated()));
 
@@ -70,6 +70,13 @@ class PlannerHelperTest {
 
         DayInterval interval4 = new DayInterval(LocalDate.now(), LocalTime.of(11, 30), LocalTime.of(12, 30));
         assertTrue(plannerHelper.overlapLunchTime(interval4, plannerParameters.getExpertRelated()));
+
+        // Neither endpoint falls inside lunch, but the interval still covers 12:00–12:59
+        DayInterval interval5 = new DayInterval(LocalDate.now(), LocalTime.of(11, 45), LocalTime.of(13, 15));
+        assertTrue(plannerHelper.overlapLunchTime(interval5, plannerParameters.getExpertRelated()));
+
+        DayInterval interval6 = new DayInterval(LocalDate.now(), LocalTime.of(13, 0), LocalTime.of(14, 0));
+        assertFalse(plannerHelper.overlapLunchTime(interval6, plannerParameters.getExpertRelated()));
     }
 
     @Test

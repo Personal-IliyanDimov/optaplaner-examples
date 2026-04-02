@@ -52,7 +52,9 @@ public class PlannerHelper {
     }
 
     public boolean overlapLunchTime(final DayInterval interval, final PlannerParameters.ExpertRelated expertRelated) {
-        return duringLunchTime(interval.getFrom(), expertRelated) || duringLunchTime(interval.getTo(), expertRelated);
+        DayInterval lunch = new DayInterval(interval.getDate(),
+                expertRelated.getLunchStartTime(), expertRelated.getLunchEndTime());
+        return intersect(interval, lunch);
     }
 
 
