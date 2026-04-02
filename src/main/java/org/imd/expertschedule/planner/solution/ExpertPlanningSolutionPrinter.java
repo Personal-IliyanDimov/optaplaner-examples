@@ -161,7 +161,7 @@ public final class ExpertPlanningSolutionPrinter {
     }
 
     private String formatWeekPeriodLine(WeekPeriod p) {
-        return String.format("%d | CW%d wd=%d | %s–%s",
+        return String.format("%d | CW%d wd=%d | %s - %s",
                 p.getYear(), p.getCalendarWeek(), p.getWorkDay(), p.getStartTime(), p.getEndTime());
     }
 
@@ -173,7 +173,7 @@ public final class ExpertPlanningSolutionPrinter {
                 .map(a -> {
                     String base = formatWeekPeriodLine(a);
                     if (a.getReason() != null && !a.getReason().isBlank()) {
-                        return base + " — " + a.getReason();
+                        return base + " | reason: " + a.getReason();
                     }
                     return base;
                 })

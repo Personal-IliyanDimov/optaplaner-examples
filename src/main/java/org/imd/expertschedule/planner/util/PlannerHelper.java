@@ -7,6 +7,7 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -99,19 +100,23 @@ public class PlannerHelper {
 
         for (Map.Entry<LocalDate, List<DayInterval>> entry : dateToDayIntervalsMap.entrySet()) {
             final List<DayInterval> expertDayIntervals = entry.getValue();
-            if (expertDayIntervals == null || expertDayIntervals.size() < 2) {
-                continue;
-            }
-
-            for (int i = 0; i < expertDayIntervals.size(); i++) {
-                for (int j = i + 1; j < expertDayIntervals.size(); j++) {
-                    if (intersect(expertDayIntervals.get(i), expertDayIntervals.get(j))) {
-                        result++;
+            if (expertDayIntervals != null && expertDayIntervals.size() > 1) {
+                for (int i = 0; i < expertDayIntervals.size() - 1; i++) {
+                    for (int j = i + 1; j < expertDayIntervals.size(); j++) {
+                        if (intersect(expertDayIntervals.get(i), expertDayIntervals.get(j))) {
+                            result++;
+                        }
                     }
                 }
             }
         }
 
+        return result;
+    }
+
+    public int calculateDaysDifference(final LocalDate left, final LocalDate right) {
+        final Period betweenPeriod = Period.between(left, right);
+        final int result =  betweenPeriod.getDays() * -1;
         return result;
     }
 }

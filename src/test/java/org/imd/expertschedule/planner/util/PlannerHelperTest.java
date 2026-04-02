@@ -190,5 +190,10 @@ class PlannerHelperTest {
         return result;
     }
 
-
+    @Test
+    void calculateDaysDifference() {
+        assertEquals(0, plannerHelper.calculateDaysDifference(LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 1)));
+        assertEquals(-1, plannerHelper.calculateDaysDifference(LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 2)));
+        assertEquals(1, plannerHelper.calculateDaysDifference(LocalDate.of(2026, 3, 2), LocalDate.of(2026, 3, 1)));
+    }
 }

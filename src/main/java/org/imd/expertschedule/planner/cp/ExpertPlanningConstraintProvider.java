@@ -12,22 +12,16 @@ import org.imd.expertschedule.planner.util.PlannerHelper;
 import org.optaplanner.core.api.score.stream.Constraint;
 import org.optaplanner.core.api.score.stream.ConstraintFactory;
 import org.optaplanner.core.api.score.stream.ConstraintProvider;
-import org.optaplanner.core.api.score.stream.uni.UniConstraintCollector;
 
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.function.Predicate;
-
 import java.util.function.ToIntBiFunction;
 import java.util.stream.Collectors;
 
@@ -144,15 +138,10 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
     }
 
     private int calculateDelayInDays(final ScheduleItem si) {
-        final LocalDate orderDueDate = si.getOrder().getDueDate();
         final LocalDate scheduledDate = si.getExpertSchedule().getDate();
-        final long difference = ChronoUnit.DAYS.between(scheduledDate, orderDueDate);
-        int result = 0;
-        if (difference < 0) {
-            result = (int) difference;
-        }
+        final LocalDate orderDueDate = si.getOrder().getDueDate();
 
-        return result;
+        return helper.calculateDaysDifference(scheduledDate, orderDueDate);
     }
 
     private Constraint fairlyDistributePerExpertScheduledItems(ConstraintFactory factory) {
