@@ -38,7 +38,8 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 matchOrderAvailability(constraintFactory),
                 matchExpertSkillsAndOrderSkills(constraintFactory),
                 matchOrderDueDate(constraintFactory),
-                fairlyDistributePerExpertScheduledItems(constraintFactory)
+                fairlyDistributePerExpertPerPeriodScheduledItems(constraintFactory),
+                fairlyDistributePerExpertPerDayScheduledItems(constraintFactory)
         };
     }
 
@@ -144,18 +145,32 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
         return helper.calculateDaysDifference(scheduledDate, orderDueDate);
     }
 
-    private Constraint fairlyDistributePerExpertScheduledItems(ConstraintFactory factory) {
-        // medium constraint - penalize imbalance (more items on one expert schedule = higher medium penalty)
-
+    private Constraint fairlyDistributePerExpertPerPeriodScheduledItems(ConstraintFactory factory) {
+        // medium constraint - penalize imbalance of total diagnosis minutes per expert (whole horizon)
         return factory
                 .forEach(ScheduleItem.class)
                 .filter(this.populatedScheduleItem())
                 .groupBy(FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
                                                si -> BigInteger.valueOf(si.getOrder().getDiagnosisDuration().toMinutes())))
-                .penalizeConfigurable(result -> result.getZeroDeviationSquaredSumRoot()
-                        .min(BigInteger.valueOf(Integer.MAX_VALUE))
-                        .intValue())
-                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_SI_CONFLICT);
+                .penalizeConfigurable(result -> fairnessPenaltyMinutes(result))
+                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PP_SI_CONFLICT);
+    }
+
+    private Constraint fairlyDistributePerExpertPerDayScheduledItems(ConstraintFactory factory) {
+        return factory
+                .forEach(ScheduleItem.class)
+                .filter(this.populatedScheduleItem())
+                .groupBy(si -> si.getExpertSchedule().getDate(),
+                        FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
+                                si -> BigInteger.valueOf(si.getOrder().getDiagnosisDuration().toMinutes())))
+                .penalizeConfigurable((ignoredDate, result) -> fairnessPenaltyMinutes(result))
+                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PD_SI_CONFLICT);
+    }
+
+    private static int fairnessPenaltyMinutes(FairnessDetector.LoadBalanceData result) {
+        return result.getZeroDeviationSquaredSumRoot()
+                .min(BigInteger.valueOf(Integer.MAX_VALUE))
+                .intValue();
     }
 
 

@@ -3,10 +3,11 @@ package org.imd.expertschedule;
 import org.imd.expertschedule.io.generator.GeneratorConfigPresets;
 import org.imd.expertschedule.io.loader.ExpertPlanningSolutionLoader;
 import org.imd.expertschedule.planner.cp.ExpertPlanningConstraintConfiguration;
+import org.imd.expertschedule.planner.domain.printers.OrderDistributionPrinter;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.solution.SolutionContext;
-import org.imd.expertschedule.planner.solution.ExpertPlanningSolutionPrinter;
+import org.imd.expertschedule.planner.domain.printers.ExpertSchedulesPrinter;
 import org.imd.expertschedule.planner.solution.SolutionInitializer;
 import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
 import org.optaplanner.core.api.solver.Solver;
@@ -42,14 +43,16 @@ public class SchedulingApp {
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
                 "org/imd/expertschedule/expert-schedule-solver-config.xml");
-        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(60L));
+        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(30L));
 
-        SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
-        Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();
+        final SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
+        final Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();
+        final ExpertPlanningSolution solution = solver.solve(unsolvedSolution);
 
-        ExpertPlanningSolution solution = solver.solve(unsolvedSolution);
+        final OrderDistributionPrinter odPrinter = new OrderDistributionPrinter();
+        odPrinter.print(solution);
 
-        ExpertPlanningSolutionPrinter printer = new ExpertPlanningSolutionPrinter();
+        final ExpertSchedulesPrinter printer = new ExpertSchedulesPrinter();
         printer.print(solution);
     }
 }
