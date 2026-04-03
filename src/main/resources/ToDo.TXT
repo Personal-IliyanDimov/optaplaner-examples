@@ -1,1 +1,8 @@
-1. Turn on debug logging for the category org.optaplanner
+Solution complexity:
+NumberExperts * PlanningPeriodInDays*StartingTimeSlotsPerDay*NumberOfOrders
+Ultrasmall
+3*5*(8*4)*20 = 9600
+
+ExtraLarge:
+50*5*(8*4)*(50*5*4) = 3,200,000
+
