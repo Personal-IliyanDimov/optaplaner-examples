@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plannerBenchmark xmlns="https://www.optaplanner.org/xsd/benchmark" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="https://www.optaplanner.org/xsd/benchmark https://www.optaplanner.org/xsd/benchmark/benchmark.xsd">
-    <benchmarkDirectory>local/data/
-    </benchmarkDirectory>
+
+    <benchmarkDirectory>local/benchmark</benchmarkDirectory>
     <parallelBenchmarkCount>AUTO</parallelBenchmarkCount>
 
     <inheritedSolverBenchmark>
         <solver>
+            <environmentMode>FULL_ASSERT</environmentMode>
+            <moveThreadCount>AUTO</moveThreadCount>
+
+            <!-- Domain model configuration -->
             <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
             <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
+
+            <!-- Score configuration -->
             <scoreDirectorFactory>
                 <constraintProviderClass>org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider</constraintProviderClass>
                 <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
             </scoreDirectorFactory>
+
+            <!-- Termination (same limit as expert-schedule-solver-config.xml; increase for slower benchmarks) -->
             <termination>
-                <minutesSpentLimit>5</minutesSpentLimit>
+                <minutesSpentLimit>2</minutesSpentLimit>
             </termination>
         </solver>
+
         <problemBenchmarks>
-            <solutionFileIOClass>org.optaplanner.examples.cloudbalancing.persistence.CloudBalanceSolutionFileIO</solutionFileIOClass>
-            <inputSolutionFile>data/cloudbalancing/unsolved/100computers-300processes.json</inputSolutionFile>
-            <inputSolutionFile>data/cloudbalancing/unsolved/200computers-600processes.json</inputSolutionFile>
-            <inputSolutionFile>data/cloudbalancing/unsolved/400computers-1200processes.json</inputSolutionFile>
-            <inputSolutionFile>data/cloudbalancing/unsolved/800computers-2400processes.json</inputSolutionFile>
-            <inputSolutionFile>data/cloudbalancing/unsolved/1600computers-4800processes.json</inputSolutionFile>
+            <solutionFileIOClass>org.imd.expertschedule.io.benchmark.ExpertPlanningSolutionFileIO</solutionFileIOClass>
+            <inputSolutionFile>data/expertschedule/dataset-ultrasmall.json</inputSolutionFile>
+            <inputSolutionFile>data/expertschedule/dataset-small.json</inputSolutionFile>
         </problemBenchmarks>
     </inheritedSolverBenchmark>
 

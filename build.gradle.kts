@@ -28,6 +28,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("org.projectlombok:lombok:1.18.30")
     implementation("org.optaplanner:optaplanner-core:10.1.0")
+    implementation("org.optaplanner:optaplanner-persistence-common:10.1.0")
+    implementation("org.optaplanner:optaplanner-benchmark:10.1.0")
     implementation("ch.qos.logback:logback-classic:1.5.16")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1")

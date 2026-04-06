@@ -1,13 +1,14 @@
 package org.imd.expertschedule;
 
+import org.imd.expertschedule.io.PlanningSolutionAssembly;
 import org.imd.expertschedule.io.generator.GeneratorConfigPresets;
 import org.imd.expertschedule.io.loader.ExpertPlanningSolutionLoader;
 import org.imd.expertschedule.planner.cp.ExpertPlanningConstraintConfiguration;
 import org.imd.expertschedule.planner.domain.printers.OrderDistributionPrinter;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
-import org.imd.expertschedule.planner.solution.SolutionContext;
 import org.imd.expertschedule.planner.domain.printers.ExpertSchedulesPrinter;
+import org.imd.expertschedule.planner.solution.SolutionContext;
 import org.imd.expertschedule.planner.solution.SolutionInitializer;
 import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
 import org.optaplanner.core.api.solver.Solver;
@@ -24,15 +25,14 @@ public class SchedulingApp {
     public static void main(String[] args) throws IOException {
         final Path dataDir = Path.of("data/expertschedule/");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        final SolutionContext context = loader.loadFromDirectory(dataDir, GeneratorConfigPresets.ultrasmall().getFileName());
-        final PlannerParameters plannerParameters = new PlannerParameters();
-        plannerParameters.getPlannerRelated().setYear(2026);
-        plannerParameters.getPlannerRelated().setCalendarWeek(10);
-        plannerParameters.getPlannerRelated().setWorkingDays(new int[] {1, 2, 3, 4, 5});
+        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.ultrasmall().getFileName());
 
-        final SolutionInitializer solutionInitializer = new SolutionInitializer();
-        final ExpertPlanningSolution unsolvedSolution = solutionInitializer.initialize(plannerParameters,
-                new ExpertPlanningConstraintConfiguration(), context);
+        final PlannerParameters plannerParameters = PlanningSolutionAssembly.plannerParametersFromMetadata(loaderContext.metadata());
+        final ExpertPlanningConstraintConfiguration constraintConfiguration = new ExpertPlanningConstraintConfiguration();
+        final SolutionContext context = loaderContext.context();
+
+        final ExpertPlanningSolution unsolvedSolution = new SolutionInitializer().initialize(plannerParameters,
+                constraintConfiguration, context);
 
         final PlanningSolutionValidator validator = new PlanningSolutionValidator(plannerParameters);
         final Collection<PlanningSolutionValidator.Violation> validationResults = validator.validate(unsolvedSolution);

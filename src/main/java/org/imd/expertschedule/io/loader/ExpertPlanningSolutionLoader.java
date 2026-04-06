@@ -2,7 +2,6 @@ package org.imd.expertschedule.io.loader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.imd.expertschedule.io.generator.GeneratorConfig;
 import org.imd.expertschedule.io.model.AbsenceData;
 import org.imd.expertschedule.io.model.AvailabilityData;
 import org.imd.expertschedule.io.model.BackOfficeData;
@@ -25,13 +24,11 @@ import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.Absence;
 import org.imd.expertschedule.planner.domain.time.Availability;
-import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.SolutionContext;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,9 +37,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * Loads planning data from a single JSON file (see {@link PlanningDatasetData}) and builds an {@link ExpertPlanningSolution}.
- */
 public class ExpertPlanningSolutionLoader {
     private final ObjectMapper objectMapper;
 
@@ -50,21 +44,15 @@ public class ExpertPlanningSolutionLoader {
         this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     }
 
-    public ExpertPlanningSolutionLoader(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
-    public SolutionContext load(Path datasetFile) throws IOException {
+    public PlanningLoaderContext loadBundle(Path datasetFile) throws IOException {
         PlanningDatasetData data = objectMapper.readValue(datasetFile.toFile(), PlanningDatasetData.class);
-        return buildContext(data);
+        return new PlanningLoaderContext(buildContext(data), data.getMetadata());
     }
 
-    public SolutionContext loadFromDirectory(final Path dataDir,
-                                                    final String fileName) throws IOException {
+    public PlanningLoaderContext loadBundleFromDirectory(Path dataDir, String fileName) throws IOException {
         Objects.requireNonNull(dataDir);
         Objects.requireNonNull(fileName);
-
-        return load(dataDir.resolve(fileName));
+        return loadBundle(dataDir.resolve(fileName));
     }
 
     private SolutionContext buildContext(PlanningDatasetData data) {
