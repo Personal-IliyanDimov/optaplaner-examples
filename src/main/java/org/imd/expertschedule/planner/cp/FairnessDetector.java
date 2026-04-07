@@ -95,7 +95,10 @@ public class FairnessDetector {
             final int n = items.size();
 
             final BigInteger nBySquaredAverage = BigDecimal.valueOf(n).multiply(mean.pow(2)).toBigInteger();
-            final BigInteger ssdByMean = squaredSum.subtract(nBySquaredAverage);
+            BigInteger ssdByMean = squaredSum.subtract(nBySquaredAverage);
+            if (ssdByMean.compareTo(BigInteger.ZERO) < 0) {
+                ssdByMean = BigInteger.ZERO;
+            }
 
             return ssdByMean;
         }

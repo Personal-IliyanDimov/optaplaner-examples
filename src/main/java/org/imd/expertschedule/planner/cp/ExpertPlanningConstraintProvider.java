@@ -162,7 +162,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 .filter(this.populatedScheduleItem())
                 .groupBy(FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
                                                si -> (int) si.getOrder().getDiagnosisDuration().toMinutes()))
-                .penalizeConfigurable(result -> fairnessPenaltyMinutes(result))
+                .penalizeConfigurable(result -> fairnessPenalty(result))
                 .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PP_SI_CONFLICT);
     }
 
@@ -173,11 +173,11 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 .groupBy(si -> si.getExpertSchedule().getDate(),
                         FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
                                 si -> (int) si.getOrder().getDiagnosisDuration().toMinutes()))
-                .penalizeConfigurable((ignoredDate, result) -> fairnessPenaltyMinutes(result))
+                .penalizeConfigurable((ignoredDate, result) -> fairnessPenalty(result))
                 .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PD_SI_CONFLICT);
     }
 
-    private static int fairnessPenaltyMinutes(FairnessDetector.LoadBalanceData result) {
+    private static int fairnessPenalty(FairnessDetector.LoadBalanceData result) {
         return result.getSsdFromMean()
                 .min(BigInteger.valueOf(Integer.MAX_VALUE))
                 .intValue();

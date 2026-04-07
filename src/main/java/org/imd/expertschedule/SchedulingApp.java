@@ -25,7 +25,7 @@ public class SchedulingApp {
     public static void main(String[] args) throws IOException {
         final Path dataDir = Path.of("data/expertschedule/");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.ultrasmall().getFileName());
+        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.small().getFileName());
 
         final PlannerParameters plannerParameters = PlanningSolutionAssembly.plannerParametersFromMetadata(loaderContext.metadata());
         final ExpertPlanningConstraintConfiguration constraintConfiguration = new ExpertPlanningConstraintConfiguration();
@@ -43,7 +43,7 @@ public class SchedulingApp {
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
                 "org/imd/expertschedule/expert-schedule-solver-config.xml");
-        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(600L));
+        solverConfig.withTerminationConfig(new TerminationConfig().withSecondsSpentLimit(1200L));
 
         final SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
         final Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();
