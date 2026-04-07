@@ -1,9 +1,14 @@
 package org.imd.expertschedule.planner.cp;
 
+import lombok.Getter;
 import org.optaplanner.core.api.score.stream.uni.UniConstraintCollector;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -13,7 +18,7 @@ public class FairnessDetector {
 
     public static <A> UniConstraintCollector<A, LoadBalanceData, LoadBalanceData> loadBalance(
             Function<A, Object> groupKey,
-            Function<A, BigInteger> valueExtractor) {
+            Function<A, Integer> valueExtractor) {
 
         return new UniConstraintCollector<A, LoadBalanceData, LoadBalanceData>() {
 
@@ -39,40 +44,81 @@ public class FairnessDetector {
 
     public static final class LoadBalanceData {
 
-        private final Map<Object, BigInteger> groupWeightMap = new LinkedHashMap<>(0);
-        /** Sum of per-group squared totals: {@code Σ_g (weight_g)²}. */
-        private BigInteger squaredSum = BigInteger.ZERO;
+        private final Map<Object, Distribution<Integer>> groupToDistributionMap = new LinkedHashMap<>(0);
 
-        private Runnable apply(Object mapped, BigInteger weight) {
-            BigInteger oldWeight = groupWeightMap.getOrDefault(mapped, BigInteger.ZERO);
-            BigInteger newWeight = oldWeight.add(weight);
-
-            groupWeightMap.put(mapped, newWeight);
-
-            // (newWeight² - oldWeight²) = 2 * oldWeight * w + w²
-            BigInteger delta = oldWeight.shiftLeft(1).multiply(weight).add(weight.multiply(weight));
-            squaredSum = squaredSum.add(delta);
+        private Runnable apply(final Object mapped, final Integer weight) {
+            Distribution<Integer> rd = groupToDistributionMap.compute(mapped,
+                (k, d) -> {
+                    final Distribution<Integer> nd = (d == null) ? new Distribution<>() : d;
+                    nd.getItems().add(weight);
+                    return nd;
+                });
 
             return () -> {
-                BigInteger currentWeight = groupWeightMap.get(mapped);
-                if (currentWeight == null) {
-                    throw new IllegalStateException("Missing group total for undo");
-                }
-                BigInteger weightBeforeUndo = currentWeight.subtract(weight);
-
-                if (weightBeforeUndo.signum() <= 0) {
-                    groupWeightMap.remove(mapped);
-                } else {
-                    groupWeightMap.put(mapped, weightBeforeUndo);
-                }
-
-                BigInteger undoDelta = weightBeforeUndo.shiftLeft(1).multiply(weight).add(weight.multiply(weight));
-                squaredSum = squaredSum.subtract(undoDelta);
+                groupToDistributionMap.compute(mapped,
+                    (k, d) -> {
+                        if (d != null) {
+                            d.getItems().remove(weight);
+                        }
+                        if (d.getItems().isEmpty()) {
+                            d = null;
+                        }
+                        return d;
+                    });
             };
         }
 
-        public BigInteger getZeroDeviationSquaredSumRoot() {
-            return squaredSum.sqrt();
+        public BigInteger getSsdFromMean() {
+            final Map<Object, Integer> groupToSumMap = new HashMap<>();
+            groupToDistributionMap.entrySet().stream().forEach(entry -> {
+                Object key = entry.getKey();
+                Distribution<Integer> distribution = entry.getValue();
+                for (Integer item : distribution.getItems()) {
+                    groupToSumMap.compute(key, (k, s) -> (s == null) ? item : s + item);
+                }
+            });
+
+            return calculateSumOfSquaredDeviationsFromMean(groupToSumMap.values().stream().toList());
+        }
+
+        private BigInteger calculateSumOfSquaredDeviationsFromMean(List<Integer> items) {
+            if (items.isEmpty()) {
+                return BigInteger.ZERO;
+            }
+
+            BigInteger squaredSum = BigInteger.ZERO;
+            for (Integer item : items) {
+                squaredSum = squaredSum.add(BigInteger.valueOf(item).pow(2));
+            }
+
+            final BigDecimal mean = calculateMean(items);
+            final int n = items.size();
+
+            final BigInteger nBySquaredAverage = BigDecimal.valueOf(n).multiply(mean.pow(2)).toBigInteger();
+            final BigInteger ssdByMean = squaredSum.subtract(nBySquaredAverage);
+
+            return ssdByMean;
+        }
+
+        private BigDecimal calculateMean(List<Integer> items) {
+            long sum = 0L;
+            for (int i = 0; i < items.size(); i++) {
+                sum += items.get(i);
+            }
+
+            final BigDecimal result = BigDecimal.valueOf(sum)
+                .divide(BigDecimal.valueOf(items.size()), BigDecimal.ROUND_HALF_UP);
+
+            return result;
+        }
+    }
+
+    @Getter
+    private static class Distribution<T> {
+        private final List<T> items ;
+
+        public Distribution() {
+            items = new ArrayList<>();
         }
     }
 }

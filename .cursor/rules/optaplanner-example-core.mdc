@@ -1,0 +1,15 @@
+---
+description: Core structure and conventions for the OptaPlanner examples project
+alwaysApply: true
+---
+
+# OptaPlanner Examples – Core Rules
+
+- Keep **domain objects** (planning entities, solution, facts) in a dedicated `domain` package.
+- Keep **solver-related code** (constraint providers, main app, configuration) outside the domain package (e.g. in `com.example.taskschedule` or a `solver` subpackage).
+- Prefer **Lombok** for simple data classes (getters/setters/constructors) to keep entities concise.
+- When adding new planning variables, always:
+  - Define a **value range** on the solution (`@ValueRangeProvider`) or a separate fact class.
+  - Reference that range from the variable via `@PlanningVariable(valueRangeProviderRefs = "rangeId")`.
+- Keep examples **small and focused** – if a new feature or variation is added, create a new example package instead of overloading an existing one.
+

@@ -60,7 +60,6 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
     }
 
     private boolean expertIsAvailable(final ScheduleItem si) {
-        final List<Availability> customerAvailabilities = si.getOrder().getCustomerAvailabilities();
         final DayInterval meetingInterval = extractDayInterval(si);
         return helper.expertIsAvailable(meetingInterval, si.getExpertSchedule().getExpert());
     }
@@ -162,7 +161,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 .forEach(ScheduleItem.class)
                 .filter(this.populatedScheduleItem())
                 .groupBy(FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
-                                               si -> BigInteger.valueOf(si.getOrder().getDiagnosisDuration().toMinutes())))
+                                               si -> (int) si.getOrder().getDiagnosisDuration().toMinutes()))
                 .penalizeConfigurable(result -> fairnessPenaltyMinutes(result))
                 .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PP_SI_CONFLICT);
     }
@@ -173,13 +172,13 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 .filter(this.populatedScheduleItem())
                 .groupBy(si -> si.getExpertSchedule().getDate(),
                         FairnessDetector.loadBalance(si -> si.getExpertSchedule().getExpert(),
-                                si -> BigInteger.valueOf(si.getOrder().getDiagnosisDuration().toMinutes())))
+                                si -> (int) si.getOrder().getDiagnosisDuration().toMinutes()))
                 .penalizeConfigurable((ignoredDate, result) -> fairnessPenaltyMinutes(result))
                 .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PD_SI_CONFLICT);
     }
 
     private static int fairnessPenaltyMinutes(FairnessDetector.LoadBalanceData result) {
-        return result.getZeroDeviationSquaredSumRoot()
+        return result.getSsdFromMean()
                 .min(BigInteger.valueOf(Integer.MAX_VALUE))
                 .intValue();
     }

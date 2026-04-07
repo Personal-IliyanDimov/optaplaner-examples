@@ -1,0 +1,16 @@
+---
+description: Clean code for AI-generated edits—minimal commenting, clear naming
+alwaysApply: true
+---
+
+# Clean code for new / changed code
+
+When adding or modifying code in this workspace:
+
+- **Do not** add Javadoc, KDoc, or file-level comments on every class or interface “for completeness.”
+- **Do not** add a comment above every method or field that only repeats the name or signature (e.g. “Gets the user” above `getUser()`).
+- **Prefer** self-explanatory names, small focused methods, and obvious structure over commentary.
+- **Use comments sparingly** only where they add real value: non-obvious algorithms, domain rules, invariants, security or threading assumptions, or public API contracts that names alone cannot carry.
+- **Avoid** noisy section banners (`// --- Foo ---`) unless the file is genuinely huge and the team already uses that style there.
+
+This rule complements (does not replace) any need for **brief** comments where the codebase already documents tricky OptaPlanner or business behavior.
