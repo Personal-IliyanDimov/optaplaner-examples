@@ -40,16 +40,19 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig small() {
         final int numExperts = 5;
+        final int numExpertsWithUndefaultAvailability = 2;
+        final int numExpertsWithAbsence = 1;
 
         GeneratorConfig config = new GeneratorConfig();
         config.setFileName("dataset-small.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
         config.setNumCustomers(10);
-        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
-        config.setNumOffices(1);
-        config.setExpertsWithUndefaultAvailability(2);
-        config.setExpertsWithAbsence(1);
+        config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
+                            WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(numExpertsWithAbsence);
+        config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
+        config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
@@ -62,16 +65,19 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig medium() {
         final int numExperts = 15;
+        final int numExpertsWithUndefaultAvailability = 5;
+        final int numExpertsWithAbsence = 3;
 
         GeneratorConfig config = new GeneratorConfig();
         config.setFileName("dataset-medium.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
         config.setNumCustomers(20);
-        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
-        config.setNumOffices(3);
-        config.setExpertsWithUndefaultAvailability(5);
-        config.setExpertsWithAbsence(3);
+        config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
+                WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(numExpertsWithAbsence);
+        config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
+        config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
@@ -84,16 +90,19 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig large() {
         final int numExperts = 30;
+        final int numExpertsWithUndefaultAvailability = 5;
+        final int numExpertsWithAbsence = 3;
 
         GeneratorConfig config = new GeneratorConfig();
         config.setFileName("dataset-large.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
         config.setNumCustomers(100);
-        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
-        config.setNumOffices(6);
-        config.setExpertsWithUndefaultAvailability(10);
-        config.setExpertsWithAbsence(5);
+        config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
+                WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(numExpertsWithAbsence);
+        config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
+        config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
@@ -106,16 +115,19 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig extraLarge() {
         final int numExperts = 50;
+        final int numExpertsWithUndefaultAvailability = 10;
+        final int numExpertsWithAbsence = 10;
 
         GeneratorConfig config = new GeneratorConfig();
         config.setFileName("dataset-extralarge.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
         config.setNumCustomers(1000);
-        config.setNumOrders(numExperts*WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
-        config.setNumOffices(10);
-        config.setExpertsWithUndefaultAvailability(10);
-        config.setExpertsWithAbsence(10);
+        config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
+                WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+        config.setNumOffices(numExpertsWithAbsence);
+        config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
+        config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
         config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
