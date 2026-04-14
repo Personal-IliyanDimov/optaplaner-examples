@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Runnable benchmark: one solver benchmark (no blueprint explosion).
+  Run from project root: ./gradlew benchmark
+  For exhaustive local-search comparison, reintroduce solverBenchmarkBluePrint EVERY_LOCAL_SEARCH_TYPE
+  and increase termination limits.
+-->
 <plannerBenchmark xmlns="https://www.optaplanner.org/xsd/benchmark" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="https://www.optaplanner.org/xsd/benchmark https://www.optaplanner.org/xsd/benchmark/benchmark.xsd">
 
     <benchmarkDirectory>local/benchmark</benchmarkDirectory>
-    <parallelBenchmarkCount>AUTO</parallelBenchmarkCount>
+    <parallelBenchmarkCount>1</parallelBenchmarkCount>
+    <warmUpSecondsSpentLimit>0</warmUpSecondsSpentLimit>
 
     <inheritedSolverBenchmark>
         <solver>
-            <environmentMode>FULL_ASSERT</environmentMode>
-            <moveThreadCount>AUTO</moveThreadCount>
+            <!-- NONE: multithreaded moves need @PlanningId on entities and range types; AUTO matches expert-schedule-solver-config when those IDs exist -->
+            <moveThreadCount>NONE</moveThreadCount>
 
-            <!-- Domain model configuration -->
             <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
             <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
 
-            <!-- Score configuration -->
             <scoreDirectorFactory>
                 <constraintProviderClass>org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider</constraintProviderClass>
                 <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
             </scoreDirectorFactory>
 
-            <!-- Termination (same limit as expert-schedule-solver-config.xml; increase for slower benchmarks) -->
             <termination>
                 <minutesSpentLimit>2</minutesSpentLimit>
             </termination>
@@ -28,13 +32,12 @@
 
         <problemBenchmarks>
             <solutionFileIOClass>org.imd.expertschedule.io.benchmark.ExpertPlanningSolutionFileIO</solutionFileIOClass>
-            <!--inputSolutionFile>data/expertschedule/dataset-ultrasmall.json</inputSolutionFile-->
+            <inputSolutionFile>data/expertschedule/dataset-ultrasmall.json</inputSolutionFile>
             <inputSolutionFile>data/expertschedule/dataset-small.json</inputSolutionFile>
         </problemBenchmarks>
     </inheritedSolverBenchmark>
 
     <solverBenchmarkBluePrint>
-        <solverBenchmarkBluePrintType>EVERY_LOCAL_SEARCH_TYPE</solverBenchmarkBluePrintType>
+        <solverBenchmarkBluePrintType>EVERY_CONSTRUCTION_HEURISTIC_TYPE_WITH_EVERY_LOCAL_SEARCH_TYPE</solverBenchmarkBluePrintType>
     </solverBenchmarkBluePrint>
-
 </plannerBenchmark>

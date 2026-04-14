@@ -43,6 +43,14 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.register<JavaExec>("benchmark") {
+    group = "application"
+    description = "Runs OptaPlanner expert benchmark; prints report folder under local/benchmark/"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("org.imd.expertschedule.ExpertBenchmarkApp")
+    workingDir = layout.projectDirectory.asFile
+}
+
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }

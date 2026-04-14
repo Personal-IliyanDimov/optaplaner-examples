@@ -1,17 +1,13 @@
 package org.imd.expertschedule.planner.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.TimeSlot;
 import lombok.Getter;
 import lombok.Setter;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
+import org.optaplanner.core.api.domain.lookup.PlanningId;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
-
-import java.time.Period;
 
 @Getter
 @Setter
@@ -27,4 +23,9 @@ public class ScheduleItem {
 
     @PlanningVariable(valueRangeProviderRefs = "timeSlotRange")
     private TimeSlot timeSlot;
+
+//    @PlanningId
+//    public Long getPlanningId() {
+//        return order == null || order.getId() == null ? null : order.getId().getId();
+//    }
 }

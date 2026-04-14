@@ -34,3 +34,6 @@ target/
 
 # Logs
 logs/
+
+# OptaPlanner benchmark output
+local/benchmark/
