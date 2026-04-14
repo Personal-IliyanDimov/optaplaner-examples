@@ -1,5 +1,6 @@
 package org.imd.expertschedule.planner.cp;
 
+import lombok.ToString;
 import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import org.imd.expertschedule.planner.util.DayInterval;
 import org.optaplanner.core.api.score.stream.uni.UniConstraintCollector;
@@ -40,6 +41,7 @@ public class OverlapDetector {
         };
     }
 
+    @ToString
     public static final class OverlapData {
         private final Map<ExpertRef, List<DayInterval>> expertToDayIntervalsMap = new LinkedHashMap<>(0);
 
