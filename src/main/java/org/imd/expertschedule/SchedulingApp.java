@@ -11,6 +11,9 @@ import org.imd.expertschedule.planner.domain.printers.ExpertSchedulesPrinter;
 import org.imd.expertschedule.planner.solution.SolutionContext;
 import org.imd.expertschedule.planner.solution.SolutionInitializer;
 import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
+import org.optaplanner.core.api.score.ScoreManager;
+import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
+import org.optaplanner.core.api.solver.SolutionManager;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
@@ -22,7 +25,7 @@ import java.util.Collection;
 
 public class SchedulingApp {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         final Path dataDir = Path.of("data/expertschedule/");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
         final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.small().getFileName());
@@ -49,9 +52,17 @@ public class SchedulingApp {
         final Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();
         final ExpertPlanningSolution solution = solver.solve(unsolvedSolution);
 
+        Thread.sleep(1000L);
+
+        final SolutionManager<ExpertPlanningSolution, HardMediumSoftScore> solutionManager =
+                SolutionManager.create(solverFactory);
+        System.out.println(solutionManager.explain(solution).getSummary());
+
+        System.out.println("Order Distribution Data: ");
         final OrderDistributionPrinter odPrinter = new OrderDistributionPrinter();
         odPrinter.print(solution);
 
+        System.out.println("Solution Data: ");
         final ExpertSchedulesPrinter printer = new ExpertSchedulesPrinter();
         printer.print(solution);
     }
