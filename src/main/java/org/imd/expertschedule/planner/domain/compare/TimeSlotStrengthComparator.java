@@ -9,26 +9,37 @@ import java.util.Comparator;
 
 public final class TimeSlotStrengthComparator implements Comparator<TimeSlot> {
 
-    private final PlannerHelper helper = new PlannerHelper();
-    private final PlannerParameters.ExpertRelated expertRelated = new PlannerParameters().getExpertRelated();
+    private final Comparator<TimeSlot> tsComparator = (TimeSlot ts1, TimeSlot ts2) -> {
+        final int aAvLength = TSHelper.calculateAvailabilityLength(ts1.getStartTime());
+        final int bAvLength = TSHelper.calculateAvailabilityLength(ts2.getStartTime());
+
+        return Integer.compare(aAvLength, bAvLength);
+    };
 
     @Override
     public int compare(final TimeSlot a, final TimeSlot b) {
-        final int aAvLength = calculateAvailabilityLength(a.getStartTime());
-        final int bAvLength = calculateAvailabilityLength(b.getStartTime());
-
-        return Integer.compare(aAvLength, bAvLength);
+        return Comparator.nullsFirst(tsComparator).compare(a, b);
     }
 
-    private int calculateAvailabilityLength(LocalTime time) {
-        int result = 0;
-        if (helper.lessOrEqual(expertRelated.getWorkingDayStartTime(), time) && helper.lessOrEqual(time, expertRelated.getLunchStartTime())) {
-            result = expertRelated.getLunchStartTime().toSecondOfDay() - time.toSecondOfDay();
-        }
-        else if (helper.lessOrEqual(expertRelated.getLunchEndTime(), time) && helper.lessOrEqual(time, expertRelated.getWorkingDayEndTime())){
-            result = expertRelated.getWorkingDayEndTime().toSecondOfDay() - time.toSecondOfDay();
-        }
+    public static class TSHelper {
+        private static final PlannerHelper helper = new PlannerHelper();
+        private static final PlannerParameters.ExpertRelated expertRelated = new PlannerParameters().getExpertRelated();
 
-        return result;
+        public static int calculateAvailabilityLength(LocalTime time) {
+            if (time == null) {
+                return 0;
+            }
+
+            int result = 0;
+
+            if (helper.lessOrEqual(expertRelated.getWorkingDayStartTime(), time) && helper.lessOrEqual(time, expertRelated.getLunchStartTime())) {
+                result = expertRelated.getLunchStartTime().toSecondOfDay() - time.toSecondOfDay();
+            }
+            else if (helper.lessOrEqual(expertRelated.getLunchEndTime(), time) && helper.lessOrEqual(time, expertRelated.getWorkingDayEndTime())) {
+                result = expertRelated.getWorkingDayEndTime().toSecondOfDay() - time.toSecondOfDay();
+            }
+
+            return result;
+        }
     }
 }
