@@ -9,23 +9,30 @@ import java.util.Comparator;
 
 public final class TimeSlotStrengthComparator implements Comparator<TimeSlot> {
 
-    private final Comparator<TimeSlot> tsComparator = (TimeSlot ts1, TimeSlot ts2) -> {
-        final int aAvLength = TSHelper.calculateAvailabilityLength(ts1.getStartTime());
-        final int bAvLength = TSHelper.calculateAvailabilityLength(ts2.getStartTime());
-
-        return Integer.compare(aAvLength, bAvLength);
-    };
+    private final Comparator<TimeSlot> tsComparator = new InternalComparator();
 
     @Override
     public int compare(final TimeSlot a, final TimeSlot b) {
         return Comparator.nullsFirst(tsComparator).compare(a, b);
     }
 
-    public static class TSHelper {
-        private static final PlannerHelper helper = new PlannerHelper();
-        private static final PlannerParameters.ExpertRelated expertRelated = new PlannerParameters().getExpertRelated();
 
-        public static int calculateAvailabilityLength(LocalTime time) {
+    private static class InternalComparator implements Comparator<TimeSlot> {
+        private final TSHelper tsHelper = new TSHelper();
+        @Override
+        public int compare(TimeSlot ts1, TimeSlot ts2) {
+            final int aAvLength = tsHelper.calculateAvailabilityLength(ts1.getStartTime());
+            final int bAvLength = tsHelper.calculateAvailabilityLength(ts2.getStartTime());
+
+            return Integer.compare(aAvLength, bAvLength);
+        }
+    }
+
+    private static class TSHelper {
+        private final PlannerHelper helper = new PlannerHelper();
+        private final PlannerParameters.ExpertRelated expertRelated = new PlannerParameters().getExpertRelated();
+
+        public int calculateAvailabilityLength(LocalTime time) {
             if (time == null) {
                 return 0;
             }
