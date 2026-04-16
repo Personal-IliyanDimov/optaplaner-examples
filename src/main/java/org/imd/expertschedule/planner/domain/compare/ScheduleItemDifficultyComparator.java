@@ -61,9 +61,5 @@ public final class ScheduleItemDifficultyComparator implements Comparator<Schedu
             final int result = op == null ? 0 : op.getLevel();
             return result;
         }
-
-        private static long minutes(Duration d) {
-            return d == null ? 0L : d.toMinutes();
-        }
     }
 }
