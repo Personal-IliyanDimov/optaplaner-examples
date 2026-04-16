@@ -21,7 +21,7 @@
         <appender-ref ref="CONSOLE" />
     </root>
 
-    <logger name="org.optaplanner" level="DEBUG">
+    <logger name="org.optaplanner.benchmark" level="DEBUG">
         <appender-ref ref="FILE" />
     </logger>
 </configuration>
