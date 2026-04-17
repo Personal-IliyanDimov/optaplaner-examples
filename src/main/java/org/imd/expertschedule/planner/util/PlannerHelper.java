@@ -3,6 +3,7 @@ package org.imd.expertschedule.planner.util;
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.time.Absence;
 import org.imd.expertschedule.planner.domain.time.Availability;
+import org.imd.expertschedule.planner.domain.time.WeekPeriod;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 
 import java.time.LocalDate;
@@ -120,5 +121,33 @@ public class PlannerHelper {
         final Period betweenPeriod = Period.between(left, right);
         final int result =  betweenPeriod.getDays() * -1;
         return result;
+    }
+
+    public Long calculateRealAvailability(final Availability availability, final List<Absence> absences) {
+        long result = 0;
+
+        if (availability == null) {
+            return result;
+        }
+
+        int difference =  (availability.getEndTime().toSecondOfDay() - availability.getStartTime().toSecondOfDay()) / 60;
+        result = (long) difference;
+
+        if (absences == null || absences.isEmpty()) {
+            return result;
+        }
+
+        for (Absence absence : absences) {
+           long delta = intersect(availability, absence);
+           if (delta > 0) {
+               result -= delta;
+           }
+        }
+
+        return result;
+    }
+
+    public Long intersect(final WeekPeriod p1, final WeekPeriod p2) {
+        return null;
     }
 }

@@ -5,30 +5,37 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.Order;
+import org.imd.expertschedule.planner.domain.Skill;
 import org.imd.expertschedule.planner.domain.time.Availability;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.util.PlannerHelper;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class PlanningSolutionValidator {
 
     private final PlannerParameters plannerParameters;
     private final PlannerHelper helper = new PlannerHelper();
+    private final SkillsSupplyAndDemandValidator sdValidator = new SkillsSupplyAndDemandValidator();
 
-    public Collection<Violation> validate(ExpertPlanningSolution solution) {
-        final Collection<Violation> result = new java.util.ArrayList<>();
+    public Collection<Violation> validate(final ExpertPlanningSolution solution,
+                                          final Collection<Violation> violations) {
 
         // each expert must have none null availability
-        validateExpertAvailabilityIsNotNullOrEmpty(solution, result);
-        validateExpertAvailabilitySlotsAreValid(solution, result);
-        validateOrderCustomeAvailabilitySlotsAreValid(solution, result);
+        validateExpertAvailabilityIsNotNullOrEmpty(solution, violations);
+        validateExpertAvailabilitySlotsAreValid(solution, violations);
+        validateOrderCustomerAvailabilitySlotsAreValid(solution, violations);
+        sdValidator.validate(solution, plannerParameters, helper, violations);
 
-        return result;
+        return violations;
     }
-
 
     private void validateExpertAvailabilityIsNotNullOrEmpty(final ExpertPlanningSolution solution,
                                                             final Collection<Violation> vc) {
@@ -63,7 +70,7 @@ public class PlanningSolutionValidator {
     }
 
 
-    private void validateOrderCustomeAvailabilitySlotsAreValid(final ExpertPlanningSolution solution,
+    private void validateOrderCustomerAvailabilitySlotsAreValid(final ExpertPlanningSolution solution,
                                                                final Collection<Violation> result) {
         for (Order order : solution.getOrderList()) {
             if (order.getCustomerAvailabilities() != null) {
@@ -84,12 +91,5 @@ public class PlanningSolutionValidator {
                 }
             }
         }
-    }
-
-
-    @Getter
-    @AllArgsConstructor
-    public static class Violation {
-        private String message;
     }
 }
