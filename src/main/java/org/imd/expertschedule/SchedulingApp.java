@@ -20,6 +20,7 @@ import org.optaplanner.core.config.solver.SolverConfig;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class SchedulingApp {
@@ -37,7 +38,8 @@ public class SchedulingApp {
                 constraintConfiguration, context);
 
         final PlanningSolutionValidator validator = new PlanningSolutionValidator(plannerParameters);
-        final Collection<Violation> validationResults = validator.validate(unsolvedSolution);
+        final Collection<Violation> validationResults = new ArrayList<>();
+        validator.validate(unsolvedSolution, validationResults);
         if (! validationResults.isEmpty()) {
             validationResults.forEach(violation -> System.out.println("Validation violation: " + violation.getMessage()));
             return ;
