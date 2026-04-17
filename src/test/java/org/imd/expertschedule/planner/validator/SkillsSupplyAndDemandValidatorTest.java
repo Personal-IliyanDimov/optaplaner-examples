@@ -126,12 +126,13 @@ class SkillsSupplyAndDemandValidatorTest {
     }
 
     @Test
-    void validate_twoDueDates_supplyOnlyOnEarlierDate_doesNotCoverLaterDueDate() {
+    void validate_twoDueDates_supplyOnlyOnEarlierCalendarDay_stillCoversLaterDueDate_viaRunningDelta() {
         Skill skill = skill("Electrical");
         Order orderMonday = order(1L, planningMonday, Duration.ofMinutes(60), skill);
         Order orderTuesday = order(2L, planningTuesday, Duration.ofMinutes(60), skill);
 
-        // All availability lands in the Monday bucket (first matching due date); Tuesday demand sees no supply.
+        // Analyzer still puts all minutes in the Monday supply bucket, but the validator carries a running
+        // surplus forward, so Tuesday demand is satisfied without its own availability row.
         Expert expert = expert(1L, Set.of(skill),
                 List.of(availability(YEAR, CALENDAR_WEEK, 1, LocalTime.of(9, 0), LocalTime.of(12, 0))));
 
@@ -142,11 +143,7 @@ class SkillsSupplyAndDemandValidatorTest {
         List<Violation> violations = new ArrayList<>();
         new SkillsSupplyAndDemandValidator(new DistributionAnalyzer(plannerHelper)).validate(solution, violations);
 
-        long underSupplyCount = violations.stream().filter(v -> v.getMessage().contains("under-supplied")).count();
-        assertEquals(1, underSupplyCount);
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(planningTuesday.toString())));
-        assertFalse(violations.stream().anyMatch(v -> v.getMessage().contains(planningMonday.toString())
-                && v.getMessage().contains("under-supplied")));
+        assertFalse(violations.stream().anyMatch(v -> v.getMessage().contains("under-supplied")));
     }
 
     @Test
@@ -170,7 +167,7 @@ class SkillsSupplyAndDemandValidatorTest {
     }
 
     @Test
-    void validate_threeDueDates_middleDateMissesSupply_otherDatesOk() {
+    void validate_threeDueDates_missingTuesdaySlot_depletesRunningDelta_soWednesdayAlsoUnderSupplied() {
         Skill skill = skill("Plumbing");
         Order mon = order(1L, planningMonday, Duration.ofMinutes(60), skill);
         Order tue = order(2L, planningTuesday, Duration.ofMinutes(60), skill);
@@ -187,18 +184,19 @@ class SkillsSupplyAndDemandValidatorTest {
         List<Violation> violations = new ArrayList<>();
         new SkillsSupplyAndDemandValidator(new DistributionAnalyzer(plannerHelper)).validate(solution, violations);
 
-        assertEquals(1, violations.stream().filter(v -> v.getMessage().contains("under-supplied")).count());
+        assertEquals(2, violations.stream().filter(v -> v.getMessage().contains("under-supplied")).count());
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(planningTuesday.toString())));
+        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(planningWednesday.toString())));
     }
 
     @Test
-    void validate_threeDueDates_singleEarlyAvailabilityOnlyFlowsToFirstDueDate() {
+    void validate_threeDueDates_singleEarlyAvailability_runningDeltaCoversMonAndTue_notWednesday() {
         Skill skill = skill("Electrical");
         Order mon = order(1L, planningMonday, Duration.ofMinutes(60), skill);
         Order tue = order(2L, planningTuesday, Duration.ofMinutes(60), skill);
         Order wed = order(3L, planningWednesday, Duration.ofMinutes(60), skill);
 
-        // 120 minutes on Monday only → Monday bucket is satisfied; Tuesday and Wednesday stay empty.
+        // 120 minutes on Monday only: cumulative supply satisfies Mon + Tue, then Wednesday is short.
         Expert expert = expert(1L, Set.of(skill),
                 List.of(availability(YEAR, CALENDAR_WEEK, 1, LocalTime.of(9, 0), LocalTime.of(11, 0))));
 
@@ -209,10 +207,11 @@ class SkillsSupplyAndDemandValidatorTest {
         List<Violation> violations = new ArrayList<>();
         new SkillsSupplyAndDemandValidator(new DistributionAnalyzer(plannerHelper)).validate(solution, violations);
 
-        assertEquals(2, violations.stream().filter(v -> v.getMessage().contains("under-supplied")).count());
-        assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(planningTuesday.toString())));
+        assertEquals(1, violations.stream().filter(v -> v.getMessage().contains("under-supplied")).count());
         assertTrue(violations.stream().anyMatch(v -> v.getMessage().contains(planningWednesday.toString())));
         assertFalse(violations.stream().anyMatch(v -> v.getMessage().contains(planningMonday.toString())
+                && v.getMessage().contains("under-supplied")));
+        assertFalse(violations.stream().anyMatch(v -> v.getMessage().contains(planningTuesday.toString())
                 && v.getMessage().contains("under-supplied")));
     }
 
