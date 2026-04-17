@@ -1,5 +1,6 @@
 package org.imd.expertschedule.planner.analyzer;
 
+import lombok.RequiredArgsConstructor;
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.Order;
 import org.imd.expertschedule.planner.domain.Skill;
@@ -13,9 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class DistributionAnalyzer {
 
-    private final PlannerHelper plannerHelper = new PlannerHelper();
+    private final PlannerHelper plannerHelper;
 
     /**
      * Extracts skill distribution info base on orders.
@@ -70,18 +72,24 @@ public class DistributionAnalyzer {
         });
 
         for (final Expert expert : solution.getExpertList()) {
-            for (Availability availability: expert.getAvailabilities()) {
-                final Long intervalInMinutes = plannerHelper.calculateRealAvailability(availability, expert.getAbsences());
+            if (expert.getAvailabilities() == null || expert.getSkills() == null) {
+                continue;
+            }
+            for (Availability availability : expert.getAvailabilities()) {
+                final long intervalInMinutes = plannerHelper.calculateRealAvailability(availability, expert.getAbsences());
+                if (intervalInMinutes <= 0L) {
+                    continue;
+                }
+
+                final LocalDate availabilityDate = plannerHelper.calculateDate(
+                        availability.getYear(), availability.getCalendarWeek(), availability.getWorkDay());
 
                 for (SkillDistribution sd : result) {
-                    if (sd.getDueDate().equals(sd.getDueDate())) {
+                    if (plannerHelper.lessOrEqual(availabilityDate, (sd.getDueDate()))) {
                         final Map<String, Long> skillToMinutes = sd.getSkillToMinutes();
-
-                        final long visitMinutes = order.getDiagnosisDuration().toMinutes();
-                        for (Skill skill : order.getRequiredSkills()) {
-                            skillToMinutes.merge(skill.getName(), visitMinutes, Long::sum);
+                        for (Skill skill : expert.getSkills()) {
+                            skillToMinutes.merge(skill.getName(), intervalInMinutes, Long::sum);
                         }
-
                         break;
                     }
                 }

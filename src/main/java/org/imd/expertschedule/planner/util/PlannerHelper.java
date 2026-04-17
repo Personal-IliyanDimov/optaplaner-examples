@@ -1,10 +1,13 @@
 package org.imd.expertschedule.planner.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.time.Absence;
 import org.imd.expertschedule.planner.domain.time.Availability;
 import org.imd.expertschedule.planner.domain.time.WeekPeriod;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
+import org.jfree.data.time.Week;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,6 +62,9 @@ public class PlannerHelper {
         return intersect(interval, lunch);
     }
 
+    public boolean lessOrEqual(final LocalDate leftDate, final LocalDate rightDate) {
+        return (leftDate.equals(rightDate) || leftDate.isBefore(rightDate));
+    }
 
     public boolean lessOrEqual(final LocalTime leftTime, final LocalTime rightTime) {
         return (leftTime.equals(rightTime) || leftTime.isBefore(rightTime));
@@ -138,33 +144,48 @@ public class PlannerHelper {
             return result;
         }
 
+        WeekPeriod avAsWp = availability;
         for (Absence absence : absences) {
-           long delta = intersect(availability, absence);
+           IntersectResult intersectResult = intersect(avAsWp, absence);
+            long delta = intersectResult.minutes();
            if (delta > 0) {
                result -= delta;
+               avAsWp = intersectResult.wp();
            }
         }
 
         return result;
     }
 
-    public Long intersect(final WeekPeriod p1, final WeekPeriod p2) {
+    public IntersectResult intersect(final WeekPeriod p1, final WeekPeriod p2) {
         if (p1 == null || p2 == null) {
-            return 0L;
+            return new IntersectResult( 0, null);
         }
 
         if ( p1.getYear() != p2.getYear() ||
              p1.getCalendarWeek() != p2.getCalendarWeek() ||
              p1.getWorkDay() != p2.getWorkDay()) {
 
-            return 0L;
+            return new IntersectResult( 0, null);
         }
 
         final LocalTime overlapFrom = p1.getStartTime().isAfter(p2.getStartTime()) ? p1.getStartTime() : p2.getStartTime();
         final LocalTime overlapTo = p1.getEndTime().isBefore(p2.getEndTime()) ? p1.getEndTime() : p2.getEndTime();
         if (! lessOrEqual(overlapFrom, overlapTo)) {
-            return 0L;
+            return new IntersectResult( 0, null);
         }
-        return ChronoUnit.MINUTES.between(overlapFrom, overlapTo);
+
+        final long overlapInMinutes = ChronoUnit.MINUTES.between(overlapFrom, overlapTo);
+        final WeekPeriod wp = new WeekPeriod();
+        wp.setYear(p1.getYear());
+        wp.setCalendarWeek(p1.getCalendarWeek());
+        wp.setWorkDay(p1.getWorkDay());
+        wp.setStartTime(overlapFrom);
+        wp.setEndTime(overlapTo);
+
+        return new IntersectResult(overlapInMinutes, wp);
+    }
+
+    public record IntersectResult(long minutes, WeekPeriod wp) {
     }
 }

@@ -3,6 +3,7 @@ package org.imd.expertschedule.planner.validator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.imd.expertschedule.planner.analyzer.DistributionAnalyzer;
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.Order;
 import org.imd.expertschedule.planner.domain.Skill;
@@ -23,7 +24,7 @@ public class PlanningSolutionValidator {
 
     private final PlannerParameters plannerParameters;
     private final PlannerHelper helper = new PlannerHelper();
-    private final SkillsSupplyAndDemandValidator sdValidator = new SkillsSupplyAndDemandValidator();
+
 
     public Collection<Violation> validate(final ExpertPlanningSolution solution,
                                           final Collection<Violation> violations) {
@@ -32,7 +33,9 @@ public class PlanningSolutionValidator {
         validateExpertAvailabilityIsNotNullOrEmpty(solution, violations);
         validateExpertAvailabilitySlotsAreValid(solution, violations);
         validateOrderCustomerAvailabilitySlotsAreValid(solution, violations);
-        sdValidator.validate(solution, plannerParameters, helper, violations);
+
+        final SkillsSupplyAndDemandValidator sdValidator = new SkillsSupplyAndDemandValidator(new DistributionAnalyzer(helper));
+        sdValidator.validate(solution, violations);
 
         return violations;
     }
