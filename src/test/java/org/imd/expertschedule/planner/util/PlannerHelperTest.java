@@ -209,41 +209,41 @@ class PlannerHelperTest {
     void testIntersectForWeekPeriods() {
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                         buildWeekPeriod(2025, 12, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+                                                         buildWeekPeriod(2025, 12, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))).minutes());
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                         buildWeekPeriod(2025, 11, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+                                                         buildWeekPeriod(2025, 11, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))).minutes());
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                         buildWeekPeriod(2025, 12, 2, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+                                                         buildWeekPeriod(2025, 12, 2, LocalTime.of(10, 0), LocalTime.of(13, 0))).minutes());
 
         // regular cases
 
         assertEquals(120, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                           buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+                                                           buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))).minutes());
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(10, 0)),
-                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(11, 0), LocalTime.of(12, 0))));
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(11, 0), LocalTime.of(12, 0))).minutes());
 
         assertEquals(60, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0)),
-                                                          buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0))));
+                                                          buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0))).minutes());
 
         assertEquals(60, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                          buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0))));
+                                                          buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0))).minutes());
 
         // exceptional cases
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                           buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(10, 0))));
+                                                           buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(10, 0))).minutes());
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(10, 0)),
-                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(11, 0), LocalTime.of(11, 0))));
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(11, 0), LocalTime.of(11, 0))).minutes());
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0)),
-                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(9, 0))));
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(9, 0))).minutes());
 
         assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
-                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(10, 0))));
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(10, 0))).minutes());
 
     }
 

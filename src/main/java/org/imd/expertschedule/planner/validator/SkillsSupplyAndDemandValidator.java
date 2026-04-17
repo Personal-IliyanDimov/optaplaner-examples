@@ -4,10 +4,9 @@ package org.imd.expertschedule.planner.validator;
 import org.imd.expertschedule.planner.analyzer.DistributionAnalyzer;
 import org.imd.expertschedule.planner.analyzer.SkillDistribution;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
-import org.imd.expertschedule.planner.solution.PlannerParameters;
-import org.imd.expertschedule.planner.util.PlannerHelper;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,20 +24,36 @@ public class SkillsSupplyAndDemandValidator {
         final List<SkillDistribution> demandedSkillDistributions = distributionAnalyzer.orderSkillDistributionBasedOnDueDate(solution);
         final List<SkillDistribution> suppliedSkillDistributions = distributionAnalyzer.expertSkillDistributionBasedOnDueDate(solution);
 
-        for  (final SkillDistribution demandedSkillDistribution : demandedSkillDistributions) {
-            for   (final SkillDistribution suppliedSkillDistribution : suppliedSkillDistributions) {
+        if (demandedSkillDistributions.size() == 0) {
+            return ;
+        }
+
+        final SkillDistribution runningDeltaSkillDistribution =
+            new SkillDistribution(demandedSkillDistributions.getLast().getDueDate(), new HashMap<> ());
+
+        for (final SkillDistribution suppliedSkillDistribution : suppliedSkillDistributions) {
+            suppliedSkillDistribution.getSkillToMinutes().entrySet().forEach(entry -> {
+                final String skillName = entry.getKey();
+                final long demandMinutes = entry.getValue();
+                final long deltaMinutes = runningDeltaSkillDistribution.getSkillToMinutes().getOrDefault(skillName, 0L) + demandMinutes;
+                runningDeltaSkillDistribution.getSkillToMinutes().put(skillName, deltaMinutes);
+            });
+
+            for (final SkillDistribution demandedSkillDistribution : demandedSkillDistributions) {
                 if (suppliedSkillDistribution.getDueDate().equals(demandedSkillDistribution.getDueDate()))  {
                     final Map<String, Long> demandedSkillToMinutes = demandedSkillDistribution.getSkillToMinutes();
-                    final Map<String, Long> suppliedSkillToMinutes = suppliedSkillDistribution.getSkillToMinutes();
+                    final Map<String, Long> runningDeltaSkillToMinutes = runningDeltaSkillDistribution.getSkillToMinutes();
 
                     for (String skillName : demandedSkillToMinutes.keySet()) {
                         final long demandMinutes = demandedSkillToMinutes.get(skillName);
-                        final long supplyMinutes = suppliedSkillToMinutes.getOrDefault(skillName, 0L);
+                        final long runningDeltaMinutes = runningDeltaSkillToMinutes.getOrDefault(skillName, 0L);
 
-                        if (supplyMinutes < demandMinutes) {
+                        if (runningDeltaMinutes < demandMinutes) {
                             violations.add(new Violation("On " + demandedSkillDistribution.getDueDate() + ", skill " + skillName + " is under-supplied. " +
-                                    "Demand: " + demandMinutes + " minutes, Supply: " + supplyMinutes + " minutes."));
+                                    "Demand: " + demandMinutes + " minutes, Running Delta: " + runningDeltaMinutes + " minutes."));
                         }
+
+                        runningDeltaSkillDistribution.getSkillToMinutes().put(skillName, runningDeltaMinutes - demandMinutes);
                     }
 
                     break;
