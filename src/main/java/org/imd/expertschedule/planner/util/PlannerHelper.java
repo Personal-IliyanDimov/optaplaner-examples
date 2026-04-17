@@ -9,6 +9,7 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -148,6 +149,22 @@ public class PlannerHelper {
     }
 
     public Long intersect(final WeekPeriod p1, final WeekPeriod p2) {
-        return null;
+        if (p1 == null || p2 == null) {
+            return 0L;
+        }
+
+        if ( p1.getYear() != p2.getYear() ||
+             p1.getCalendarWeek() != p2.getCalendarWeek() ||
+             p1.getWorkDay() != p2.getWorkDay()) {
+
+            return 0L;
+        }
+
+        final LocalTime overlapFrom = p1.getStartTime().isAfter(p2.getStartTime()) ? p1.getStartTime() : p2.getStartTime();
+        final LocalTime overlapTo = p1.getEndTime().isBefore(p2.getEndTime()) ? p1.getEndTime() : p2.getEndTime();
+        if (! lessOrEqual(overlapFrom, overlapTo)) {
+            return 0L;
+        }
+        return ChronoUnit.MINUTES.between(overlapFrom, overlapTo);
     }
 }

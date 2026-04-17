@@ -2,6 +2,7 @@ package org.imd.expertschedule.planner.util;
 
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.time.Availability;
+import org.imd.expertschedule.planner.domain.time.WeekPeriod;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -202,5 +203,62 @@ class PlannerHelperTest {
         assertEquals(0, plannerHelper.calculateDaysDifference(LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 1)));
         assertEquals(-1, plannerHelper.calculateDaysDifference(LocalDate.of(2026, 3, 1), LocalDate.of(2026, 3, 2)));
         assertEquals(1, plannerHelper.calculateDaysDifference(LocalDate.of(2026, 3, 2), LocalDate.of(2026, 3, 1)));
+    }
+
+    @Test
+    void testIntersectForWeekPeriods() {
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                         buildWeekPeriod(2025, 12, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                         buildWeekPeriod(2025, 11, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                         buildWeekPeriod(2025, 12, 2, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+
+        // regular cases
+
+        assertEquals(120, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                           buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(13, 0))));
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(10, 0)),
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(11, 0), LocalTime.of(12, 0))));
+
+        assertEquals(60, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0)),
+                                                          buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0))));
+
+        assertEquals(60, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                          buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0))));
+
+        // exceptional cases
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                           buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(10, 0))));
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(10, 0)),
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(11, 0), LocalTime.of(11, 0))));
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(11, 0)),
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(9, 0))));
+
+        assertEquals(0, plannerHelper.intersect(buildWeekPeriod(2026, 12, 1, LocalTime.of(9, 0), LocalTime.of(12, 0)),
+                                                         buildWeekPeriod(2026, 12, 1, LocalTime.of(10, 0), LocalTime.of(10, 0))));
+
+    }
+
+    private WeekPeriod buildWeekPeriod(int year,
+                                       int calendarWeek,
+                                       int workDay,
+                                       LocalTime startTime,
+                                       LocalTime endTime) {
+        final WeekPeriod weekPeriod = new WeekPeriod();
+        weekPeriod.setYear(year);
+        weekPeriod.setCalendarWeek(calendarWeek);
+        weekPeriod.setWorkDay(workDay);
+        weekPeriod.setStartTime(startTime);
+        weekPeriod.setEndTime(endTime);
+
+        return weekPeriod;
     }
 }
