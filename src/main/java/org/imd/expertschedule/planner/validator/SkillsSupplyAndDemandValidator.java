@@ -1,6 +1,7 @@
 package org.imd.expertschedule.planner.validator;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.imd.expertschedule.planner.analyzer.DistributionAnalyzer;
 import org.imd.expertschedule.planner.analyzer.SkillDistribution;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class SkillsSupplyAndDemandValidator {
 
     private final DistributionAnalyzer distributionAnalyzer;
@@ -49,8 +51,13 @@ public class SkillsSupplyAndDemandValidator {
                         final long runningDeltaMinutes = runningDeltaSkillToMinutes.getOrDefault(skillName, 0L);
 
                         if (runningDeltaMinutes < demandMinutes) {
-                            violations.add(new Violation("On " + demandedSkillDistribution.getDueDate() + ", skill " + skillName + " is under-supplied. " +
+                            violations.add(new Violation("Violation! On " + demandedSkillDistribution.getDueDate() + ", skill " + skillName + " is under-supplied. " +
                                     "Demand: " + demandMinutes + " minutes, Running Delta: " + runningDeltaMinutes + " minutes."));
+                        }
+                        else {
+                            log.info("On " + demandedSkillDistribution.getDueDate() + ", skill " + skillName + " is over-supplied. " +
+                                     "Demand: " + demandMinutes + " . Supply: " + runningDeltaMinutes +
+                                    " .Running Delta: " + (runningDeltaMinutes - demandMinutes) + " minutes.");
                         }
 
                         runningDeltaSkillDistribution.getSkillToMinutes().put(skillName, runningDeltaMinutes - demandMinutes);

@@ -49,12 +49,12 @@ public final class GeneratorConfigPresets {
         config.setNumExperts(numExperts);
         config.setNumCustomers(10);
         config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
-                            WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+                            WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
         config.setNumOffices(numExpertsWithAbsence);
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M" /*, "PT2H" */ });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -74,7 +74,7 @@ public final class GeneratorConfigPresets {
         config.setNumExperts(numExperts);
         config.setNumCustomers(20);
         config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
-                WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
         config.setNumOffices(numExpertsWithAbsence);
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
@@ -99,7 +99,7 @@ public final class GeneratorConfigPresets {
         config.setNumExperts(numExperts);
         config.setNumCustomers(100);
         config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
-                WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
         config.setNumOffices(numExpertsWithAbsence);
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
@@ -124,7 +124,7 @@ public final class GeneratorConfigPresets {
         config.setNumExperts(numExperts);
         config.setNumCustomers(1000);
         config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
-                WEEK_DAYS*AVERAGE_ORDERS_PER_DAY);
+                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
         config.setNumOffices(numExpertsWithAbsence);
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
