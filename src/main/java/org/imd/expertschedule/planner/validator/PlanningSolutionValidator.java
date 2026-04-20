@@ -44,7 +44,7 @@ public class PlanningSolutionValidator {
                                                             final Collection<Violation> vc) {
         solution.getExpertList().forEach(expert -> {
             if (expert.getAvailabilities() == null) {
-                vc.add(new Violation("Expert " + expert.getId() + " has null availability"));
+                vc.add(new Violation("Violation! Expert " + expert.getId() + " has null availability"));
             }
         });
     }
@@ -55,17 +55,17 @@ public class PlanningSolutionValidator {
             if (expert.getAvailabilities() != null) {
                 for (Availability availability : expert.getAvailabilities()) {
                     if (! helper.lessOrEqual(availability.getStartTime(), (availability.getEndTime()))) {
-                        result.add(new Violation("Expert " + expert.getId() + " has invalid availability slot: start is after end."));
+                        result.add(new Violation("Violation! Expert " + expert.getId() + " has invalid availability slot: start is after end."));
                     }
                 }
 
                 for (Availability availability : expert.getAvailabilities()) {
                     if (! helper.lessOrEqual(plannerParameters.getExpertRelated().getWorkingDayStartTime(), availability.getStartTime())) {
-                        result.add(new Violation("Expert " + expert.getId() + " has invalid availability start time."));
+                        result.add(new Violation("Violation! Expert " + expert.getId() + " has invalid availability start time."));
                     }
 
                     if (! helper.lessOrEqual(availability.getEndTime(), plannerParameters.getExpertRelated().getWorkingDayEndTime())) {
-                        result.add(new Violation("Expert " + expert.getId() + " has invalid availability end time."));
+                        result.add(new Violation("Violation! Expert " + expert.getId() + " has invalid availability end time."));
                     }
                 }
             }
