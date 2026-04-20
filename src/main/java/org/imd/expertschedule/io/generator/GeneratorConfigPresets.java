@@ -79,7 +79,7 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M" /*, "PT2H" */ });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -104,7 +104,7 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M" /*, "PT2H" */ });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -129,7 +129,32 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M", "PT2H" });
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M" /*, "PT2H" */ });
+        config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setYear(PLANNING_YEAR);
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+
+        return config;
+    }
+
+    public static GeneratorConfig huge() {
+        final int numExperts = 200;
+        final int numExpertsWithUndefaultAvailability = 30;
+        final int numExpertsWithAbsence = 20;
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-huge.json");
+        config.setNumSkills(15);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(1000);
+        config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
+                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
+        config.setNumOffices(numExpertsWithAbsence);
+        config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
+        config.setExpertsWithAbsence(numExpertsWithAbsence);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M"/*, "PT2H" */ });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);

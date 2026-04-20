@@ -39,7 +39,7 @@ import java.util.Random;
  */
 public class TestDataGenerator {
 
-    private static final PlannerHelper PLANNING_DATE_HELPER = new PlannerHelper();
+    private static final PlannerHelper HELPER = new PlannerHelper();
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .registerModule(new JavaTimeModule())
@@ -64,6 +64,7 @@ public class TestDataGenerator {
             case "medium" -> GeneratorConfigPresets.medium();
             case "large" -> GeneratorConfigPresets.large();
             case "extralarge" -> GeneratorConfigPresets.extraLarge();
+            case "huge" -> GeneratorConfigPresets.huge();
             default -> throw new IllegalArgumentException(
                     "Unknown preset '" + presetName
                             + "'. Use: ultrasmall | small | medium | large | extralarge");
@@ -255,7 +256,7 @@ public class TestDataGenerator {
             o.setCode("ORDER-" + (i + 1));
             o.setCustomerId(customers.get(random.nextInt(customers.size())).getId());
             o.setLocation(randomLocation(0, 20, 0, 20, random));
-            o.setDueDate(planningDates.get(random.nextInt(planningDates.size())));
+            o.setDueDate(planningDates.get(i % planningDates.size()).plusDays(1));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
             o.setDiagnosisDuration(randomDiagnosisDuration(durations, random));
             o.setRequiredSkills(pickRequiredSkillsSubsetFromExpert(experts, random));
@@ -332,7 +333,7 @@ public class TestDataGenerator {
     private static List<LocalDate> planningDates(int year, int calendarWeek, int[] weekWorkingDays) {
         List<LocalDate> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
-            list.add(PLANNING_DATE_HELPER.calculateDate(year, calendarWeek, wd));
+            list.add(HELPER.calculateDate(year, calendarWeek, wd));
         }
         return list;
     }
