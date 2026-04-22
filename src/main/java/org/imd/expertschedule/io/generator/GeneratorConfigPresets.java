@@ -115,22 +115,22 @@ public final class GeneratorConfigPresets {
 
     public static GeneratorConfig extraLarge() {
         final int numExperts = 50;
-        final int numExpertsWithUndefaultAvailability = 10;
-        final int numExpertsWithAbsence = 10;
+        final int numExpertsWithUndefaultAvailability = 5;
+        final int numExpertsWithAbsence = 5;
 
         GeneratorConfig config = new GeneratorConfig();
         config.setFileName("dataset-extralarge.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
-        config.setNumCustomers(1000);
+        config.setNumCustomers(100);
         config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
-                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
+                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY));
         config.setNumOffices(numExpertsWithAbsence);
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M" /*, "PT2H" */ });
-        config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setOrderDurations(new String[] { "PT30M", "PT45M", "PT1H", "PT1H15M" /*, "PT1H30M" , "PT2H" */ });
+        config.setCustomerAvailabilityTimeWindowInMinutes(240);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);

@@ -26,14 +26,13 @@
             </scoreDirectorFactory>
 
             <termination>
-                <minutesSpentLimit>5</minutesSpentLimit>
+                <minutesSpentLimit>15</minutesSpentLimit>
             </termination>
         </solver>
 
         <problemBenchmarks>
             <solutionFileIOClass>org.imd.expertschedule.io.benchmark.ExpertPlanningSolutionFileIO</solutionFileIOClass>
-            <!-- inputSolutionFile>data/expertschedule/dataset-ultrasmall.json</inputSolutionFile -->
-            <inputSolutionFile>data/expertschedule/dataset-small.json</inputSolutionFile>
+            <inputSolutionFile>data/expertschedule/dataset-extralarge.json</inputSolutionFile>
         </problemBenchmarks>
     </inheritedSolverBenchmark>
 

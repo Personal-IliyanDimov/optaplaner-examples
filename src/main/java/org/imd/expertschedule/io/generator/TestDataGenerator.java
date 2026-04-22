@@ -258,7 +258,7 @@ public class TestDataGenerator {
             o.setLocation(randomLocation(0, 20, 0, 20, random));
             o.setDueDate(planningDates.get(i % planningDates.size()).plusDays(1));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
-            o.setDiagnosisDuration(randomDiagnosisDuration(durations, random));
+            o.setDiagnosisDuration(durations[i % (durations.length)]);
             o.setRequiredSkills(pickRequiredSkillsSubsetFromExpert(experts, random));
             o.setCustomerAvailabilities(
                     customerAvailabilitiesForPlanningWeek(config, config.getYear(), weekWorkingDays, random));
@@ -336,10 +336,6 @@ public class TestDataGenerator {
             list.add(HELPER.calculateDate(year, calendarWeek, wd));
         }
         return list;
-    }
-
-    private static String randomDiagnosisDuration(final String[] orderDurations, Random random) {
-        return orderDurations[random.nextInt(orderDurations.length)];
     }
 
     private static LocationData randomLocation(double minLat, double maxLat, double minLon, double maxLon, Random random) {
