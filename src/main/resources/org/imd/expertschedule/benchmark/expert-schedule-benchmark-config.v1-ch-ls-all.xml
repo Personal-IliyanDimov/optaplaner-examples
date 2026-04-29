@@ -36,53 +36,7 @@
         </problemBenchmarks>
     </inheritedSolverBenchmark>
 
-    <solverBenchmark>
-        <name>WEAKEST_FIT - TABU_SEARCH</name>
-        <solver>
-            <constructionHeuristic>
-                <constructionHeuristicType>WEAKEST_FIT</constructionHeuristicType>
-            </constructionHeuristic>
-            <localSearch>
-                <localSearchType>TABU_SEARCH</localSearchType>
-            </localSearch>
-        </solver>
-    </solverBenchmark>
-
-    <solverBenchmark>
-        <name>FIRST_FIT - TABU_SEARCH</name>
-        <solver>
-            <constructionHeuristic>
-                <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
-            </constructionHeuristic>
-            <localSearch>
-                <localSearchType>TABU_SEARCH</localSearchType>
-            </localSearch>
-        </solver>
-    </solverBenchmark>
-
-    <solverBenchmark>
-        <name>STRONGEST_FIT - TABU_SEARCH</name>
-        <solver>
-            <constructionHeuristic>
-                <constructionHeuristicType>STRONGEST_FIT</constructionHeuristicType>
-            </constructionHeuristic>
-            <localSearch>
-                <localSearchType>TABU_SEARCH</localSearchType>
-            </localSearch>
-        </solver>
-    </solverBenchmark>
-
-    <solverBenchmark>
-        <name>STRONGEST_FIT_DECREASING - TABU_SEARCH</name>
-        <solver>
-            <constructionHeuristic>
-                <constructionHeuristicType>STRONGEST_FIT_DECREASING</constructionHeuristicType>
-            </constructionHeuristic>
-            <localSearch>
-                <localSearchType>TABU_SEARCH</localSearchType>
-            </localSearch>
-        </solver>
-    </solverBenchmark>
-
-
+    <solverBenchmarkBluePrint>
+        <solverBenchmarkBluePrintType>EVERY_CONSTRUCTION_HEURISTIC_TYPE_WITH_EVERY_LOCAL_SEARCH_TYPE</solverBenchmarkBluePrintType>
+    </solverBenchmarkBluePrint>
 </plannerBenchmark>

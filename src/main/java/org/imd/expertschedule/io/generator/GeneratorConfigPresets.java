@@ -147,14 +147,14 @@ public final class GeneratorConfigPresets {
         config.setFileName("dataset-huge.json");
         config.setNumSkills(15);
         config.setNumExperts(numExperts);
-        config.setNumCustomers(1000);
+        config.setNumCustomers(100);
         config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
                 WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
         config.setNumOffices(numExpertsWithAbsence);
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT1H", "PT1H30M"/*, "PT2H" */ });
+        config.setOrderDurations(new String[] { "PT30M", "PT45M", "PT1H", "PT1H15M" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);

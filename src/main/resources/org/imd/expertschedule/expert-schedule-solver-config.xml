@@ -23,7 +23,7 @@
   <!-- Optimization algorithms configuration -->
   <termination>
     <terminationCompositionStyle>OR</terminationCompositionStyle>
-    <unimprovedSpentLimit>PT10M00S</unimprovedSpentLimit>
+    <spentLimit>PT10M00S</spentLimit>
     <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
   </termination>
 
