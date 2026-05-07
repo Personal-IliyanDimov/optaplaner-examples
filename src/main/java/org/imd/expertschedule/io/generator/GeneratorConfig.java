@@ -1,13 +1,11 @@
 package org.imd.expertschedule.io.generator;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Configuration for generating a planning dataset.
- * Use presets from {@link GeneratorConfigPresets} or build custom with {@link #builder()}.
+ * Use presets from {@link GeneratorConfigPresets} or construct with setters.
  */
 @Getter
 @Setter
@@ -32,4 +30,6 @@ public class GeneratorConfig {
     private int year;
     private int calendarWeek;
     private int[] weekWorkingDays;
+
+    private double maxDistanceFromBackOfficeKm = 100.0;
 }

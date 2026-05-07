@@ -33,9 +33,6 @@ import java.util.Random;
  * Generates a single planning dataset file from a {@link GeneratorConfig}.
  * Use presets from {@link GeneratorConfigPresets} or pass a custom config.
  * <p>
- * Example: run with a preset name (default {@code small}): {@code ultrasmall}, {@code small},
- * {@code medium}, {@code large}, {@code extralarge}. Output goes under {@code data/expertschedule/}
- * using the preset's file name.
  */
 public class TestDataGenerator {
 
@@ -54,7 +51,8 @@ public class TestDataGenerator {
         final Path outputFile = outputDir.resolve(config.getFileName());
         generate(config, outputFile);
 
-        System.out.println("Generated " + presetName + " dataset: " + outputFile.toAbsolutePath());
+        System.out.println("Generated " + presetName + " dataset: " + outputFile.toAbsolutePath()
+                + " (maxDistanceFromBackOfficeKm=" + config.getMaxDistanceFromBackOfficeKm() + ")");
     }
 
     private static GeneratorConfig resolvePreset(String presetName) {
@@ -67,7 +65,7 @@ public class TestDataGenerator {
             case "huge" -> GeneratorConfigPresets.huge();
             default -> throw new IllegalArgumentException(
                     "Unknown preset '" + presetName
-                            + "'. Use: ultrasmall | small | medium | large | extralarge");
+                            + "'. Use: ultrasmall | small | medium | large | extralarge | huge");
         };
     }
 
@@ -82,7 +80,7 @@ public class TestDataGenerator {
         List<BackOfficeData> backOffices = buildBackOffices(config.getNumOffices(), random);
         List<CustomerData> customers = buildCustomers(config.getNumCustomers());
         List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices, config, random);
-        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, experts, config, random);
+        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, experts, backOffices, config, random);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setMetadata(config);
@@ -222,25 +220,28 @@ public class TestDataGenerator {
 
     /**
      * Chooses a non-empty random subset of skills from a randomly picked generated expert, so every order can be
-     * served by at least that expert (skill-wise).
+     * served by at least that expert (skill-wise). The same expert anchors the order location near their back office.
      */
-    private static List<String> pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, Random random) {
+    private static PickResult pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, Random random) {
         List<ExpertData> withSkills = experts.stream()
                 .filter(e -> e.getSkills() != null && !e.getSkills().isEmpty())
                 .toList();
         if (withSkills.isEmpty()) {
-            return List.of("Electrical");
+            return new PickResult(null, List.of("Electrical"));
         }
         ExpertData expert = withSkills.get(random.nextInt(withSkills.size()));
         List<String> pool = new ArrayList<>(expert.getSkills());
         int subsetSize = random.nextInt(pool.size()) + 1;
         Collections.shuffle(pool, random);
-        return new ArrayList<>(pool.subList(0, subsetSize));
+        return new PickResult(expert, new ArrayList<>(pool.subList(0, Math.min(subsetSize, pool.size()))));
     }
+
+    private record PickResult(ExpertData referenceExpert, List<String> requiredSkills) {}
 
     private static List<OrderData> buildOrders(final int count,
                                                final List<CustomerData> customers,
                                                final List<ExpertData> experts,
+                                               final List<BackOfficeData> backOffices,
                                                final GeneratorConfig config,
                                                final Random random) {
         List<OrderData> list = new ArrayList<>();
@@ -251,20 +252,84 @@ public class TestDataGenerator {
         String[] priorities = config.getOrderPriorities();
         String[] durations = config.getOrderDurations();
         for (int i = 0; i < count; i++) {
+            PickResult pick = pickRequiredSkillsSubsetFromExpert(experts, random);
             OrderData o = new OrderData();
             o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
             o.setCustomerId(customers.get(random.nextInt(customers.size())).getId());
-            o.setLocation(randomLocation(0, 20, 0, 20, random));
+            o.setLocation(orderLocationNearBackOffice(pick, backOffices, config, random));
             o.setDueDate(planningDates.get(i % planningDates.size()).plusDays(1));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
             o.setDiagnosisDuration(durations[i % (durations.length)]);
-            o.setRequiredSkills(pickRequiredSkillsSubsetFromExpert(experts, random));
+            o.setRequiredSkills(pick.requiredSkills());
             o.setCustomerAvailabilities(
                     customerAvailabilitiesForPlanningWeek(config, config.getYear(), weekWorkingDays, random));
             list.add(o);
         }
         return list;
+    }
+
+    private static LocationData orderLocationNearBackOffice(PickResult pick,
+                                                            List<BackOfficeData> backOffices,
+                                                            GeneratorConfig config,
+                                                            Random random) {
+        double maxKm = config.getMaxDistanceFromBackOfficeKm();
+
+        LocationData anchor = resolveAnchorOfficeLocation(pick.referenceExpert(), backOffices);
+        return randomLocationNear(anchor.getLatitude(), anchor.getLongitude(), maxKm, random);
+    }
+
+    private static LocationData resolveAnchorOfficeLocation(ExpertData referenceExpert, List<BackOfficeData> backOffices) {
+        LocationData result = null;
+
+        long oid = referenceExpert.getBackOfficeId();
+        for (BackOfficeData b : backOffices) {
+            if (b.getId() == oid && b.getLocation() != null) {
+                result = b.getLocation();
+            }
+        }
+
+        return result;
+    }
+
+    /** Earth mean radius for great-circle distance (km). */
+    private static final double EARTH_RADIUS_KM = 6371.0;
+
+    /**
+     * Uniform random point within a geographic disk of radius {@code maxRadiusKm} around ({@code centerLatDeg}, {@code centerLonDeg})
+     * (great-circle distance).
+     */
+    static LocationData randomLocationNear(double centerLatDeg, double centerLonDeg, double maxRadiusKm, Random random) {
+
+        double distKm = maxRadiusKm * Math.sqrt(random.nextDouble());
+        double bearing = 2.0 * Math.PI * random.nextDouble();
+
+        double lat1 = Math.toRadians(centerLatDeg);
+        double lon1 = Math.toRadians(centerLonDeg);
+        double angularDist = distKm / EARTH_RADIUS_KM;
+
+        double lat2 = Math.asin(Math.sin(lat1) * Math.cos(angularDist)
+                + Math.cos(lat1) * Math.sin(angularDist) * Math.cos(bearing));
+        double lon2 = lon1 + Math.atan2(Math.sin(bearing) * Math.sin(angularDist) * Math.cos(lat1),
+                Math.cos(angularDist) - Math.sin(lat1) * Math.sin(lat2));
+
+        LocationData loc = new LocationData();
+        loc.setLatitude(Math.toDegrees(lat2));
+        loc.setLongitude(Math.toDegrees(lon2));
+        return loc;
+    }
+
+    /**
+     * Great-circle distance between two WGS84-like coordinates in kilometers.
+     */
+    static double haversineKm(double lat1Deg, double lon1Deg, double lat2Deg, double lon2Deg) {
+        double lat1 = Math.toRadians(lat1Deg);
+        double lat2 = Math.toRadians(lat2Deg);
+        double dLat = lat2 - lat1;
+        double dLon = Math.toRadians(lon2Deg - lon1Deg);
+        double h = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        return 2.0 * EARTH_RADIUS_KM * Math.asin(Math.min(1.0, Math.sqrt(h)));
     }
 
     private static final LocalTime CUSTOMER_AVAILABILITY_DAY_START = LocalTime.of(9, 0);
