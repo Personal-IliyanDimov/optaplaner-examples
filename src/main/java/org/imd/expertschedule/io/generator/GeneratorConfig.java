@@ -31,5 +31,5 @@ public class GeneratorConfig {
     private int calendarWeek;
     private int[] weekWorkingDays;
 
-    private double maxDistanceFromBackOfficeKm = 100.0;
+    private double maxDistanceFromBackOfficeKm = 50.0;
 }
