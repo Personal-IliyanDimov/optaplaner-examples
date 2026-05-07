@@ -25,13 +25,14 @@ public class ExpertPlanningConstraintConfiguration {
     @ConstraintWeight(WeightNames.O_DUE_DATE_CONFLICT)
     private HardMediumSoftScore constraintOrderDueDate = HardMediumSoftScore.ONE_HARD;
 
-
+    @ConstraintWeight(WeightNames.EL_TD_PD_CONFLICT)
+    private HardMediumSoftScore constraintExpertLimitTravelDistancePerDay = HardMediumSoftScore.ONE_HARD;
 
     @ConstraintWeight(WeightNames.FD_PE_PP_SI_CONFLICT)
-    private HardMediumSoftScore constraintFairlyDistributePerExpertPerPeriodScheduledItems = HardMediumSoftScore.ONE_MEDIUM;
+    private HardMediumSoftScore constraintFairlyDistributePerExpertPerPeriodScheduledItems = HardMediumSoftScore.ONE_SOFT;
 
     @ConstraintWeight(WeightNames.FD_PE_PD_SI_CONFLICT)
-    private HardMediumSoftScore constraintFairlyDistributePerExpertPerDayScheduledItems = HardMediumSoftScore.ONE_MEDIUM;
+    private HardMediumSoftScore constraintFairlyDistributePerExpertPerDayScheduledItems = HardMediumSoftScore.ONE_SOFT;
 
     public static final class WeightNames {
         public static final String EA_AVAILABILITY_CONFLICT = "Expert Availability Conflict";
@@ -40,6 +41,10 @@ public class ExpertPlanningConstraintConfiguration {
         public static final String OA_AVAILABILITY_CONFLICT = "Order Availability Conflict";
         public static final String ES_VS_OS_SKILL_CONFLICT = "ExpertSkills Vs OrderSkills Conflict";
         public static final String O_DUE_DATE_CONFLICT = "OrderDueDate Conflict";
+
+        public static final String ER_WT_TO_TT_CONFLICT = "Expert Ratio - Work Time To Travel Time";
+        public static final String EL_TD_PD_CONFLICT = "Expert Limit - Travel Distance Per Day";
+
         public static final String FD_PE_PP_SI_CONFLICT = "Fairly Distribute Per Expert Per Period Scheduled Items Conflict";
         public static final String FD_PE_PD_SI_CONFLICT = "Fairly Distribute Per Expert Per Day Scheduled Items Conflict";
     }

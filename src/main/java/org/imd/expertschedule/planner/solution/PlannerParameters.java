@@ -8,10 +8,12 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @Getter
+@Setter
 public class PlannerParameters {
 
     private PlannerRelated plannerRelated = new PlannerRelated();
     private ExpertRelated expertRelated = new ExpertRelated();
+    private TravelRelated travelRelated = new TravelRelated();
 
     @Getter
     public static class ExpertRelated {
@@ -28,5 +30,11 @@ public class PlannerParameters {
         private int year;
         private int calendarWeek;
         private int[] workingDays;
+    }
+
+    @Getter
+    @Setter
+    public static class TravelRelated {
+        private final double maxTravelDistancePerDay = 200.0;
     }
 }

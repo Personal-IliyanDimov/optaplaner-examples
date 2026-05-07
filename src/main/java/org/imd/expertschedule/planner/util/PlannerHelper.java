@@ -1,23 +1,25 @@
 package org.imd.expertschedule.planner.util;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.imd.expertschedule.planner.domain.Expert;
+import org.imd.expertschedule.planner.domain.Location;
+import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.domain.time.Absence;
 import org.imd.expertschedule.planner.domain.time.Availability;
 import org.imd.expertschedule.planner.domain.time.WeekPeriod;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
-import org.jfree.data.time.Week;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class PlannerHelper {
+
+    private final DistanceCalculator distanceCalculator = new DistanceCalculator();
 
     public LocalDate calculateDate(final int year, final int calendarWeek, final int calendarWeekDay) {
         if (calendarWeek < 1) {
@@ -184,6 +186,40 @@ public class PlannerHelper {
         wp.setEndTime(overlapTo);
 
         return new IntersectResult(overlapInMinutes, wp);
+    }
+
+    public Integer calculateTotalTravelDistance(final List<ScheduleItem> siList) {
+        int result = 0;
+        if  (siList == null || siList.isEmpty()) {
+            return result;
+        }
+
+        // always calculate from back office location
+        final List<Location> locations = prepareLocations(siList);
+
+        for (int i = 0; i < locations.size() - 1; i++) {
+            for (int j = i + 1; j < locations.size(); j++) {
+                result += distanceCalculator.calculateDistance(locations.get(i), locations.get(j));
+            }
+        }
+
+        return result;
+    }
+
+    private static List<Location> prepareLocations(List<ScheduleItem> siList) {
+        final List<Location> locations = new ArrayList<>();
+
+        Location officeLocation = null;
+        for (final ScheduleItem si : siList) {
+            if (officeLocation == null) {
+                officeLocation = si.getExpertSchedule().getExpert().getBackOffice().getLocation();
+            }
+            locations.add(si.getOrder().getLocation());
+        }
+        locations.addFirst(officeLocation);
+        locations.addLast(officeLocation);
+
+        return locations;
     }
 
     public record IntersectResult(long minutes, WeekPeriod wp) {

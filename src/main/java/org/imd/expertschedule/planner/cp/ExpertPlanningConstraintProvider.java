@@ -10,7 +10,9 @@ import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.util.DayInterval;
 import org.imd.expertschedule.planner.util.Pair;
 import org.imd.expertschedule.planner.util.PlannerHelper;
+import org.imd.expertschedule.planner.util.Triple;
 import org.optaplanner.core.api.score.stream.Constraint;
+import org.optaplanner.core.api.score.stream.ConstraintCollectors;
 import org.optaplanner.core.api.score.stream.ConstraintFactory;
 import org.optaplanner.core.api.score.stream.ConstraintProvider;
 
@@ -18,10 +20,13 @@ import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntBiFunction;
 import java.util.stream.Collectors;
@@ -41,6 +46,7 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
                 matchOrderAvailability(constraintFactory),
                 matchExpertSkillsAndOrderSkills(constraintFactory),
                 matchOrderDueDate(constraintFactory),
+                matchExpertLimitTravelDistancePerDay(constraintFactory),
                 fairlyDistributePerExpertPerPeriodScheduledItems(constraintFactory),
                 fairlyDistributePerExpertPerDayScheduledItems(constraintFactory)
         };
@@ -153,6 +159,41 @@ public class ExpertPlanningConstraintProvider implements ConstraintProvider {
         final LocalDate orderDueDate = si.getOrder().getDueDate();
 
         return helper.calculateDaysDifference(scheduledDate, orderDueDate);
+    }
+
+    private Constraint matchExpertLimitTravelDistancePerDay(ConstraintFactory constraintFactory) {
+        return constraintFactory.forEach(ScheduleItem.class)
+                .filter(this.populatedScheduleItem())
+                .groupBy(si -> si.getExpertSchedule().getExpert(), ConstraintCollectors.toList(Function.identity()))
+                .map((expert, scheduleItems) -> {
+                    final Map<LocalDate, List<ScheduleItem>> dateToScheduleItemsMap = scheduleItems.stream()
+                            .collect(Collectors.groupingBy(si -> si.getExpertSchedule().getDate()));
+
+                    dateToScheduleItemsMap.entrySet().forEach(entry ->
+                        Collections.sort(entry.getValue(), Comparator.comparing(si -> si.getTimeSlot().getStartTime())));
+
+                    return new Pair<>(expert, dateToScheduleItemsMap);
+                })
+                .flattenLast(pair -> {
+                    final Expert expert = pair.getLeft();
+                    final Map<LocalDate, List<ScheduleItem>> dateToSI = pair.getRight();
+
+                    List<Triple<Expert, LocalDate, List<ScheduleItem>>> result = dateToSI.entrySet().stream()
+                            .map(entry -> {
+                                final LocalDate date = entry.getKey();
+                                final List<ScheduleItem> scheduleItems = entry.getValue();
+
+                                return new Triple<>(expert, date, scheduleItems);
+                            })
+                            .toList();
+
+                    return result;
+                })
+                .filter(t -> {
+                     return helper.calculateTotalTravelDistance(t.getThird()) > plannerParameters.getTravelRelated().getMaxTravelDistancePerDay();
+                })
+                .penalizeConfigurable(t -> FIXED_PENALTY)
+                .asConstraint(ExpertPlanningConstraintConfiguration.WeightNames.EL_TD_PD_CONFLICT);
     }
 
     private Constraint fairlyDistributePerExpertPerPeriodScheduledItems(ConstraintFactory factory) {
