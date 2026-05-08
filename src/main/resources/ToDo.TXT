@@ -6,5 +6,24 @@ Ultrasmall
 10*5*(8*4)*40 = 64000
 
 ExtraLarge:
-40*5*(8*4)*(50*5*4) = 12800000
+50*5*(8*4)*(800) = 6400000
 
+
+{
+  "metadata" : {
+    "fileName" : "dataset-extralarge.json",
+    "numSkills" : 15,
+    "numExperts" : 50,
+    "numCustomers" : 100,
+    "numOrders" : 800,
+    "numOffices" : 5,
+    "expertsWithUndefaultAvailability" : 5,
+    "expertsWithAbsence" : 5,
+    "orderPriorities" : [ "LOW", "MEDIUM", "HIGH" ],
+    "orderDurations" : [ "PT30M", "PT45M", "PT1H", "PT1H15M" ],
+    "customerAvailabilityTimeWindowInMinutes" : 240,
+    "year" : 2026,
+    "calendarWeek" : 10,
+    "weekWorkingDays" : [ 1, 2, 3, 4, 5 ],
+    "maxDistanceFromBackOfficeKm" : 40.0
+  },

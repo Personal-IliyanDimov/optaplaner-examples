@@ -18,7 +18,6 @@ public class Expert {
     private String name;
 
     private BackOffice backOffice;
-    private Location backOfficeLocation;
     private Set<Skill> skills;
 
     private List<Availability> availabilities;

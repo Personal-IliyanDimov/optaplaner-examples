@@ -19,13 +19,13 @@ public class DistanceCalculator {
         final double dLat = (lat2 - lat1) * DEG_TO_RAD;
         final double dLon = (lon2 - lon1) * DEG_TO_RAD;
 
-        final double sinLat = Math.sin(dLat * 0.5);
-        final double sinLon = Math.sin(dLon * 0.5);
+        final double sinHalfLat = Math.sin(dLat * 0.5);
+        final double sinHalfLon = Math.sin(dLon * 0.5);
 
-        final double a = sinLat * sinLat
-                + Math.cos(lat1Rad) * Math.cos(lat2Rad)
-                * sinLon * sinLon;
+        final double a = sinHalfLat * sinHalfLat
+                + Math.cos(lat1Rad) * Math.cos(lat2Rad) * sinHalfLon * sinHalfLon;
 
-        return EARTH_RADIUS_KM * (2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a)));
+        // 2 * asin(sqrt(a)) == 2 * atan2(sqrt(a), sqrt(1-a)); one sqrt vs two, same numerics with clamp
+        return 2.0 * EARTH_RADIUS_KM * Math.asin(Math.min(1.0, Math.sqrt(a)));
     }
 }

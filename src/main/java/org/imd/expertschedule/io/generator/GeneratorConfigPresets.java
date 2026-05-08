@@ -34,6 +34,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(20);
 
         return config;
     }
@@ -59,6 +60,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(20);
 
         return config;
     }
@@ -84,6 +86,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(30);
 
         return config;
     }
@@ -109,6 +112,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(30);
 
         return config;
     }
@@ -134,6 +138,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(40);
 
         return config;
     }
@@ -159,6 +164,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(50);
 
         return config;
     }
