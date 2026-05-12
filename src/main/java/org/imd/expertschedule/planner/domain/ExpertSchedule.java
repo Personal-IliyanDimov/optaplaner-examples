@@ -3,6 +3,7 @@ package org.imd.expertschedule.planner.domain;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ExpertSchedule {
     private Expert expert;
     private LocalDate date;

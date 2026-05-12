@@ -138,7 +138,7 @@ public final class GeneratorConfigPresets {
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
-        config.setMaxDistanceFromBackOfficeKm(40);
+        config.setMaxDistanceFromBackOfficeKm(20);
 
         return config;
     }

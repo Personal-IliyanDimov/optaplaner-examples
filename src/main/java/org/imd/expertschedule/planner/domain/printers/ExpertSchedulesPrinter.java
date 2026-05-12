@@ -4,6 +4,7 @@ import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.ExpertSchedule;
 import org.imd.expertschedule.planner.domain.Location;
 import org.imd.expertschedule.planner.domain.Order;
+import org.imd.expertschedule.planner.domain.OrderPriority;
 import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.domain.Skill;
 import org.imd.expertschedule.planner.domain.time.Absence;
@@ -91,12 +92,21 @@ public final class ExpertSchedulesPrinter {
 
     private void printScheduledItemLine(PrintStream out, ScheduleItem item) {
         Order order = item.getOrder();
+        String orderIdStr = "n/a";
+        String priorityStr = "n/a";
         String customerName = "n/a";
         String dueDateStr = "n/a";
         String durationStr = "n/a";
         String locationStr = "n/a";
         String orderSkillsStr = "n/a";
         if (order != null) {
+            if (order.getId() != null) {
+                orderIdStr = Long.toString(order.getId().getId());
+            }
+            OrderPriority priority = order.getPriority();
+            if (priority != null) {
+                priorityStr = priority.name();
+            }
             if (order.getCustomer() != null && order.getCustomer().getName() != null) {
                 customerName = order.getCustomer().getName();
             }
@@ -108,8 +118,9 @@ public final class ExpertSchedulesPrinter {
             orderSkillsStr = formatSkills(order.getRequiredSkills());
         }
         LocalTime start = item.getTimeSlot().getStartTime();
-        out.printf("  - customer: %s | due: %s | start: %s | duration: %s | location: %s | order skills: %s%n",
-                customerName, dueDateStr, start, durationStr, locationStr, orderSkillsStr);
+        out.printf(
+                "  - order id: %s | priority: %s | customer: %s | due: %s | start: %s | duration: %s | location: %s | order skills: %s%n",
+                orderIdStr, priorityStr, customerName, dueDateStr, start, durationStr, locationStr, orderSkillsStr);
     }
 
     private String expertLabel(Expert expert) {

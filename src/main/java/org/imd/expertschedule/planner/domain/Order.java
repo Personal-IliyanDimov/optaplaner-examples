@@ -1,5 +1,6 @@
 package org.imd.expertschedule.planner.domain;
 
+import lombok.ToString;
 import org.imd.expertschedule.planner.domain.refs.CustomerRef;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.Availability;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString
 public class Order {
     private OrderRef id;
     private Customer customer;
