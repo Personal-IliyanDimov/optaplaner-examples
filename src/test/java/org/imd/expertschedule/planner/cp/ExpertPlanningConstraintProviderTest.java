@@ -23,6 +23,7 @@ import org.optaplanner.core.api.score.ScoreExplanation;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.optaplanner.core.api.score.constraint.ConstraintMatchTotal;
 import org.optaplanner.core.api.solver.SolutionManager;
+import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
 
@@ -56,10 +57,8 @@ class ExpertPlanningConstraintProviderTest {
 
         anchorDate = plannerHelper.calculateDate(2026, 2, 1);
 
-        SolverConfig solverConfig = new SolverConfig()
-                .withSolutionClass(ExpertPlanningSolution.class)
-                .withEntityClasses(ScheduleItem.class)
-                .withConstraintProviderClass(ExpertPlanningConstraintProvider.class);
+        final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
+                "org/imd/expertschedule/expert-schedule-solver-config.xml");
         solutionManager = SolutionManager.create(SolverFactory.create(solverConfig));
     }
 
@@ -71,13 +70,10 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si = scheduleItem(order, schedule, LocalTime.of(10, 0));
 
         ExpertPlanningSolution solution =
-                wrapSolution(List.of(si), expert, schedule, ts(LocalTime.of(10, 0)));
+                wrapSolution(List.of(si), List.of(expert), List.of(schedule), List.of(ts(LocalTime.of(10, 0))));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.EA_AVAILABILITY_CONFLICT)
-                        .hasMatches());
         assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.EA_AVAILABILITY_CONFLICT);
     }
 
@@ -89,13 +85,11 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si = scheduleItem(order, schedule, LocalTime.of(11, 45));
 
         ExpertPlanningSolution solution =
-                wrapSolution(List.of(si), expert, schedule, ts(LocalTime.of(11, 45)));
+                wrapSolution(List.of(si), List.of(expert), List.of(schedule), List.of(ts(LocalTime.of(11, 45))));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.EA_LUNCH_TIME_CONFLICT)
-                        .hasMatches());
+
         assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.EA_LUNCH_TIME_CONFLICT);
     }
 
@@ -113,16 +107,12 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si2 = scheduleItem(orderLate, schedule, LocalTime.of(9, 30));
 
         ExpertPlanningSolution solution = wrapSolution(
-                List.of(si1, si2),
-                expert,
-                List.of(schedule),
+                List.of(si1, si2), List.of(expert), List.of(schedule),
                 List.of(ts(LocalTime.of(9, 0)), ts(LocalTime.of(9, 30))));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        ConstraintMatchTotals overlap =
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.OVERLAPS_WITH_OTHER_MEETING_CONFLICT);
-        assertTrue(overlap.hasMatches());
+
         assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.OVERLAPS_WITH_OTHER_MEETING_CONFLICT);
 
         LocalDate d = anchorDate;
@@ -140,13 +130,11 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si = scheduleItem(order, schedule, LocalTime.of(10, 0));
 
         ExpertPlanningSolution solution =
-                wrapSolution(List.of(si), expert, schedule, ts(LocalTime.of(10, 0)));
+                wrapSolution(List.of(si), List.of(expert), List.of(schedule), List.of(ts(LocalTime.of(10, 0))));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.OA_AVAILABILITY_CONFLICT)
-                        .hasMatches());
+
         assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.OA_AVAILABILITY_CONFLICT);
     }
 
@@ -159,13 +147,11 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si = scheduleItem(order, schedule, LocalTime.of(10, 0));
 
         ExpertPlanningSolution solution =
-                wrapSolution(List.of(si), expert, schedule, ts(LocalTime.of(10, 0)));
+                wrapSolution(List.of(si), List.of(expert), List.of(schedule), List.of(ts(LocalTime.of(10, 0))));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.ES_VS_OS_SKILL_CONFLICT)
-                        .hasMatches());
+
         assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.ES_VS_OS_SKILL_CONFLICT);
     }
 
@@ -182,13 +168,11 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si = scheduleItem(order, schedule, LocalTime.of(10, 0));
 
         ExpertPlanningSolution solution =
-                wrapSolution(List.of(si), expert, schedule, ts(LocalTime.of(10, 0)));
+                wrapSolution(List.of(si), List.of(expert), List.of(schedule), List.of(ts(LocalTime.of(10, 0))));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        ConstraintMatchTotals due =
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.O_DUE_DATE_CONFLICT);
-        assertTrue(due.hasMatches());
+        assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.O_DUE_DATE_CONFLICT);
 
         PlannerHelper helper = new PlannerHelper();
         int delay = helper.calculateDaysDifference(scheduled, dueDate);
@@ -214,7 +198,7 @@ class ExpertPlanningConstraintProviderTest {
         ScheduleItem si2 = scheduleItem(farEast, schedule, LocalTime.of(11, 0));
 
         ExpertPlanningSolution solution =
-                wrapSolutionGeo(List.of(si1, si2), expert, List.of(schedule), geoTimeSlots(LocalTime.of(9, 0), LocalTime.of(11, 0)));
+                wrapSolution(List.of(si1, si2), List.of(expert), List.of(schedule), geoTimeSlots(LocalTime.of(9, 0), LocalTime.of(11, 0)));
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
@@ -223,9 +207,6 @@ class ExpertPlanningConstraintProviderTest {
         Integer travel = planner.calculateTotalTravelDistance(List.of(si1, si2));
         assertTrue(travel != null && travel > plannerParameters.getTravelRelated().getMaxTravelDistancePerDay());
 
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.EL_TD_PD_CONFLICT)
-                        .hasMatches());
         assertHardNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.EL_TD_PD_CONFLICT);
     }
 
@@ -256,9 +237,7 @@ class ExpertPlanningConstraintProviderTest {
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PP_SI_CONFLICT)
-                        .hasMatches());
+
         assertSoftNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PP_SI_CONFLICT);
     }
 
@@ -289,9 +268,7 @@ class ExpertPlanningConstraintProviderTest {
 
         ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation =
                 solutionManager.explain(solution);
-        assertTrue(
-                constraintMatchTotal(explanation, ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PD_SI_CONFLICT)
-                        .hasMatches());
+
         assertSoftNegative(explanation, ExpertPlanningConstraintConfiguration.WeightNames.FD_PE_PD_SI_CONFLICT);
     }
 
@@ -461,22 +438,6 @@ class ExpertPlanningConstraintProviderTest {
 
     private ExpertPlanningSolution wrapSolution(
             List<ScheduleItem> items,
-            Expert expert,
-            ExpertSchedule schedule,
-            TimeSlot slot) {
-        return wrapSolution(items, List.of(expert), List.of(schedule), List.of(slot));
-    }
-
-    private ExpertPlanningSolution wrapSolution(
-            List<ScheduleItem> items,
-            Expert expert,
-            List<ExpertSchedule> schedules,
-            List<TimeSlot> slots) {
-        return wrapSolution(items, List.of(expert), schedules, slots);
-    }
-
-    private ExpertPlanningSolution wrapSolution(
-            List<ScheduleItem> items,
             List<Expert> experts,
             List<ExpertSchedule> schedules,
             List<TimeSlot> slots) {
@@ -491,53 +452,40 @@ class ExpertPlanningConstraintProviderTest {
         return solution;
     }
 
-    private ExpertPlanningSolution wrapSolutionGeo(
-            List<ScheduleItem> items,
-            Expert expert,
-            List<ExpertSchedule> schedules,
-            List<TimeSlot> slots) {
-        return wrapSolution(items, List.of(expert), schedules, slots);
-    }
-
-    private static ConstraintMatchTotals constraintMatchTotal(
+    private ConstraintMatchTotal<HardMediumSoftScore> constraintMatchTotal(
             ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation,
             String constraintName) {
         for (ConstraintMatchTotal<HardMediumSoftScore> total : explanation.getConstraintMatchTotalMap().values()) {
             if (constraintName.equals(total.getConstraintName())) {
-                return new ConstraintMatchTotals(total.getConstraintMatchCount(), total.getScore());
+                return total;
             }
         }
-        return new ConstraintMatchTotals(0, HardMediumSoftScore.ZERO);
+
+        throw new IllegalStateException("Constraint name not found in explanation: " + constraintName);
     }
 
-    private static void assertHardNegative(
+    private void assertHardNegative(
             ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation,
             String constraintName) {
-        ConstraintMatchTotals t = constraintMatchTotal(explanation, constraintName);
-        assertTrue(t.hasMatches());
-        assertTrue(t.score().hardScore() < 0);
+        ConstraintMatchTotal<HardMediumSoftScore> cmt = constraintMatchTotal(explanation, constraintName);
+        assertTrue(cmt.getConstraintMatchCount() > 0);
+        assertTrue(cmt.getScore().hardScore() < 0);
     }
 
-    private static void assertSoftNegative(
+    private void assertSoftNegative(
             ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation,
             String constraintName) {
-        ConstraintMatchTotals t = constraintMatchTotal(explanation, constraintName);
-        assertTrue(t.hasMatches());
-        assertTrue(t.score().softScore() < 0);
+        ConstraintMatchTotal<HardMediumSoftScore> cmt = constraintMatchTotal(explanation, constraintName);
+        assertTrue(cmt.getConstraintMatchCount() > 0);
+        assertTrue(cmt.getScore().softScore() < 0);
     }
 
-    private static void assertHardScoreEquals(
+    private void assertHardScoreEquals(
             ScoreExplanation<ExpertPlanningSolution, HardMediumSoftScore> explanation,
             String constraintName,
             int expectedHard) {
-        ConstraintMatchTotals t = constraintMatchTotal(explanation, constraintName);
-        assertTrue(t.hasMatches());
-        assertEquals(expectedHard, t.score().hardScore());
-    }
-
-    private record ConstraintMatchTotals(int matchCount, HardMediumSoftScore score) {
-        boolean hasMatches() {
-            return matchCount > 0;
-        }
+        ConstraintMatchTotal<HardMediumSoftScore> cmt = constraintMatchTotal(explanation, constraintName);
+        assertTrue(cmt.getConstraintMatchCount() > 0);
+        assertEquals(expectedHard, cmt.getScore().hardScore());
     }
 }

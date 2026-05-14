@@ -222,18 +222,12 @@ public class TestDataGenerator {
      * Chooses a non-empty random subset of skills from a randomly picked generated expert, so every order can be
      * served by at least that expert (skill-wise). The same expert anchors the order location near their back office.
      */
-    private static PickResult pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, Random random) {
-        List<ExpertData> withSkills = experts.stream()
-                .filter(e -> e.getSkills() != null && !e.getSkills().isEmpty())
-                .toList();
-        if (withSkills.isEmpty()) {
-            return new PickResult(null, List.of("Electrical"));
-        }
-        ExpertData expert = withSkills.get(random.nextInt(withSkills.size()));
-        List<String> pool = new ArrayList<>(expert.getSkills());
-        int subsetSize = random.nextInt(pool.size()) + 1;
-        Collections.shuffle(pool, random);
-        return new PickResult(expert, new ArrayList<>(pool.subList(0, Math.min(subsetSize, pool.size()))));
+    private static PickResult pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, int expertIndex, Random random) {
+        ExpertData expert = experts.get(random.nextInt(experts.size()));
+        List<String> expertSkills = new ArrayList<>(expert.getSkills());
+        int subsetSize = random.nextInt(expertSkills.size()) + 1;
+        Collections.shuffle(expertSkills, random);
+        return new PickResult(expert, new ArrayList<>(expertSkills.subList(0, subsetSize)));
     }
 
     private record PickResult(ExpertData referenceExpert, List<String> requiredSkills) {}
@@ -252,7 +246,7 @@ public class TestDataGenerator {
         String[] priorities = config.getOrderPriorities();
         String[] durations = config.getOrderDurations();
         for (int i = 0; i < count; i++) {
-            PickResult pick = pickRequiredSkillsSubsetFromExpert(experts, random);
+            PickResult pick = pickRequiredSkillsSubsetFromExpert(experts, i % experts.size(), random);
             OrderData o = new OrderData();
             o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
