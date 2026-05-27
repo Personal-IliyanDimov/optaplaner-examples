@@ -32,7 +32,7 @@
 
         <problemBenchmarks>
             <solutionFileIOClass>org.imd.expertschedule.io.benchmark.ExpertPlanningSolutionFileIO</solutionFileIOClass>
-            <inputSolutionFile>data/expertschedule/dataset-small.json</inputSolutionFile>
+            <inputSolutionFile>data/expertschedule/dataset-large.json</inputSolutionFile>
         </problemBenchmarks>
     </inheritedSolverBenchmark>
 

@@ -6,6 +6,7 @@ import org.imd.expertschedule.io.loader.ExpertPlanningSolutionLoader;
 import org.imd.expertschedule.planner.cp.ExpertPlanningConstraintConfiguration;
 import org.imd.expertschedule.planner.domain.printers.ExpertSchedulesPrinter;
 import org.imd.expertschedule.planner.domain.printers.OrderDistributionPrinter;
+import org.imd.expertschedule.planner.domain.printers.OrdersToExpertDistributionPrinter;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.solution.SolutionContext;
@@ -28,7 +29,7 @@ public class SchedulingApp {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Path dataDir = Path.of("data/expertschedule/");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.small().getFileName());
+        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.large().getFileName());
 
         final PlannerParameters plannerParameters = PlanningSolutionAssembly.plannerParametersFromMetadata(loaderContext.metadata());
         final ExpertPlanningConstraintConfiguration constraintConfiguration = new ExpertPlanningConstraintConfiguration();
@@ -44,6 +45,10 @@ public class SchedulingApp {
             validationResults.forEach(violation -> System.out.println("Validation violation: " + violation.getMessage()));
             return ;
         }
+
+        System.out.println("Before Solving: Orders To Expert Mapping Distribution Data: ");
+        final OrdersToExpertDistributionPrinter otePrinter = new OrdersToExpertDistributionPrinter();
+        otePrinter.print(unsolvedSolution);
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
                 "org/imd/expertschedule/expert-schedule-solver-config.xml");

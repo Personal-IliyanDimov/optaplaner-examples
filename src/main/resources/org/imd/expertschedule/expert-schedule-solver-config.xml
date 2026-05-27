@@ -23,7 +23,7 @@
   <!-- Optimization algorithms configuration -->
   <termination>
     <terminationCompositionStyle>OR</terminationCompositionStyle>
-    <spentLimit>PT10M00S</spentLimit>
+    <spentLimit>PT59M00S</spentLimit>
     <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
   </termination>
 
@@ -54,4 +54,12 @@
       <!--<minimumProcessListSize>300</minimumProcessListSize>-->
     <!--</solutionPartitionerCustomProperties>-->
   <!--</partitionedSearch>-->
+
+  <constructionHeuristic>
+    <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+  </constructionHeuristic>
+
+  <localSearch>
+    <localSearchType>TABU_SEARCH</localSearchType>
+  </localSearch>
 </solver>
