@@ -35,6 +35,6 @@ public class PlannerParameters {
     @Getter
     @Setter
     public static class TravelRelated {
-        private final double maxTravelDistancePerDay = 200.0;
+        private final double maxTravelDistancePerDay = 300.0;
     }
 }

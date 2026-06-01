@@ -29,7 +29,7 @@ public class SchedulingApp {
     public static void main(String[] args) throws IOException, InterruptedException {
         final Path dataDir = Path.of("data/expertschedule/");
         final ExpertPlanningSolutionLoader loader = new ExpertPlanningSolutionLoader();
-        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.large().getFileName());
+        final var loaderContext = loader.loadBundleFromDirectory(dataDir, GeneratorConfigPresets.huge().getFileName());
 
         final PlannerParameters plannerParameters = PlanningSolutionAssembly.plannerParametersFromMetadata(loaderContext.metadata());
         final ExpertPlanningConstraintConfiguration constraintConfiguration = new ExpertPlanningConstraintConfiguration();

@@ -26,16 +26,16 @@ public final class ScheduleItemDifficultyComparator implements Comparator<Schedu
             final Order order2 = si2.getOrder();
 
             int result = Comparator
-                    .nullsFirst(Comparator.comparingLong(this::orderPriorityLevel))
-                    .compare(order1, order2);
+                    .nullsFirst(LocalDate::compareTo)
+                    .compare(order1.getDueDate(), order2.getDueDate());
 
             if  (result != 0) {
                 return result;
             }
 
             result = Comparator
-                    .nullsFirst(LocalDate::compareTo)
-                    .compare(order1.getDueDate(), order2.getDueDate());
+                    .nullsFirst(Comparator.comparingLong(this::orderPriorityLevel))
+                    .compare(order1, order2);
 
             if  (result != 0) {
                 return result;

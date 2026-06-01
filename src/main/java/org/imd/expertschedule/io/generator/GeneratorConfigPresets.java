@@ -159,12 +159,12 @@ public final class GeneratorConfigPresets {
         config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
         config.setExpertsWithAbsence(numExpertsWithAbsence);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] { "PT30M", "PT45M", "PT1H", "PT1H15M" });
+        config.setOrderDurations(new String[] { "PT30M", "PT45M", "PT1H", "PT1H15M", "PT1H30M" });
         config.setCustomerAvailabilityTimeWindowInMinutes(180);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
         config.setWeekWorkingDays(WEEK_WORKING_DAYS);
-        config.setMaxDistanceFromBackOfficeKm(50);
+        config.setMaxDistanceFromBackOfficeKm(20);
 
         return config;
     }
