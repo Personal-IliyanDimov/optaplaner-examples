@@ -34,6 +34,7 @@ public class ScheduleItem {
     @PlanningId
     @EqualsAndHashCode.Include
     public Long getPlanningId() {
-        return order == null || order.getId() == null ? null : order.getId().getId();
+        final Long planningId = (order == null || order.getId() == null) ? null : order.getId().getId();
+        return planningId;
     }
 }
