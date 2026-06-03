@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Partitioned solve by order due date, then global tabu polish.
+  bestScoreLimit must NOT appear on solver/partition terminations: partition child threads (PART_THREAD)
+  do not support BestScoreTermination. Use time limits in partitions; best score only on global localSearch.
+  Non-partitioned: expert-schedule-solver-config.unpartitioned.xml
+-->
+<solver xmlns="https://www.optaplanner.org/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://www.optaplanner.org/xsd/solver https://www.optaplanner.org/xsd/solver/solver.xsd">
+  <moveThreadCount>AUTO</moveThreadCount>
+
+  <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
+  <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
+
+  <scoreDirectorFactory>
+    <constraintProviderClass>org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider</constraintProviderClass>
+    <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+  </scoreDirectorFactory>
+
+  <!-- Overall wall clock only; no bestScoreLimit here (inherited by PART_THREAD child solvers). -->
+  <termination>
+    <spentLimit>PT15M00S</spentLimit>
+  </termination>
+
+  <partitionedSearch>
+    <termination>
+      <minutesSpentLimit>10</minutesSpentLimit>
+    </termination>
+    <solutionPartitionerClass>org.imd.expertschedule.planner.partition.ExpertSchedulePartitioner</solutionPartitionerClass>
+    <runnablePartThreadLimit>AUTO</runnablePartThreadLimit>
+    <constructionHeuristic>
+      <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+    </constructionHeuristic>
+    <localSearch>
+      <termination>
+        <minutesSpentLimit>10</minutesSpentLimit>
+      </termination>
+      <localSearchType>TABU_SEARCH</localSearchType>
+    </localSearch>
+  </partitionedSearch>
+
+  <customPhase>
+    <customPhaseCommandClass>org.imd.expertschedule.planner.partition.PartitionDiagnosticsAfterPartitionedPhaseCommand</customPhaseCommandClass>
+  </customPhase>
+
+  <localSearch>
+    <termination>
+      <terminationCompositionStyle>OR</terminationCompositionStyle>
+      <spentLimit>PT5M00S</spentLimit>
+      <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
+    </termination>
+    <localSearchType>TABU_SEARCH</localSearchType>
+  </localSearch>
+</solver>
