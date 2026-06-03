@@ -23,7 +23,6 @@ import org.optaplanner.core.api.score.ScoreExplanation;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.optaplanner.core.api.score.constraint.ConstraintMatchTotal;
 import org.optaplanner.core.api.solver.SolutionManager;
-import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
 
@@ -58,7 +57,7 @@ class ExpertPlanningConstraintProviderTest {
         anchorDate = plannerHelper.calculateDate(2026, 2, 1);
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
-                "org/imd/expertschedule/expert-schedule-solver-config.xml");
+                "org/imd/expertschedule/expert-schedule-solver-config.partitioned.xml");
         solutionManager = SolutionManager.create(SolverFactory.create(solverConfig));
     }
 

@@ -7,6 +7,7 @@ import org.imd.expertschedule.planner.domain.Order;
 import org.imd.expertschedule.planner.domain.ScheduleItem;
 import org.imd.expertschedule.planner.domain.time.TimeSlot;
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
+import org.imd.expertschedule.planner.util.Pair;
 import org.imd.expertschedule.planner.util.PlannerHelper;
 import org.optaplanner.core.api.score.buildin.hardmediumsoft.HardMediumSoftScore;
 import org.optaplanner.core.api.score.director.ScoreDirector;
@@ -15,6 +16,8 @@ import org.optaplanner.core.impl.partitionedsearch.partitioner.SolutionPartition
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -41,15 +44,15 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
                 originalSolution.getConstraintConfiguration();
         final List<ExpertSchedule> originalExpertScheduleList = originalSolution.getExpertScheduleList();
 
-        Map<LocalDate, List<ScheduleItem>> itemsByDueDate = groupScheduleItemsByDueDate(originalScheduleItemList);
+        List<Pair<LocalDate, List<ScheduleItem>>> itemsByDueDate = groupScheduleItemsByDueDate(originalScheduleItemList);
         if (itemsByDueDate.isEmpty()) {
             throw new IllegalStateException("Cannot partition solution with no schedule items.");
         }
 
         List<ExpertPlanningSolution> partitionList = new ArrayList<>(itemsByDueDate.size());
-        for (Map.Entry<LocalDate, List<ScheduleItem>> entry : itemsByDueDate.entrySet()) {
-            LocalDate partitionDueDate = entry.getKey();
-            List<ScheduleItem> partitionItems = entry.getValue();
+        for (Pair<LocalDate, List<ScheduleItem>> pair : itemsByDueDate) {
+            LocalDate partitionDueDate = pair.getLeft();
+            List<ScheduleItem> partitionItems = pair.getRight();
 
 
             final ExpertPlanningSolution partSolution = createPartition(
@@ -83,14 +86,20 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
         return partition;
     }
 
-    private Map<LocalDate, List<ScheduleItem>> groupScheduleItemsByDueDate(List<ScheduleItem> scheduleItems) {
+    private  List<Pair<LocalDate, List<ScheduleItem>>> groupScheduleItemsByDueDate(List<ScheduleItem> scheduleItems) {
         final Map<LocalDate, List<ScheduleItem>> itemsByDueDate = new TreeMap<>();
         for (ScheduleItem item : scheduleItems) {
             final Order order = item.getOrder();
             itemsByDueDate.computeIfAbsent(order.getDueDate(), ignored -> new ArrayList<>()).add(item);
         }
 
-        return itemsByDueDate;
+        final  List<Pair<LocalDate, List<ScheduleItem>>> result = new ArrayList<>();
+        itemsByDueDate.entrySet().stream().forEach(entry -> {
+            result.add(new Pair<>(entry.getKey(), entry.getValue()));
+        });
+
+        Collections.sort(result, Comparator.comparing(Pair::getLeft));
+        return result;
     }
 
 
