@@ -64,6 +64,10 @@ public class PlannerHelper {
         return intersect(interval, lunch);
     }
 
+    public boolean less(final LocalDate leftDate, final LocalDate rightDate) {
+        return leftDate.isBefore(rightDate);
+    }
+
     public boolean lessOrEqual(final LocalDate leftDate, final LocalDate rightDate) {
         return (leftDate.equals(rightDate) || leftDate.isBefore(rightDate));
     }
