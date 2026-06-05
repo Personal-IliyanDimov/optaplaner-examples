@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Partitioned solve by order due date, then global tabu polish.
-  bestScoreLimit must NOT appear on solver/partition terminations: partition child threads (PART_THREAD)
-  do not support BestScoreTermination. Use time limits in partitions; best score only on global localSearch.
+  Per-partition time: inner CH + LS terminations (each of 5 child solvers gets its own budget).
+  No tight cap on partitionedSearch itself so slow partitions are not cut off early.
+  bestScoreLimit only on global localSearch (not on solver/partition: PART_THREAD unsupported).
   Non-partitioned: expert-schedule-solver-config.unpartitioned.xml
 -->
 <solver xmlns="https://www.optaplanner.org/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -17,18 +18,22 @@
     <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
 
-  <!-- Overall wall clock only; no bestScoreLimit here (inherited by PART_THREAD child solvers). -->
+  <!-- Wall clock for full run: ~max(CH+LS) per partition in parallel + global LS (no bestScoreLimit here). -->
   <termination>
-    <spentLimit>PT15M00S</spentLimit>
+    <spentLimit>PT45M00S</spentLimit>
   </termination>
 
   <partitionedSearch>
+    <!-- Phase-level cap (parallel wall clock ~ max inner CH+LS); required before customPhase/global LS. -->
     <termination>
-      <minutesSpentLimit>10</minutesSpentLimit>
+      <minutesSpentLimit>30</minutesSpentLimit>
     </termination>
     <solutionPartitionerClass>org.imd.expertschedule.planner.partition.ExpertSchedulePartitioner</solutionPartitionerClass>
     <runnablePartThreadLimit>AUTO</runnablePartThreadLimit>
     <constructionHeuristic>
+      <termination>
+        <minutesSpentLimit>15</minutesSpentLimit>
+      </termination>
       <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
     </constructionHeuristic>
     <localSearch>

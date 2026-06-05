@@ -50,10 +50,10 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
         }
 
         List<ExpertPlanningSolution> partitionList = new ArrayList<>(itemsByDueDate.size());
+
         for (Pair<LocalDate, List<ScheduleItem>> pair : itemsByDueDate) {
             LocalDate partitionDueDate = pair.getLeft();
             List<ScheduleItem> partitionItems = pair.getRight();
-
 
             final ExpertPlanningSolution partSolution = createPartition(
                 originalConstraintConfiguration,

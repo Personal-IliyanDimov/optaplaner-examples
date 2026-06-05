@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Partitioned solve (same as expert-schedule-solver-config.partitioned.xml).
-  See comments there regarding bestScoreLimit and PART_THREAD.
+  Same as expert-schedule-solver-config.partitioned.xml (per-partition CH/LS time limits).
   Non-partitioned: expert-schedule-solver-config.unpartitioned.xml
 -->
 <solver xmlns="https://www.optaplanner.org/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -17,16 +16,19 @@
   </scoreDirectorFactory>
 
   <termination>
-    <spentLimit>PT15M00S</spentLimit>
+    <spentLimit>PT45M00S</spentLimit>
   </termination>
 
   <partitionedSearch>
     <termination>
-      <minutesSpentLimit>10</minutesSpentLimit>
+      <minutesSpentLimit>30</minutesSpentLimit>
     </termination>
     <solutionPartitionerClass>org.imd.expertschedule.planner.partition.ExpertSchedulePartitioner</solutionPartitionerClass>
     <runnablePartThreadLimit>AUTO</runnablePartThreadLimit>
     <constructionHeuristic>
+      <termination>
+        <minutesSpentLimit>15</minutesSpentLimit>
+      </termination>
       <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
     </constructionHeuristic>
     <localSearch>

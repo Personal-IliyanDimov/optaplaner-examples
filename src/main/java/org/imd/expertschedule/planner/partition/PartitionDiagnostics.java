@@ -22,6 +22,9 @@ public final class PartitionDiagnostics {
         List<ExpertPlanningSolution> partitions = partitioner.split(solution);
         System.out.println();
         System.out.println("=== " + heading + " (" + partitions.size() + " partitions) ===");
+        System.out.printf(
+                "  merged solution: uninitialized schedule items=%d / %d%n",
+                countUninitialized(solution), solution.getScheduleItemList().size());
         for (int index = 0; index < partitions.size(); index++) {
             ExpertPlanningSolution partition = partitions.get(index);
             LocalDate dueDate = partitionDueDate(partition);
@@ -33,6 +36,16 @@ public final class PartitionDiagnostics {
                     index, dueDate, itemCount, expertScheduleCount, score);
         }
         System.out.println();
+    }
+
+    public static int countUninitialized(ExpertPlanningSolution solution) {
+        int count = 0;
+        for (ScheduleItem item : solution.getScheduleItemList()) {
+            if (item.getExpertSchedule() == null || item.getTimeSlot() == null) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private static LocalDate partitionDueDate(ExpertPlanningSolution partition) {

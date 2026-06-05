@@ -21,7 +21,7 @@
                 <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
             </scoreDirectorFactory>
             <termination>
-                <minutesSpentLimit>15</minutesSpentLimit>
+                <minutesSpentLimit>45</minutesSpentLimit>
             </termination>
         </solver>
         <problemBenchmarks>
@@ -47,11 +47,14 @@
         <solver>
             <partitionedSearch>
                 <termination>
-                    <minutesSpentLimit>10</minutesSpentLimit>
+                    <minutesSpentLimit>30</minutesSpentLimit>
                 </termination>
                 <solutionPartitionerClass>org.imd.expertschedule.planner.partition.ExpertSchedulePartitioner</solutionPartitionerClass>
                 <runnablePartThreadLimit>AUTO</runnablePartThreadLimit>
                 <constructionHeuristic>
+                    <termination>
+                        <minutesSpentLimit>15</minutesSpentLimit>
+                    </termination>
                     <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
                 </constructionHeuristic>
                 <localSearch>
