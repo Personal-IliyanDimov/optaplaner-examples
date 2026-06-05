@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Partitioned solve: CH per due-date partition, then global tabu on merged solution.
-  Per-partition CH uses a time cap as safety only (CH ends when all items are assigned).
-  Global localSearch uses OR(0 hard, 15 min). bestScoreLimit cannot be on solver/partition phases (PART_THREAD).
+  Partitioned solve: CH + tabu per due-date partition, then diagnostics custom phase.
+  Per-partition LS uses a time cap only (bestScoreLimit unsupported on PART_THREAD).
+  No global localSearch — avoids cross-day expertSchedule moves on the merged solution.
   Non-partitioned: expert-schedule-solver-config.unpartitioned.xml
 -->
 <solver xmlns="https://www.optaplanner.org/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -29,22 +29,23 @@
     <runnablePartThreadLimit>AUTO</runnablePartThreadLimit>
     <constructionHeuristic>
       <termination>
-        <minutesSpentLimit>15</minutesSpentLimit>
+        <terminationCompositionStyle>OR</terminationCompositionStyle>
+        <spentLimit>PT10M00S</spentLimit>
+        <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
       </termination>
       <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
     </constructionHeuristic>
+    <localSearch>
+      <termination>
+        <terminationCompositionStyle>OR</terminationCompositionStyle>
+        <spentLimit>PT15M00S</spentLimit>
+        <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
+      </termination>
+      <localSearchType>TABU_SEARCH</localSearchType>
+    </localSearch>
   </partitionedSearch>
 
   <customPhase>
     <customPhaseCommandClass>org.imd.expertschedule.planner.partition.PartitionDiagnosticsAfterPartitionedPhaseCommand</customPhaseCommandClass>
   </customPhase>
-
-  <localSearch>
-    <termination>
-      <terminationCompositionStyle>OR</terminationCompositionStyle>
-      <spentLimit>PT15M00S</spentLimit>
-      <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
-    </termination>
-    <localSearchType>TABU_SEARCH</localSearchType>
-  </localSearch>
 </solver>

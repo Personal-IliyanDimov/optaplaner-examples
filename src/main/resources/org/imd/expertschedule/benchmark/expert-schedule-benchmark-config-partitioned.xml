@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Compare global solve vs partitioned search (+ post-merge local search).
+  Compare global solve vs partitioned search (CH + tabu per partition).
   Run: PlannerBenchmarkFactory.createFromXmlResource(
       "org/imd/expertschedule/benchmark/expert-schedule-benchmark-config-partitioned.xml")
 -->
@@ -43,7 +43,7 @@
     </solverBenchmark>
 
     <solverBenchmark>
-        <name>PARTITIONED - FFD + GLOBAL TABU</name>
+        <name>PARTITIONED - FFD - TABU</name>
         <solver>
             <partitionedSearch>
                 <termination>
@@ -53,18 +53,21 @@
                 <runnablePartThreadLimit>AUTO</runnablePartThreadLimit>
                 <constructionHeuristic>
                     <termination>
-                        <minutesSpentLimit>15</minutesSpentLimit>
+                        <terminationCompositionStyle>OR</terminationCompositionStyle>
+                        <spentLimit>PT10M00S</spentLimit>
+                        <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
                     </termination>
                     <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
                 </constructionHeuristic>
+                <localSearch>
+                    <termination>
+                        <terminationCompositionStyle>OR</terminationCompositionStyle>
+                        <spentLimit>PT15M00S</spentLimit>
+                        <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
+                    </termination>
+                    <localSearchType>TABU_SEARCH</localSearchType>
+                </localSearch>
             </partitionedSearch>
-            <localSearch>
-                <termination>
-                    <terminationCompositionStyle>OR</terminationCompositionStyle>
-                    <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
-                </termination>
-                <localSearchType>TABU_SEARCH</localSearchType>
-            </localSearch>
         </solver>
     </solverBenchmark>
 
