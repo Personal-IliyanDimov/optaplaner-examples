@@ -50,8 +50,13 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
         }
 
         List<ExpertPlanningSolution> partitionList = new ArrayList<>(itemsByDueDate.size());
+        Pair<LocalDate, List<ScheduleItem>> previousPair;
+        Pair<LocalDate, List<ScheduleItem>> pair;
 
-        for (Pair<LocalDate, List<ScheduleItem>> pair : itemsByDueDate) {
+        for (int i = 0; i < itemsByDueDate.size(); i ++) {
+            previousPair = (i == 0) ? null : itemsByDueDate.get(i - 1);
+            pair = itemsByDueDate.get(i);
+            LocalDate partitionStartDate = (previousPair == null) ? LocalDate.MIN : previousPair.getLeft().plusDays(1);
             LocalDate partitionDueDate = pair.getLeft();
             List<ScheduleItem> partitionItems = pair.getRight();
 
@@ -59,7 +64,7 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
                 originalConstraintConfiguration,
                 originalTimeSlotList,
                 originalSolutionExpertList,
-                buildExpertSchedulesUpToDueDate(originalExpertScheduleList, partitionDueDate),
+                buildExpertSchedulesUpToDueDate(originalExpertScheduleList, partitionStartDate, partitionDueDate),
                 copyScheduleItems(partitionItems));
 
             partitionList.add(partSolution);
@@ -104,14 +109,17 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
 
 
     private List<ExpertSchedule> buildExpertSchedulesUpToDueDate(
-            List<ExpertSchedule> originalExpertScheduleList, LocalDate partitionDueDate) {
+            final List<ExpertSchedule> originalExpertScheduleList,
+            final LocalDate partitionStartDate,
+            final LocalDate partitionDueDate) {
 
         List<ExpertSchedule> partitionExpertSchedules = new ArrayList<>();
         for (ExpertSchedule originalSchedule : originalExpertScheduleList) {
             if (originalSchedule.getDate() == null) {
                 throw new IllegalStateException("Original expert schedule has null date. ");
             }
-            if (helper.lessOrEqual(originalSchedule.getDate(), partitionDueDate)) {
+            if ( helper.lessOrEqual(partitionStartDate, originalSchedule.getDate()) &&
+                 helper.lessOrEqual(originalSchedule.getDate(), partitionDueDate) ) {
                 partitionExpertSchedules.add(new ExpertSchedule(originalSchedule.getExpert(), originalSchedule.getDate()));
             }
         }
