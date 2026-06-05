@@ -252,7 +252,7 @@ public class TestDataGenerator {
             o.setCode("ORDER-" + (i + 1));
             o.setCustomerId(customers.get(random.nextInt(customers.size())).getId());
             o.setLocation(orderLocationNearBackOffice(pick, backOffices, config, random));
-            o.setDueDate(planningDates.get(i % planningDates.size()).plusDays(1));
+            o.setDueDate(planningDates.get(i % planningDates.size()));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
             o.setDiagnosisDuration(durations[i % (durations.length)]);
             o.setRequiredSkills(pick.requiredSkills());

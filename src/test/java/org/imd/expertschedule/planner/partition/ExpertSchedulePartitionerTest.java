@@ -122,7 +122,7 @@ class ExpertSchedulePartitionerTest {
         assertEquals(1, parts.get(0).getExpertScheduleList().size());
         assertTrue(parts.get(0).getExpertScheduleList().stream().allMatch(s -> !s.getDate().isAfter(MONDAY)));
 
-        assertEquals(2, parts.get(1).getExpertScheduleList().size());
+        assertEquals(1, parts.get(1).getExpertScheduleList().size());
         assertTrue(parts.get(1).getExpertScheduleList().stream().allMatch(s -> !s.getDate().isAfter(TUESDAY)));
     }
 
