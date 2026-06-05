@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Partitioned solve by order due date, then global tabu polish.
-  Per-partition time: inner CH + LS terminations (each of 5 child solvers gets its own budget).
-  No tight cap on partitionedSearch itself so slow partitions are not cut off early.
-  bestScoreLimit only on global localSearch (not on solver/partition: PART_THREAD unsupported).
+  Partitioned solve: CH per due-date partition, then global tabu on merged solution.
+  Per-partition CH uses a time cap as safety only (CH ends when all items are assigned).
+  Global localSearch uses OR(0 hard, 15 min). bestScoreLimit cannot be on solver/partition phases (PART_THREAD).
   Non-partitioned: expert-schedule-solver-config.unpartitioned.xml
 -->
 <solver xmlns="https://www.optaplanner.org/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -18,13 +17,11 @@
     <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
 
-  <!-- Wall clock for full run: ~max(CH+LS) per partition in parallel + global LS (no bestScoreLimit here). -->
   <termination>
     <spentLimit>PT45M00S</spentLimit>
   </termination>
 
   <partitionedSearch>
-    <!-- Phase-level cap (parallel wall clock ~ max inner CH+LS); required before customPhase/global LS. -->
     <termination>
       <minutesSpentLimit>30</minutesSpentLimit>
     </termination>
@@ -36,12 +33,6 @@
       </termination>
       <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
     </constructionHeuristic>
-    <localSearch>
-      <termination>
-        <minutesSpentLimit>10</minutesSpentLimit>
-      </termination>
-      <localSearchType>TABU_SEARCH</localSearchType>
-    </localSearch>
   </partitionedSearch>
 
   <customPhase>
@@ -51,7 +42,7 @@
   <localSearch>
     <termination>
       <terminationCompositionStyle>OR</terminationCompositionStyle>
-      <spentLimit>PT5M00S</spentLimit>
+      <spentLimit>PT15M00S</spentLimit>
       <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
     </termination>
     <localSearchType>TABU_SEARCH</localSearchType>

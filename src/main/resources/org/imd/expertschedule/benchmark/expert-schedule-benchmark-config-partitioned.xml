@@ -43,7 +43,7 @@
     </solverBenchmark>
 
     <solverBenchmark>
-        <name>PARTITIONED - FFD - TABU + GLOBAL TABU</name>
+        <name>PARTITIONED - FFD + GLOBAL TABU</name>
         <solver>
             <partitionedSearch>
                 <termination>
@@ -57,15 +57,10 @@
                     </termination>
                     <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
                 </constructionHeuristic>
-                <localSearch>
-                    <termination>
-                        <minutesSpentLimit>10</minutesSpentLimit>
-                    </termination>
-                    <localSearchType>TABU_SEARCH</localSearchType>
-                </localSearch>
             </partitionedSearch>
             <localSearch>
                 <termination>
+                    <terminationCompositionStyle>OR</terminationCompositionStyle>
                     <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
                 </termination>
                 <localSearchType>TABU_SEARCH</localSearchType>
