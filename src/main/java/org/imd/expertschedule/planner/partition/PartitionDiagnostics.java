@@ -22,9 +22,12 @@ public final class PartitionDiagnostics {
         List<ExpertPlanningSolution> partitions = partitioner.split(solution);
         System.out.println();
         System.out.println("=== " + heading + " (" + partitions.size() + " partitions) ===");
+        HardMediumSoftScore mergedScore = scoreFunction.apply(solution);
         System.out.printf(
                 "  merged solution: uninitialized schedule items=%d / %d%n",
                 countUninitialized(solution), solution.getScheduleItemList().size());
+        System.out.printf("  merged score: %s%n", mergedScore);
+        System.out.println("  (per-partition scores below are isolated subsets, not the merged score)");
         for (int index = 0; index < partitions.size(); index++) {
             ExpertPlanningSolution partition = partitions.get(index);
             LocalDate dueDate = partitionDueDate(partition);

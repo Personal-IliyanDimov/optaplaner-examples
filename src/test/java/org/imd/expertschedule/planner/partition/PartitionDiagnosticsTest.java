@@ -49,6 +49,8 @@ class PartitionDiagnosticsTest {
         assertTrue(output.contains("dueDate=2026-03-03"));
         assertTrue(output.contains("items=1"));
         assertTrue(output.contains("2 partitions"));
+        assertTrue(output.contains("merged score:"));
+        assertTrue(output.contains("isolated subsets"));
     }
 
     private static SolutionManager<ExpertPlanningSolution, HardMediumSoftScore> solutionManager() {
