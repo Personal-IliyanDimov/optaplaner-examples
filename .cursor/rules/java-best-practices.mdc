@@ -1,0 +1,35 @@
+---
+description: Java coding standards—method size, naming, static methods, test names
+globs: **/*.java
+alwaysApply: false
+---
+
+# Java best practices
+
+## Methods
+
+- Keep methods **at most 20–25 lines** (excluding blanks and braces). Extract helpers when logic grows.
+- One clear responsibility per method. Prefer early returns over deep nesting.
+
+## Naming
+
+- Use **talkative names** that state intent: `partitionExpertsByBackOffice`, not `doPartition` or `pe`.
+- Booleans: `is…`, `has…`, `can…`. Collections: plural nouns (`scheduleItems`, not `list`).
+- Avoid abbreviations unless they are domain-standard in this codebase.
+
+## Static methods
+
+- **Do not** add or widen `static` methods unless the user has **explicitly confirmed** that in the current task.
+- Default to instance methods, constructors, or small focused types instead of static utility sprawl.
+
+## Tests
+
+- Test method names: `<methodUnderTest>_<condition>_<expectedOutcome>` (e.g. `splitWorkingSolution_groupsItemsByDueDateAndClosestBackOffice`).
+- Use this pattern in every test class; no `test1`, `shouldWork`, or generic names.
+- One behavior per test; arrange–act–assert; shared setup via instance helpers/factories on the test class.
+- **Do not** add `static` helpers or utilities in test classes unless the user has **explicitly confirmed** that in the current task. Prefer instance fields and methods (e.g. `partitioner`, `office()`, `wrapSolution()`).
+
+## General
+
+- Match existing package structure, imports, and Lombok usage in the file you edit.
+- Minimize diff scope: no drive-by refactors or unrelated formatting.
