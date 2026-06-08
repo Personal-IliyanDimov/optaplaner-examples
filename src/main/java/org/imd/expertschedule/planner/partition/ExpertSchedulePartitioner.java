@@ -58,17 +58,17 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
             throw new IllegalStateException("Cannot partition solution with no schedule items.");
         }
 
+        final List<LocalDate> partitionDates = partitionGroups.stream()
+            .map(pi -> pi.key().dueDate()).distinct().sorted().toList();
+
         List<ExpertPlanningSolution> partitionList = new ArrayList<>(partitionGroups.size());
-        PartitionInfo previousPartition;
         PartitionInfo partition;
 
         for (int i = 0; i < partitionGroups.size(); i ++) {
-            previousPartition = (i == 0) ? null : partitionGroups.get(i - 1);
-
             partition = partitionGroups.get(i);
             final PartitionKey partitionKey = partition.key();
 
-            final LocalDate partitionStartDateNi = (previousPartition == null) ? LocalDate.MIN : partitionKey.dueDate();
+            final LocalDate partitionStartDateNi = findPreviousPartitionStartDate(partition.key().dueDate, partitionDates);
             List<ScheduleItem> partitionItems = partition.data();
 
             final List<Expert> partitionExperts = filterExpertsForPartition(originalSolutionExpertList, partitionKey.backOfficeRef());
@@ -84,6 +84,11 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
         }
 
         return partitionList;
+    }
+
+    private LocalDate findPreviousPartitionStartDate(final LocalDate dueDate, final List<LocalDate> partitionDates) {
+        final List<LocalDate> result = partitionDates.stream().filter(pd -> helper.less(pd, dueDate)).toList();
+        return result.isEmpty() ? LocalDate.MIN : result.getLast();
     }
 
     private ExpertPlanningSolution createPartition(
