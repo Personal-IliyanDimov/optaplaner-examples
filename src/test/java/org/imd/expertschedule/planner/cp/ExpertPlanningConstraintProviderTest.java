@@ -314,9 +314,7 @@ class ExpertPlanningConstraintProviderTest {
 
     private BackOffice backOffice(Location loc) {
         BackOffice bo = new BackOffice();
-        BackOfficeRef id = new BackOfficeRef();
-        id.setId(1L);
-        bo.setId(id);
+        bo.setId(new BackOfficeRef(1L));
         bo.setLocation(loc);
         return bo;
     }
