@@ -66,7 +66,7 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
             previousPartition = (i == 0) ? null : partitionGroups.get(i - 1);
 
             partition = partitionGroups.get(i);
-            final PartitionKey partitionKey = previousPartition.key();
+            final PartitionKey partitionKey = partition.key();
 
             final LocalDate partitionStartDateNi = (previousPartition == null) ? LocalDate.MIN : partitionKey.dueDate();
             List<ScheduleItem> partitionItems = partition.data();
@@ -121,6 +121,7 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
                 new PartitionInfo(entry.getKey(), entry.getValue())
         ).toList();
 
+        result = new ArrayList<>(result);
         Collections.sort(result, Comparator.comparing(p -> p.key().dueDate));
 
         return result;
