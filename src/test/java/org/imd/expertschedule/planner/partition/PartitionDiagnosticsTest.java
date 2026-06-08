@@ -1,10 +1,13 @@
 package org.imd.expertschedule.planner.partition;
 
 import org.imd.expertschedule.planner.cp.ExpertPlanningConstraintConfiguration;
+import org.imd.expertschedule.planner.domain.BackOffice;
 import org.imd.expertschedule.planner.domain.Expert;
 import org.imd.expertschedule.planner.domain.ExpertSchedule;
+import org.imd.expertschedule.planner.domain.Location;
 import org.imd.expertschedule.planner.domain.Order;
 import org.imd.expertschedule.planner.domain.ScheduleItem;
+import org.imd.expertschedule.planner.domain.refs.BackOfficeRef;
 import org.imd.expertschedule.planner.domain.refs.ExpertRef;
 import org.imd.expertschedule.planner.domain.refs.OrderRef;
 import org.imd.expertschedule.planner.domain.time.TimeSlot;
@@ -47,6 +50,7 @@ class PartitionDiagnosticsTest {
         String output = buffer.toString(StandardCharsets.UTF_8);
         assertTrue(output.contains("dueDate=2026-03-02"));
         assertTrue(output.contains("dueDate=2026-03-03"));
+        assertTrue(output.contains("backOffice=1"));
         assertTrue(output.contains("items=1"));
         assertTrue(output.contains("2 partitions"));
         assertTrue(output.contains("merged score:"));
@@ -60,7 +64,8 @@ class PartitionDiagnosticsTest {
     }
 
     private static ExpertPlanningSolution buildTwoDueDateSolution() {
-        Expert expert = expert(1);
+        BackOffice office = backOffice(1);
+        Expert expert = expert(1, office);
         ExpertSchedule mondaySchedule = new ExpertSchedule(expert, LocalDate.of(2026, 3, 2));
         ExpertSchedule tuesdaySchedule = new ExpertSchedule(expert, LocalDate.of(2026, 3, 3));
 
@@ -77,11 +82,20 @@ class PartitionDiagnosticsTest {
         return solution;
     }
 
-    private static Expert expert(long id) {
+    private static BackOffice backOffice(long id) {
+        BackOfficeRef ref = new BackOfficeRef(id);
+        BackOffice office = new BackOffice();
+        office.setId(ref);
+        office.setLocation(new Location(0.0, 0.0));
+        return office;
+    }
+
+    private static Expert expert(long id, BackOffice backOffice) {
         ExpertRef ref = new ExpertRef();
         ref.setId(id);
         Expert expert = new Expert();
         expert.setId(ref);
+        expert.setBackOffice(backOffice);
         return expert;
     }
 
@@ -91,6 +105,7 @@ class PartitionDiagnosticsTest {
         Order order = new Order();
         order.setId(orderRef);
         order.setDueDate(dueDate);
+        order.setLocation(new Location(0.1, 0.1));
         return order;
     }
 
