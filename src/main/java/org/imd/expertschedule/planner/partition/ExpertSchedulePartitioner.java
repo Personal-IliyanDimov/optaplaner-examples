@@ -39,7 +39,7 @@ public class ExpertSchedulePartitioner implements SolutionPartitioner<ExpertPlan
         return split(scoreDirector.getWorkingSolution());
     }
 
-    private List<ExpertPlanningSolution> split(ExpertPlanningSolution originalSolution) {
+    List<ExpertPlanningSolution> split(ExpertPlanningSolution originalSolution) {
         final List<ScheduleItem> originalScheduleItemList = originalSolution.getScheduleItemList();
         final List<TimeSlot> originalTimeSlotList = originalSolution.getTimeSlotList();
         final List<Expert> originalSolutionExpertList = originalSolution.getExpertList();
