@@ -31,12 +31,14 @@ public final class PartitionDiagnostics {
         for (int index = 0; index < partitions.size(); index++) {
             ExpertPlanningSolution partition = partitions.get(index);
             LocalDate dueDate = partitionDueDate(partition);
+            Long backOfficeId = partitionBackOfficeId(partition);
             int itemCount = partition.getScheduleItemList().size();
+            int expertCount = partition.getExpertList().size();
             int expertScheduleCount = partition.getExpertScheduleList().size();
             HardMediumSoftScore score = scoreFunction.apply(partition);
             System.out.printf(
-                    "  [%d] dueDate=%s, items=%d, expertSchedules=%d, score=%s%n",
-                    index, dueDate, itemCount, expertScheduleCount, score);
+                    "  [%d] dueDate=%s, backOffice=%s, items=%d, experts=%d, expertSchedules=%d, score=%s%n",
+                    index, dueDate, backOfficeId, itemCount, expertCount, expertScheduleCount, score);
         }
         System.out.println();
     }
@@ -58,5 +60,16 @@ public final class PartitionDiagnostics {
         }
         Order order = items.getFirst().getOrder();
         return order == null ? null : order.getDueDate();
+    }
+
+    private static Long partitionBackOfficeId(ExpertPlanningSolution partition) {
+        if (partition.getExpertList() == null || partition.getExpertList().isEmpty()) {
+            return null;
+        }
+        var backOffice = partition.getExpertList().getFirst().getBackOffice();
+        if (backOffice == null || backOffice.getId() == null) {
+            return null;
+        }
+        return backOffice.getId().getId();
     }
 }
