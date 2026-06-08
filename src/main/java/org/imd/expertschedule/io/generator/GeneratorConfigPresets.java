@@ -168,4 +168,30 @@ public final class GeneratorConfigPresets {
 
         return config;
     }
+
+    public static GeneratorConfig extraHuge() {
+        final int numExperts = 600;
+        final int numExpertsWithUndefaultAvailability = 40;
+        final int numExpertsWithAbsence = 30;
+
+        GeneratorConfig config = new GeneratorConfig();
+        config.setFileName("dataset-extrahuge.json");
+        config.setNumSkills(15);
+        config.setNumExperts(numExperts);
+        config.setNumCustomers(100);
+        config.setNumOrders((numExperts - numExpertsWithUndefaultAvailability - numExpertsWithAbsence)*
+                WEEK_DAYS*(AVERAGE_ORDERS_PER_DAY-1));
+        config.setNumOffices(numExpertsWithAbsence);
+        config.setExpertsWithUndefaultAvailability(numExpertsWithUndefaultAvailability);
+        config.setExpertsWithAbsence(numExpertsWithAbsence);
+        config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
+        config.setOrderDurations(new String[] { "PT30M", "PT45M", "PT1H", "PT1H15M", "PT1H30M" });
+        config.setCustomerAvailabilityTimeWindowInMinutes(180);
+        config.setYear(PLANNING_YEAR);
+        config.setCalendarWeek(CALENDAR_WEEK);
+        config.setWeekWorkingDays(WEEK_WORKING_DAYS);
+        config.setMaxDistanceFromBackOfficeKm(20);
+
+        return config;
+    }
 }
