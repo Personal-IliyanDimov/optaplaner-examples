@@ -140,7 +140,7 @@ public class TestDataGenerator {
                           "Olivia"};
         int year = config.getYear();
         int calendarWeek = config.getCalendarWeek();
-        int[] weekWorkingDays = config.getWeekWorkingDays() != null ? config.getWeekWorkingDays() : new int[]{1, 2, 3, 4, 5};
+        int[] weekWorkingDays = config.getWeekWorkingDays();
         for (int i = 0; i < count; i++) {
             ExpertData e = new ExpertData();
             e.setId(i + 1);
@@ -150,7 +150,7 @@ public class TestDataGenerator {
             e.setSkills(pickSkillNamesFromSkillData(skills, random));
 
             if (i < config.getExpertsWithUndefaultAvailability()) {
-                e.setAvailabilities(sampleUndefaultAvailabilities(year, calendarWeek, weekWorkingDays, random));
+                e.setAvailabilities(sampleUndefaultAvailabilities(year, calendarWeek, weekWorkingDays));
                 e.setAbsences(new ArrayList<>());
             } else {
                 e.setAvailabilities(sampleDefaultAvailabilities(year, calendarWeek, weekWorkingDays));
@@ -176,16 +176,15 @@ public class TestDataGenerator {
 
     private static List<AvailabilityData> sampleUndefaultAvailabilities(int year,
                                                                         int calendarWeek,
-                                                                        int[] weekWorkingDays,
-                                                                        Random random) {
+                                                                        int[] weekWorkingDays) {
         List<AvailabilityData> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData a = new AvailabilityData();
             a.setYear(year);
             a.setCalendarWeek(calendarWeek);
             a.setDayOfWeek(DayOfWeek.of(wd));
-            a.setStartTime(LocalTime.of(9 + random.nextInt(2), random.nextInt(3)*15));
-            a.setEndTime(LocalTime.of(13 + random.nextInt(2), 0));
+            a.setStartTime(LocalTime.of(9 + wd % 2, (wd % 3)*15));
+            a.setEndTime(LocalTime.of(13 + wd % 2, 0));
             list.add(a);
         }
         return list;
@@ -252,9 +251,13 @@ public class TestDataGenerator {
             o.setCode("ORDER-" + (i + 1));
             o.setCustomerId(customers.get(random.nextInt(customers.size())).getId());
             o.setLocation(orderLocationNearBackOffice(pick, backOffices, config, random));
-            o.setDueDate(planningDates.get(i % planningDates.size()).plusDays(1));
+            o.setDueDate(planningDates.get(i % planningDates.size()));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
-            o.setDiagnosisDuration(durations[i % (durations.length)]);
+            if (pick.referenceExpert.getAbsences() != null && !pick.referenceExpert.getAbsences().isEmpty()) {
+                o.setDiagnosisDuration(durations[0]);
+            } else {
+                o.setDiagnosisDuration(durations[i % (durations.length)]);
+            }
             o.setRequiredSkills(pick.requiredSkills());
             o.setCustomerAvailabilities(
                     customerAvailabilitiesForPlanningWeek(config, config.getYear(), weekWorkingDays, random));

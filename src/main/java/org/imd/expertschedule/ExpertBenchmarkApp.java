@@ -11,7 +11,7 @@ import java.io.File;
 public final class ExpertBenchmarkApp {
 
     private static final String BENCHMARK_CONFIG_RESOURCE =
-            "org/imd/expertschedule/benchmark/expert-schedule-benchmark-config.v1-ch-ls-all.xml";
+            "org/imd/expertschedule/benchmark/expert-schedule-benchmark-config-partitioned.xml";
 
     public static void main(String[] args) throws Exception {
         reducePlannerLogging();

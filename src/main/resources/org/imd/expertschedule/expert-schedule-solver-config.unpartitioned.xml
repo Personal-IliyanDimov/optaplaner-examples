@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Single global solve (no partitioning). Use when comparing quality or on small datasets.
+-->
+<solver xmlns="https://www.optaplanner.org/xsd/solver" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://www.optaplanner.org/xsd/solver https://www.optaplanner.org/xsd/solver/solver.xsd">
+  <moveThreadCount>AUTO</moveThreadCount>
+
+  <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
+  <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
+
+  <scoreDirectorFactory>
+    <constraintProviderClass>org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider</constraintProviderClass>
+    <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+  </scoreDirectorFactory>
+
+  <termination>
+    <terminationCompositionStyle>OR</terminationCompositionStyle>
+    <spentLimit>PT45M00S</spentLimit>
+    <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
+  </termination>
+
+  <constructionHeuristic>
+    <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+  </constructionHeuristic>
+
+  <localSearch>
+    <localSearchType>TABU_SEARCH</localSearchType>
+  </localSearch>
+</solver>

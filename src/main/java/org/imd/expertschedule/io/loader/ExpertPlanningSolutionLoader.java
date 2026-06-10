@@ -93,8 +93,7 @@ public class ExpertPlanningSolutionLoader {
         Map<Long, BackOffice> backOfficeById = new HashMap<>();
         for (BackOfficeData bd : backOfficeData) {
             BackOffice bo = new BackOffice();
-            BackOfficeRef bRef = new BackOfficeRef();
-            bRef.setId(bd.getId());
+            BackOfficeRef bRef = new BackOfficeRef(bd.getId());
             bo.setId(bRef);
             bo.setName(bd.getName());
             bo.setLocation(toLocation(bd.getLocation()));
@@ -125,8 +124,7 @@ public class ExpertPlanningSolutionLoader {
             ExpertRef eRef = new ExpertRef();
             eRef.setId(ed.getId());
 
-            BackOfficeRef boRef = new BackOfficeRef();
-            boRef.setId(ed.getBackOfficeId());
+            BackOfficeRef boRef = new BackOfficeRef(ed.getBackOfficeId());
 
             Expert expert = new Expert();
             expert.setId(eRef);

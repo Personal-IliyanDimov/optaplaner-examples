@@ -14,8 +14,7 @@
 
     <inheritedSolverBenchmark>
         <solver>
-            <!-- NONE: multithreaded moves need @PlanningId on entities and range types; AUTO matches expert-schedule-solver-config when those IDs exist -->
-            <moveThreadCount>NONE</moveThreadCount>
+            <moveThreadCount>AUTO</moveThreadCount>
 
             <solutionClass>org.imd.expertschedule.planner.solution.ExpertPlanningSolution</solutionClass>
             <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>

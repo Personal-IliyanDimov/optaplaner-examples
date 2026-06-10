@@ -10,6 +10,8 @@ import org.imd.expertschedule.planner.domain.printers.OrdersToExpertDistribution
 import org.imd.expertschedule.planner.solution.ExpertPlanningSolution;
 import org.imd.expertschedule.planner.solution.PlannerParameters;
 import org.imd.expertschedule.planner.solution.SolutionContext;
+import org.imd.expertschedule.planner.partition.ExpertSchedulePartitioner;
+import org.imd.expertschedule.planner.partition.PartitionDiagnostics;
 import org.imd.expertschedule.planner.solution.SolutionInitializer;
 import org.imd.expertschedule.planner.validator.PlanningSolutionValidator;
 import org.imd.expertschedule.planner.validator.Violation;
@@ -51,16 +53,24 @@ public class SchedulingApp {
         otePrinter.print(unsolvedSolution);
 
         final SolverConfig solverConfig = SolverConfig.createFromXmlResource(
-                "org/imd/expertschedule/expert-schedule-solver-config.xml");
+                "org/imd/expertschedule/expert-schedule-solver-config.partitioned.xml");
 
         final SolverFactory<ExpertPlanningSolution> solverFactory = SolverFactory.create(solverConfig);
+        final SolutionManager<ExpertPlanningSolution, HardMediumSoftScore> solutionManager =
+                SolutionManager.create(solverFactory);
+        final ExpertSchedulePartitioner partitioner = new ExpertSchedulePartitioner();
+
+        PartitionDiagnostics.printPartitions(
+                partitioner,
+                unsolvedSolution,
+                "After split (before solve, initial assignments)",
+                solutionManager::update);
+
         final Solver<ExpertPlanningSolution> solver = solverFactory.buildSolver();
         final ExpertPlanningSolution solution = solver.solve(unsolvedSolution);
 
         Thread.sleep(1000L);
 
-        final SolutionManager<ExpertPlanningSolution, HardMediumSoftScore> solutionManager =
-                SolutionManager.create(solverFactory);
         System.out.println(solutionManager.explain(solution).getSummary());
 
         System.out.println("Order Distribution Data: ");
