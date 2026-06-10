@@ -253,7 +253,11 @@ public class TestDataGenerator {
             o.setLocation(orderLocationNearBackOffice(pick, backOffices, config, random));
             o.setDueDate(planningDates.get(i % planningDates.size()));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
-            o.setDiagnosisDuration(durations[i % (durations.length)]);
+            if (pick.referenceExpert.getAbsences() != null && !pick.referenceExpert.getAbsences().isEmpty()) {
+                o.setDiagnosisDuration(durations[0]);
+            } else {
+                o.setDiagnosisDuration(durations[i % (durations.length)]);
+            }
             o.setRequiredSkills(pick.requiredSkills());
             o.setCustomerAvailabilities(
                     customerAvailabilitiesForPlanningWeek(config, config.getYear(), weekWorkingDays, random));
