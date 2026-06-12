@@ -42,6 +42,9 @@ public class TestDataGenerator {
             .registerModule(new JavaTimeModule())
             .enable(SerializationFeature.INDENT_OUTPUT);
 
+    private static final LocalTime EXPERT_START_TIME = LocalTime.of(9, 0);
+    private static final LocalTime EXPERT_END_TIME = LocalTime.of(18, 0);
+
     public static void main(String[] args) throws IOException {
         String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "small";
         Path outputDir = Path.of("data/expertschedule/");
@@ -63,9 +66,10 @@ public class TestDataGenerator {
             case "large" -> GeneratorConfigPresets.large();
             case "extralarge" -> GeneratorConfigPresets.extraLarge();
             case "huge" -> GeneratorConfigPresets.huge();
+            case "extrahuge" -> GeneratorConfigPresets.extraHuge();
             default -> throw new IllegalArgumentException(
                     "Unknown preset '" + presetName
-                            + "'. Use: ultrasmall | small | medium | large | extralarge | huge");
+                            + "'. Use: ultrasmall | small | medium | large | extralarge | huge | extrahuge");
         };
     }
 
@@ -190,15 +194,17 @@ public class TestDataGenerator {
         return list;
     }
 
-    private static List<AvailabilityData> sampleDefaultAvailabilities(int year, int calendarWeek, int[] weekWorkingDays) {
+    private static List<AvailabilityData> sampleDefaultAvailabilities(final int year,
+                                                                      final int calendarWeek,
+                                                                      final int[] weekWorkingDays) {
         List<AvailabilityData> list = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData a = new AvailabilityData();
             a.setYear(year);
             a.setCalendarWeek(calendarWeek);
             a.setDayOfWeek(DayOfWeek.of(wd));
-            a.setStartTime(LocalTime.of(9, 0));
-            a.setEndTime(LocalTime.of(18, 0));
+            a.setStartTime(EXPERT_START_TIME);
+            a.setEndTime(EXPERT_END_TIME);
             list.add(a);
         }
         return list;
@@ -253,7 +259,9 @@ public class TestDataGenerator {
             o.setLocation(orderLocationNearBackOffice(pick, backOffices, config, random));
             o.setDueDate(planningDates.get(i % planningDates.size()));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
-            if (pick.referenceExpert.getAbsences() != null && !pick.referenceExpert.getAbsences().isEmpty()) {
+            if (pick.referenceExpert.getAbsences() != null && !pick.referenceExpert.getAbsences().isEmpty() &&
+                !(pick.referenceExpert.getAvailabilities().get(0).getStartTime().equals(EXPERT_START_TIME) &&
+                  pick.referenceExpert.getAvailabilities().get(0).getEndTime().equals(EXPERT_END_TIME))) {
                 o.setDiagnosisDuration(durations[0]);
             } else {
                 o.setDiagnosisDuration(durations[i % (durations.length)]);

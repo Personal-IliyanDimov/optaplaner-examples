@@ -37,3 +37,6 @@ logs/
 
 # OptaPlanner benchmark output
 local/benchmark/
+
+# CursorJ
+.cursorj

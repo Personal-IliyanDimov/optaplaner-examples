@@ -38,7 +38,7 @@
     <localSearch>
       <termination>
         <terminationCompositionStyle>OR</terminationCompositionStyle>
-        <spentLimit>PT15M00S</spentLimit>
+        <spentLimit>PT20M00S</spentLimit>
         <bestScoreLimit>0hard/*medium/*soft</bestScoreLimit>
       </termination>
       <localSearchType>TABU_SEARCH</localSearchType>
