@@ -151,14 +151,14 @@ public class TestDataGenerator {
 
             if (i < config.getExpertsWithUndefaultAvailability()) {
                 e.setAvailabilities(sampleUndefaultAvailabilities(year, calendarWeek, weekWorkingDays));
-                e.setAbsences(new ArrayList<>());
             } else {
                 e.setAvailabilities(sampleDefaultAvailabilities(year, calendarWeek, weekWorkingDays));
-                e.setAbsences(new ArrayList<>());
+            }
 
-                if (i + config.getExpertsWithAbsence() >= count) {
-                    e.setAbsences(sampleAbsences(year, calendarWeek, weekWorkingDays, random));
-                }
+            if (i + config.getExpertsWithAbsence() >= count) {
+                e.setAbsences(sampleAbsences(year, calendarWeek, weekWorkingDays, random));
+            } else {
+                e.setAbsences(new ArrayList<>());
             }
 
             list.add(e);
@@ -211,8 +211,8 @@ public class TestDataGenerator {
         a.setYear(year);
         a.setCalendarWeek(calendarWeek);
         a.setDayOfWeek(DayOfWeek.of(wd));
-        a.setStartTime(LocalTime.of(9 + random.nextInt(1), random.nextInt(3)*15));
-        a.setEndTime(LocalTime.of(12 - random.nextInt(1), 0));
+        a.setStartTime(LocalTime.of(9 + random.nextInt(2), random.nextInt(3) * 15));
+        a.setEndTime(LocalTime.of(12 + random.nextInt(2), 0));
         a.setReason("Leave");
         return List.of(a);
     }
@@ -221,7 +221,7 @@ public class TestDataGenerator {
      * Chooses a non-empty random subset of skills from a randomly picked generated expert, so every order can be
      * served by at least that expert (skill-wise). The same expert anchors the order location near their back office.
      */
-    private static PickResult pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, int expertIndex, Random random) {
+    private static PickResult pickRequiredSkillsSubsetFromExpert(List<ExpertData> experts, Random random) {
         ExpertData expert = experts.get(random.nextInt(experts.size()));
         List<String> expertSkills = new ArrayList<>(expert.getSkills());
         int subsetSize = random.nextInt(expertSkills.size()) + 1;
@@ -245,7 +245,7 @@ public class TestDataGenerator {
         String[] priorities = config.getOrderPriorities();
         String[] durations = config.getOrderDurations();
         for (int i = 0; i < count; i++) {
-            PickResult pick = pickRequiredSkillsSubsetFromExpert(experts, i % experts.size(), random);
+            PickResult pick = pickRequiredSkillsSubsetFromExpert(experts, random);
             OrderData o = new OrderData();
             o.setId(i + 1);
             o.setCode("ORDER-" + (i + 1));
@@ -277,16 +277,13 @@ public class TestDataGenerator {
     }
 
     private static LocationData resolveAnchorOfficeLocation(ExpertData referenceExpert, List<BackOfficeData> backOffices) {
-        LocationData result = null;
-
         long oid = referenceExpert.getBackOfficeId();
-        for (BackOfficeData b : backOffices) {
-            if (b.getId() == oid && b.getLocation() != null) {
-                result = b.getLocation();
-            }
-        }
-
-        return result;
+        return backOffices.stream()
+                .filter(b -> b.getId() == oid && b.getLocation() != null)
+                .map(BackOfficeData::getLocation)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(
+                        "No back office with id=" + oid + " found for expert id=" + referenceExpert.getId()));
     }
 
     /** Earth mean radius for great-circle distance (km). */
