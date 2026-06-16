@@ -79,8 +79,10 @@ public class TestDataGeneratorBackUp {
         List<SkillData> skills = buildSkills(config.getNumSkills());
         List<BackOfficeData> backOffices = buildBackOffices(config.getNumOffices(), random);
         List<CustomerData> customers = buildCustomers(config.getNumCustomers());
-        List<ExpertData> experts = buildExperts(config.getNumExperts(), skills, backOffices, config, random);
-        List<OrderData> orders = buildOrders(config.getNumOrders(), customers, experts, backOffices, config, random);
+        List<ExpertData> experts = buildExperts(config.getNumOffices()*config.getExpertsPerBackOffice(),
+                skills, backOffices, config, random);
+        List<OrderData> orders = buildOrders(config.getNumOffices() * config.getExpertsPerBackOffice() * config.getWeekWorkingDays().length * 2,
+                customers, experts, backOffices, config, random);
 
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setMetadata(config);
@@ -149,13 +151,13 @@ public class TestDataGeneratorBackUp {
             e.setBackOfficeId(office.getId());
             e.setSkills(pickSkillNamesFromSkillData(skills, random));
 
-            if (i < config.getExpertsWithUndefaultAvailability()) {
+            if (i < config.getExpertsPerOfficeWithUndefaultAvailability()) {
                 e.setAvailabilities(sampleUndefaultAvailabilities(year, calendarWeek, weekWorkingDays));
             } else {
                 e.setAvailabilities(sampleDefaultAvailabilities(year, calendarWeek, weekWorkingDays));
             }
 
-            if (i + config.getExpertsWithAbsence() >= count) {
+            if (i + config.getExpertsPerOfficeWithAbsence() >= count) {
                 e.setAbsences(sampleAbsences(year, calendarWeek, weekWorkingDays, random));
             } else {
                 e.setAbsences(new ArrayList<>());
@@ -243,7 +245,7 @@ public class TestDataGeneratorBackUp {
         List<LocalDate> planningDates = planningDates(config.getYear(), config.getCalendarWeek(), weekWorkingDays);
 
         String[] priorities = config.getOrderPriorities();
-        String[] durations = config.getOrderDurations();
+        Duration[] durations = config.getOrderDurations();
         for (int i = 0; i < count; i++) {
             PickResult pick = pickRequiredSkillsSubsetFromExpert(experts, random);
             OrderData o = new OrderData();
@@ -254,9 +256,9 @@ public class TestDataGeneratorBackUp {
             o.setDueDate(planningDates.get(i % planningDates.size()));
             o.setPriority(priorities[random.nextInt(priorities.length)]);
             if (pick.referenceExpert.getAbsences() != null && !pick.referenceExpert.getAbsences().isEmpty()) {
-                o.setDiagnosisDuration(durations[0]);
+                o.setDiagnosisDuration(durations[0].toString());
             } else {
-                o.setDiagnosisDuration(durations[i % (durations.length)]);
+                o.setDiagnosisDuration(durations[i % durations.length].toString());
             }
             o.setRequiredSkills(pick.requiredSkills());
             o.setCustomerAvailabilities(

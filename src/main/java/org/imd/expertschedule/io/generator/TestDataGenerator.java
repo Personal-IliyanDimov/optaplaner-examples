@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import lombok.RequiredArgsConstructor;
 import org.imd.expertschedule.io.model.AbsenceData;
 import org.imd.expertschedule.io.model.AvailabilityData;
 import org.imd.expertschedule.io.model.BackOfficeData;
@@ -24,18 +25,29 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+@RequiredArgsConstructor
 public class TestDataGenerator {
+    private static final LocalTime LUNCH_START = LocalTime.of(12, 0);
+    private static final LocalTime AFTERNOON_START = LocalTime.of(13, 0);
+    private static final LocalTime AFTERNOON_END = LocalTime.of(18, 0);
 
-    private static final PlannerHelper HELPER = new PlannerHelper();
+    private static final LocalTime CUSTOMER_AVAILABILITY_DAY_START = LocalTime.of(9, 0);
+    private static final LocalTime CUSTOMER_AVAILABILITY_DAY_END = LocalTime.of(18, 0);
 
-    private static final ObjectMapper MAPPER = new ObjectMapper()
+    private final PlannerHelper helper = new PlannerHelper();
+    private final ObjectMapper mapper = new ObjectMapper()
             .registerModule(new JavaTimeModule())
             .enable(SerializationFeature.INDENT_OUTPUT);
+
+    private final GeneratorConfig config;
+    private final Random random = new Random();
+
 
     public static void main(String[] args) throws IOException {
         String presetName = args.length > 0 ? args[0].trim().toLowerCase(Locale.ROOT) : "small";
@@ -44,7 +56,9 @@ public class TestDataGenerator {
 
         final GeneratorConfig config = resolvePreset(presetName);
         final Path outputFile = outputDir.resolve(config.getFileName());
-        generate(config, outputFile);
+
+        final TestDataGenerator generator = new TestDataGenerator(config);
+        generator.generate(config, outputFile);
 
         System.out.println("Generated " + presetName + " dataset: " + outputFile.toAbsolutePath()
                 + " (maxDistanceFromBackOfficeKm=" + config.getMaxDistanceFromBackOfficeKm() + ")");
@@ -64,12 +78,12 @@ public class TestDataGenerator {
         };
     }
 
-    public static void generate(final GeneratorConfig config, final Path outputFile) throws IOException {
+    public void generate(final GeneratorConfig config, final Path outputFile) throws IOException {
         PlanningDatasetData dataset = buildDataset(config);
-        MAPPER.writeValue(outputFile.toFile(), dataset);
+        mapper.writeValue(outputFile.toFile(), dataset);
     }
 
-    public static PlanningDatasetData buildDataset(GeneratorConfig config) {
+    public PlanningDatasetData buildDataset(GeneratorConfig config) {
         Random random = new Random();
 
         List<SkillData> skills = buildSkills(config.getNumSkills());
@@ -95,6 +109,9 @@ public class TestDataGenerator {
             }
         }
 
+        config.setTotalExperts(allExperts.size());
+        config.setTotalOrders(allOrders.size());
+
         PlanningDatasetData dataset = new PlanningDatasetData();
         dataset.setMetadata(config);
         dataset.setSkills(skills);
@@ -106,9 +123,7 @@ public class TestDataGenerator {
         return dataset;
     }
 
-    // ─── builders ────────────────────────────────────────────────────────────
-
-    private static List<SkillData> buildSkills(int count) {
+    private List<SkillData> buildSkills(int count) {
         String[] knownNames = {"Electrical", "Painting-Scratches", "Engine-Petrol",
                                "Engine-Diesel", "Exclusive", "Total Damage", "Security",
                                "Painting-Part", "Tires", "Glass", "Interior", "Exterior",
@@ -122,7 +137,7 @@ public class TestDataGenerator {
         return skills;
     }
 
-    private static List<CustomerData> buildCustomers(int count) {
+    private List<CustomerData> buildCustomers(int count) {
         List<CustomerData> customers = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             CustomerData customer = new CustomerData();
@@ -133,7 +148,7 @@ public class TestDataGenerator {
         return customers;
     }
 
-    private static List<BackOfficeData> buildBackOffices(int count, Random random) {
+    private List<BackOfficeData> buildBackOffices(int count, Random random) {
         List<BackOfficeData> backOffices = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             BackOfficeData backOffice = new BackOfficeData();
@@ -145,7 +160,7 @@ public class TestDataGenerator {
         return backOffices;
     }
 
-    private static List<ExpertData> buildExpertsForBackOffice(int startId, int count,
+    private List<ExpertData> buildExpertsForBackOffice(int startId, int count,
             List<SkillData> skills, BackOfficeData backOffice, GeneratorConfig config, Random random) {
         List<ExpertData> experts = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -154,7 +169,7 @@ public class TestDataGenerator {
         return experts;
     }
 
-    private static ExpertData buildExpert(int id, int indexInOffice,
+    private ExpertData buildExpert(int id, int indexInOffice,
             List<SkillData> skills, BackOfficeData backOffice, GeneratorConfig config, Random random) {
         String[] knownNames = {"Alice", "Bob", "Carol", "Dave", "Eve", "Frank", "Grace",
                                "Henry", "Ivy", "Jack", "Kate", "Leo", "Mia", "Noah", "Olivia"};
@@ -168,22 +183,18 @@ public class TestDataGenerator {
         expert.setName(indexInOffice < knownNames.length ? knownNames[indexInOffice] : "Expert-" + id);
         expert.setBackOfficeId(backOffice.getId());
         expert.setSkills(randomSkillNamesFrom(skills, random));
-        expert.setAvailabilities(indexInOffice < config.getExpertsWithUndefaultAvailability()
-                ? reducedDayAvailabilities(year, calendarWeek, weekWorkingDays)
-                : fullDayAvailabilities(year, calendarWeek, weekWorkingDays));
-        expert.setAbsences(indexInOffice + config.getExpertsWithAbsence() >= count
-                ? randomLeaveAbsences(year, calendarWeek, weekWorkingDays, random)
-                : new ArrayList<>());
+        expert.setAvailabilities(indexInOffice < config.getExpertsPerOfficeWithUndefaultAvailability()
+                                 ? reducedDayAvailabilities(year, calendarWeek, weekWorkingDays)
+                                 : fullDayAvailabilities(year, calendarWeek, weekWorkingDays));
+        expert.setAbsences(indexInOffice + config.getExpertsPerOfficeWithAbsence() >= count
+                           ? randomLeaveAbsences(year, calendarWeek, weekWorkingDays, random)
+                           : new ArrayList<>());
         return expert;
     }
 
-    // ─── order generation: per day, driven by expert availability ────────────
 
-    private static final LocalTime LUNCH_START = LocalTime.of(12, 0);
-    private static final LocalTime AFTERNOON_START = LocalTime.of(13, 0);
-    private static final LocalTime AFTERNOON_END = LocalTime.of(16, 0);
 
-    private static List<OrderData> buildOrdersForExpert(int startId, ExpertData expert,
+    private List<OrderData> buildOrdersForExpert(int startId, ExpertData expert,
             List<CustomerData> customers, BackOfficeData backOffice, GeneratorConfig config, Random random) {
         List<OrderData> orders = new ArrayList<>();
         int orderIdSeq = startId;
@@ -198,48 +209,76 @@ public class TestDataGenerator {
             List<AbsenceData> dayAbsences = findAbsencesForDay(expert, wd);
             LocalDate date = planningDates.get(i);
 
-            OrderData morning = tryBuildMorningOrder(orderIdSeq, expert, customers, backOffice, availability, dayAbsences, date, config, random);
-            if (morning != null) { orders.add(morning); orderIdSeq++; }
+            List<OrderData> morningOrders = tryBuildMorningOrders(orderIdSeq, expert, customers, backOffice, availability, dayAbsences, date, config);
+            if (morningOrders != null) {
+                orders.addAll(morningOrders);
+                orderIdSeq = orderIdSeq + morningOrders.size();
+            }
 
-            OrderData afternoon = tryBuildAfternoonOrder(orderIdSeq, expert, customers, backOffice, availability, dayAbsences, date, config, random);
-            if (afternoon != null) { orders.add(afternoon); orderIdSeq++; }
+            List<OrderData> afternoonOrders = tryBuildAfternoonOrders(orderIdSeq, expert, customers, backOffice, availability, dayAbsences, date, config);
+            if (afternoonOrders != null) {
+                orders.addAll(afternoonOrders);
+                orderIdSeq = orderIdSeq + afternoonOrders.size();
+            }
         }
         return orders;
     }
 
-    private static OrderData tryBuildMorningOrder(int orderId, ExpertData expert,
-            List<CustomerData> customers, BackOfficeData backOffice,
-            AvailabilityData availability, List<AbsenceData> dayAbsences,
-            LocalDate date, GeneratorConfig config, Random random) {
+    private List<OrderData> tryBuildMorningOrders(int startOrderId,
+                                                  ExpertData expert,
+                                                  List<CustomerData> customers,
+                                                  BackOfficeData backOffice,
+                                                  AvailabilityData availability,
+                                                  List<AbsenceData> dayAbsences,
+                                                  LocalDate date,
+                                                  GeneratorConfig config) {
         LocalTime windowEnd = minTime(availability.getEndTime(), LUNCH_START);
         if (!windowEnd.isAfter(availability.getStartTime())) return null;
 
         int effectiveMinutes = effectiveMinutesInWindow(availability.getStartTime(), windowEnd, dayAbsences);
-        String duration = morningDurationFor(effectiveMinutes, random);
-        if (duration == null) return null;
+        List<Duration> durations = morningDurations(effectiveMinutes);
+        if (durations.isEmpty())
+            return null;
 
-        return buildOrderForSlot(orderId, expert, customers, backOffice, date, availability.getStartTime(), duration, config, random);
+        final List<OrderData> orders = new ArrayList<>();
+        for (int i = 0; i < durations.size(); i++) {
+            final Duration duration = durations.get(i);
+            orders.add(buildOrderForSlot(startOrderId + i, expert, customers, backOffice, date, availability.getStartTime(), duration, config));
+        }
+
+        return orders;
     }
 
-    private static OrderData tryBuildAfternoonOrder(int orderId, ExpertData expert,
-            List<CustomerData> customers, BackOfficeData backOffice,
-            AvailabilityData availability, List<AbsenceData> dayAbsences,
-            LocalDate date, GeneratorConfig config, Random random) {
+    private List<OrderData> tryBuildAfternoonOrders(int startOrderId,
+                                                    ExpertData expert,
+                                                    List<CustomerData> customers,
+                                                    BackOfficeData backOffice,
+                                                    AvailabilityData availability,
+                                                    List<AbsenceData> dayAbsences,
+                                                    LocalDate date, GeneratorConfig config) {
         LocalTime windowStart = maxTime(availability.getStartTime(), AFTERNOON_START);
         LocalTime windowEnd = minTime(availability.getEndTime(), AFTERNOON_END);
-        if (!windowEnd.isAfter(windowStart)) return null;
+        if (! windowEnd.isAfter(windowStart))
+            return null;
 
         int effectiveMinutes = effectiveMinutesInWindow(windowStart, windowEnd, dayAbsences);
-        String duration = afternoonDurationFor(effectiveMinutes);
-        if (duration == null) return null;
+        List<Duration> durations = afternoonDurations(effectiveMinutes);
+        if (durations == null) return null;
 
-        return buildOrderForSlot(orderId, expert, customers, backOffice, date, windowStart, duration, config, random);
+        final List<OrderData> orders = new ArrayList<>();
+        for (int i = 0; i < durations.size(); i++) {
+            final Duration duration = durations.get(i);
+            orders.add(buildOrderForSlot(startOrderId + i, expert, customers, backOffice, date, windowStart, duration, config));
+        }
+
+        return orders;
     }
 
-    private static OrderData buildOrderForSlot(int orderId, ExpertData expert,
+    private OrderData buildOrderForSlot(int orderId, ExpertData expert,
             List<CustomerData> customers, BackOfficeData backOffice,
-            LocalDate date, LocalTime eventStart, String duration,
-            GeneratorConfig config, Random random) {
+            LocalDate date, LocalTime eventStart, Duration duration,
+            GeneratorConfig config) {
+
         String[] priorities = config.getOrderPriorities();
         int wd = date.getDayOfWeek().getValue();
 
@@ -252,41 +291,53 @@ public class TestDataGenerator {
                 config.getMaxDistanceFromBackOfficeKm(), random));
         order.setDueDate(date);
         order.setPriority(priorities[random.nextInt(priorities.length)]);
-        order.setDiagnosisDuration(duration);
+        order.setDiagnosisDuration(duration.toString());
         order.setRequiredSkills(pickRequiredSkillsSubset(expert.getSkills(), random));
         order.setCustomerAvailabilities(customerAvailabilityForOrder(config.getYear(), config.getCalendarWeek(), wd, eventStart));
         return order;
     }
 
-    // ─── duration rules ───────────────────────────────────────────────────────
 
-    /** Before-lunch slot: 3h+ → PT1H30M/PT2H, 2h+ → PT1H/PT1H30M, 1h+ → PT30M, else null. */
-    private static String morningDurationFor(int effectiveMinutes, Random random) {
-        if (effectiveMinutes >= 180) return random.nextBoolean() ? "PT1H30M" : "PT2H";
-        if (effectiveMinutes >= 120) return random.nextBoolean() ? "PT1H" : "PT1H30M";
-        if (effectiveMinutes >= 60) return "PT30M";
-        return null;
+    private List<Duration> morningDurations(int effectiveMinutes) {
+        return buildDurations(effectiveMinutes);
     }
 
-    /** 13:00–16:00 slot: full 3h → PT2H, 1.5h+ → PT1H30M, 1h+ → PT1H, 30m+ → PT30M, else null. */
-    private static String afternoonDurationFor(int effectiveMinutes) {
-        if (effectiveMinutes >= 180) return "PT2H";
-        if (effectiveMinutes >= 90) return "PT1H30M";
-        if (effectiveMinutes >= 60) return "PT1H";
-        if (effectiveMinutes >= 30) return "PT30M";
-        return null;
+
+    private List<Duration> afternoonDurations(int effectiveMinutes) {
+        return buildDurations(effectiveMinutes);
     }
 
-    // ─── availability / absence lookups ──────────────────────────────────────
+    private List<Duration> buildDurations(final int effectiveMinutes) {
+        final List<Duration> durations = new ArrayList<>();
 
-    private static AvailabilityData findAvailabilityForDay(ExpertData expert, int wd) {
+        final List<Duration> durationConstants = Arrays.asList(config.getOrderDurations());
+
+        Duration total = Duration.ofMinutes(effectiveMinutes);
+        while (total.isPositive()) {
+            final Duration specificDuration = durationConstants.get(random.nextInt(durationConstants.size()));
+            total = total.minus(specificDuration);
+
+            if (total.isPositive()) {
+                durations.add(specificDuration);
+            } else {
+                break;
+            }
+
+            // travel time
+            total = total.minus(Duration.ofMinutes(config.getAvarageTravelDurationInMinutes()));
+        }
+
+        return durations;
+    }
+
+    private AvailabilityData findAvailabilityForDay(ExpertData expert, int wd) {
         if (expert.getAvailabilities() == null) return null;
         return expert.getAvailabilities().stream()
                 .filter(a -> a.getDayOfWeek() == DayOfWeek.of(wd))
                 .findFirst().orElse(null);
     }
 
-    private static List<AbsenceData> findAbsencesForDay(ExpertData expert, int wd) {
+    private List<AbsenceData> findAbsencesForDay(ExpertData expert, int wd) {
         if (expert.getAbsences() == null) return List.of();
         return expert.getAbsences().stream()
                 .filter(a -> a.getDayOfWeek() == DayOfWeek.of(wd))
@@ -294,7 +345,7 @@ public class TestDataGenerator {
     }
 
     /** Total available minutes in [windowStart, windowEnd] minus any absence overlap. */
-    private static int effectiveMinutesInWindow(LocalTime windowStart, LocalTime windowEnd, List<AbsenceData> absences) {
+    private int effectiveMinutesInWindow(LocalTime windowStart, LocalTime windowEnd, List<AbsenceData> absences) {
         int minutes = (int) Duration.between(windowStart, windowEnd).toMinutes();
         for (AbsenceData absence : absences) {
             LocalTime overlapStart = maxTime(absence.getStartTime(), windowStart);
@@ -306,13 +357,8 @@ public class TestDataGenerator {
         return Math.max(0, minutes);
     }
 
-    // ─── customer availability ────────────────────────────────────────────────
-
-    private static final LocalTime CUSTOMER_AVAILABILITY_DAY_START = LocalTime.of(9, 0);
-    private static final LocalTime CUSTOMER_AVAILABILITY_DAY_END = LocalTime.of(18, 0);
-
     /** Customer window = [eventStart − 1h, eventStart + 1h], clamped to 09:00–18:00. */
-    private static List<Availability> customerAvailabilityForOrder(int year, int calendarWeek, int wd, LocalTime eventStart) {
+    private List<Availability> customerAvailabilityForOrder(int year, int calendarWeek, int wd, LocalTime eventStart) {
         LocalTime start = maxTime(eventStart.minusHours(1), CUSTOMER_AVAILABILITY_DAY_START);
         LocalTime end = minTime(eventStart.plusHours(1), CUSTOMER_AVAILABILITY_DAY_END);
 
@@ -325,9 +371,7 @@ public class TestDataGenerator {
         return List.of(availability);
     }
 
-    // ─── skill helpers ────────────────────────────────────────────────────────
-
-    private static List<String> randomSkillNamesFrom(List<SkillData> skills, Random random) {
+    private List<String> randomSkillNamesFrom(List<SkillData> skills, Random random) {
         if (skills.isEmpty()) return List.of("Electrical");
         int howMany = Math.max(1, random.nextInt(skills.size()) + 1);
         List<String> names = new ArrayList<>(skills.stream().map(SkillData::getName).toList());
@@ -335,7 +379,7 @@ public class TestDataGenerator {
         return names.subList(0, Math.min(howMany, names.size()));
     }
 
-    private static List<String> pickRequiredSkillsSubset(List<String> expertSkills, Random random) {
+    private List<String> pickRequiredSkillsSubset(List<String> expertSkills, Random random) {
         if (expertSkills == null || expertSkills.isEmpty()) return List.of("Electrical");
         List<String> copy = new ArrayList<>(expertSkills);
         int subsetSize = random.nextInt(copy.size()) + 1;
@@ -343,9 +387,7 @@ public class TestDataGenerator {
         return new ArrayList<>(copy.subList(0, subsetSize));
     }
 
-    // ─── availability / absence builders ─────────────────────────────────────
-
-    private static List<AvailabilityData> reducedDayAvailabilities(int year, int calendarWeek, int[] weekWorkingDays) {
+    private List<AvailabilityData> reducedDayAvailabilities(int year, int calendarWeek, int[] weekWorkingDays) {
         List<AvailabilityData> availabilities = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData availability = new AvailabilityData();
@@ -359,7 +401,7 @@ public class TestDataGenerator {
         return availabilities;
     }
 
-    private static List<AvailabilityData> fullDayAvailabilities(int year, int calendarWeek, int[] weekWorkingDays) {
+    private List<AvailabilityData> fullDayAvailabilities(int year, int calendarWeek, int[] weekWorkingDays) {
         List<AvailabilityData> availabilities = new ArrayList<>();
         for (int wd : weekWorkingDays) {
             AvailabilityData availability = new AvailabilityData();
@@ -373,7 +415,7 @@ public class TestDataGenerator {
         return availabilities;
     }
 
-    private static List<AbsenceData> randomLeaveAbsences(int year, int calendarWeek, int[] weekWorkingDays, Random random) {
+    private List<AbsenceData> randomLeaveAbsences(int year, int calendarWeek, int[] weekWorkingDays, Random random) {
         if (weekWorkingDays.length == 0) return List.of();
         int wd = weekWorkingDays[random.nextInt(weekWorkingDays.length)];
         AbsenceData absence = new AbsenceData();
@@ -395,7 +437,7 @@ public class TestDataGenerator {
      * Uniform random point within a geographic disk of radius {@code maxRadiusKm} around
      * ({@code centerLatDeg}, {@code centerLonDeg}) (great-circle distance).
      */
-    static LocationData randomLocationNear(double centerLatDeg, double centerLonDeg, double maxRadiusKm, Random random) {
+    LocationData randomLocationNear(double centerLatDeg, double centerLonDeg, double maxRadiusKm, Random random) {
         double distKm = maxRadiusKm * Math.sqrt(random.nextDouble());
         double bearing = 2.0 * Math.PI * random.nextDouble();
 
@@ -417,7 +459,7 @@ public class TestDataGenerator {
     /**
      * Great-circle distance between two WGS84-like coordinates in kilometers.
      */
-    static double haversineKm(double lat1Deg, double lon1Deg, double lat2Deg, double lon2Deg) {
+    double haversineKm(double lat1Deg, double lon1Deg, double lat2Deg, double lon2Deg) {
         double lat1 = Math.toRadians(lat1Deg);
         double lat2 = Math.toRadians(lat2Deg);
         double dLat = lat2 - lat1;
@@ -427,15 +469,15 @@ public class TestDataGenerator {
         return 2.0 * EARTH_RADIUS_KM * Math.asin(Math.min(1.0, Math.sqrt(h)));
     }
 
-    private static List<LocalDate> planningDatesForWeek(int year, int calendarWeek, int[] weekWorkingDays) {
+    private List<LocalDate> planningDatesForWeek(int year, int calendarWeek, int[] weekWorkingDays) {
         List<LocalDate> dates = new ArrayList<>();
         for (int wd : weekWorkingDays) {
-            dates.add(HELPER.calculateDate(year, calendarWeek, wd));
+            dates.add(helper.calculateDate(year, calendarWeek, wd));
         }
         return dates;
     }
 
-    private static LocationData randomLocationInBounds(double minLat, double maxLat,
+    private LocationData randomLocationInBounds(double minLat, double maxLat,
             double minLon, double maxLon, Random random) {
         LocationData location = new LocationData();
         location.setLatitude(minLat + (maxLat - minLat) * random.nextDouble());
@@ -443,11 +485,11 @@ public class TestDataGenerator {
         return location;
     }
 
-    private static LocalTime minTime(LocalTime a, LocalTime b) {
+    private LocalTime minTime(LocalTime a, LocalTime b) {
         return a.isBefore(b) ? a : b;
     }
 
-    private static LocalTime maxTime(LocalTime a, LocalTime b) {
+    private LocalTime maxTime(LocalTime a, LocalTime b) {
         return a.isAfter(b) ? a : b;
     }
 }

@@ -1,5 +1,7 @@
 package org.imd.expertschedule.io.generator;
 
+import java.time.Duration;
+
 /**
  * Preset configurations for different dataset sizes.
  * Use with {@link TestDataGenerator#generate(GeneratorConfig, java.nio.file.Path)}.
@@ -22,10 +24,11 @@ public final class GeneratorConfigPresets {
         config.setNumOffices(1);
         config.setExpertsPerBackOffice(5);
         config.setOrdersPerExpert(5);
-        config.setExpertsWithUndefaultAvailability(1);
-        config.setExpertsWithAbsence(1);
+        config.setExpertsPerOfficeWithUndefaultAvailability(1);
+        config.setExpertsPerOfficeWithAbsence(1);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] {"PT30M", "PT1H", "PT1H30M", "PT2H"});
+        config.setOrderDurations(new Duration[] {Duration.parse("PT30M"), Duration.parse("PT1H"),
+                                                 Duration.parse("PT1H30M"), Duration.parse("PT2H")});
         config.setCustomerAvailabilityTimeWindowInMinutes(CUSTOMER_AVAILABILITY_TW);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -42,10 +45,11 @@ public final class GeneratorConfigPresets {
         config.setNumOffices(2);
         config.setExpertsPerBackOffice(5);
         config.setOrdersPerExpert(5);
-        config.setExpertsWithUndefaultAvailability(2);
-        config.setExpertsWithAbsence(1);
+        config.setExpertsPerOfficeWithUndefaultAvailability(2);
+        config.setExpertsPerOfficeWithAbsence(1);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] {"PT30M", "PT1H", "PT1H30M"});
+        config.setOrderDurations(new Duration[] {Duration.parse("PT30M"), Duration.parse("PT1H"),
+                Duration.parse("PT1H30M")});
         config.setCustomerAvailabilityTimeWindowInMinutes(CUSTOMER_AVAILABILITY_TW);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -62,10 +66,11 @@ public final class GeneratorConfigPresets {
         config.setNumOffices(3);
         config.setExpertsPerBackOffice(10);
         config.setOrdersPerExpert(10);
-        config.setExpertsWithUndefaultAvailability(2);
-        config.setExpertsWithAbsence(1);
+        config.setExpertsPerOfficeWithUndefaultAvailability(2);
+        config.setExpertsPerOfficeWithAbsence(1);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] {"PT30M", "PT1H", "PT1H30M"});
+        config.setOrderDurations(new Duration[] {Duration.parse("PT30M"), Duration.parse("PT1H"),
+                Duration.parse("PT1H30M")});
         config.setCustomerAvailabilityTimeWindowInMinutes(CUSTOMER_AVAILABILITY_TW);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -82,10 +87,11 @@ public final class GeneratorConfigPresets {
         config.setNumOffices(3);
         config.setExpertsPerBackOffice(20);
         config.setOrdersPerExpert(10);
-        config.setExpertsWithUndefaultAvailability(2);
-        config.setExpertsWithAbsence(1);
+        config.setExpertsPerOfficeWithUndefaultAvailability(4);
+        config.setExpertsPerOfficeWithAbsence(2);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] {"PT30M", "PT1H", "PT1H30M"});
+        config.setOrderDurations(new Duration[] {Duration.parse("PT30M"), Duration.parse("PT1H"),
+                Duration.parse("PT1H30M")});
         config.setCustomerAvailabilityTimeWindowInMinutes(CUSTOMER_AVAILABILITY_TW);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -102,10 +108,11 @@ public final class GeneratorConfigPresets {
         config.setNumOffices(5);
         config.setExpertsPerBackOffice(50);
         config.setOrdersPerExpert(16);
-        config.setExpertsWithUndefaultAvailability(2);
-        config.setExpertsWithAbsence(1);
+        config.setExpertsPerOfficeWithUndefaultAvailability(20);
+        config.setExpertsPerOfficeWithAbsence(10);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] {"PT30M", "PT45M", "PT1H", "PT1H15M"});
+        config.setOrderDurations(new Duration[] {Duration.parse("PT30M"), Duration.parse("PT45M"),
+                Duration.parse("PT1H"), Duration.parse("PT1H15M")});
         config.setCustomerAvailabilityTimeWindowInMinutes(CUSTOMER_AVAILABILITY_TW);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
@@ -120,12 +127,13 @@ public final class GeneratorConfigPresets {
         config.setNumSkills(15);
         config.setNumCustomers(100);
         config.setNumOffices(10);
-        config.setExpertsPerBackOffice(20);
+        config.setExpertsPerBackOffice(100);
         config.setOrdersPerExpert(11);
-        config.setExpertsWithUndefaultAvailability(3);
-        config.setExpertsWithAbsence(2);
+        config.setExpertsPerOfficeWithUndefaultAvailability(20);
+        config.setExpertsPerOfficeWithAbsence(10);
         config.setOrderPriorities(new String[] {"LOW", "MEDIUM", "HIGH"});
-        config.setOrderDurations(new String[] {"PT30M", "PT45M", "PT1H", "PT1H15M", "PT1H30M"});
+        config.setOrderDurations(new Duration[] {Duration.parse("PT30M"), Duration.parse("PT45M"),
+                Duration.parse("PT1H"), Duration.parse("PT1H15M"), Duration.parse("PT1H30M")});
         config.setCustomerAvailabilityTimeWindowInMinutes(CUSTOMER_AVAILABILITY_TW);
         config.setYear(PLANNING_YEAR);
         config.setCalendarWeek(CALENDAR_WEEK);
