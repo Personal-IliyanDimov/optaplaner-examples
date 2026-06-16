@@ -3,6 +3,8 @@ package org.imd.expertschedule.io.generator;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
+
 /**
  * Configuration for generating a planning dataset.
  * Use presets from {@link GeneratorConfigPresets} or construct with setters.
@@ -14,16 +16,16 @@ public class GeneratorConfig {
     private String fileName;
 
     private int numSkills;
-    private int numExperts;
     private int numCustomers;
-    private int numOrders;
 
     private int numOffices;
-    private int expertsWithUndefaultAvailability;
-    private int expertsWithAbsence;
+    private int expertsPerBackOffice;
+    private int ordersPerExpert;
+    private int expertsPerOfficeWithUndefaultAvailability;
+    private int expertsPerOfficeWithAbsence;
 
     private String[] orderPriorities;
-    private String[] orderDurations;
+    private Duration[] orderDurations;
 
     private int customerAvailabilityTimeWindowInMinutes = 240;
 
@@ -32,4 +34,9 @@ public class GeneratorConfig {
     private int[] weekWorkingDays;
 
     private double maxDistanceFromBackOfficeKm;
+
+    private int totalExperts;
+    private int totalOrders;
+
+    private int avarageTravelDurationInMinutes = 30;
 }

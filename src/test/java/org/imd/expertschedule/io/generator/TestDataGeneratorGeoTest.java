@@ -16,15 +16,15 @@ class TestDataGeneratorGeoTest {
         double centerLon = 13.0 + random.nextDouble();
         double maxKm = 100.0;
 
-        LocationData p = TestDataGenerator.randomLocationNear(centerLat, centerLon, maxKm, random);
-        double d = TestDataGenerator.haversineKm(centerLat, centerLon, p.getLatitude(), p.getLongitude());
+        LocationData p = TestDataGeneratorBackUp.randomLocationNear(centerLat, centerLon, maxKm, random);
+        double d = TestDataGeneratorBackUp.haversineKm(centerLat, centerLon, p.getLatitude(), p.getLongitude());
 
         assertTrue(d <= maxKm + 1e-6, "distance " + d + " should be <= " + maxKm);
     }
 
     @RepeatedTest(10)
     void haversineKm_matchesApproximateShortChord() {
-        double d = TestDataGenerator.haversineKm(52.0, 13.0, 52.1, 13.0);
+        double d = TestDataGeneratorBackUp.haversineKm(52.0, 13.0, 52.1, 13.0);
         assertTrue(d > 10 && d < 15);
     }
 }

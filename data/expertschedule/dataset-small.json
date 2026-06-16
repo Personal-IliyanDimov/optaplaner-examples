@@ -2,19 +2,22 @@
   "metadata" : {
     "fileName" : "dataset-small.json",
     "numSkills" : 15,
-    "numExperts" : 5,
     "numCustomers" : 10,
-    "numOrders" : 30,
-    "numOffices" : 1,
-    "expertsWithUndefaultAvailability" : 2,
-    "expertsWithAbsence" : 1,
+    "numOffices" : 2,
+    "expertsPerBackOffice" : 5,
+    "ordersPerExpert" : 5,
+    "expertsPerOfficeWithUndefaultAvailability" : 2,
+    "expertsPerOfficeWithAbsence" : 1,
     "orderPriorities" : [ "LOW", "MEDIUM", "HIGH" ],
-    "orderDurations" : [ "PT30M", "PT1H", "PT1H30M" ],
-    "customerAvailabilityTimeWindowInMinutes" : 180,
+    "orderDurations" : [ 1800.000000000, 3600.000000000, 5400.000000000 ],
+    "customerAvailabilityTimeWindowInMinutes" : 240,
     "year" : 2026,
     "calendarWeek" : 10,
     "weekWorkingDays" : [ 1, 2, 3, 4, 5 ],
-    "maxDistanceFromBackOfficeKm" : 20.0
+    "maxDistanceFromBackOfficeKm" : 20.0,
+    "totalExperts" : 10,
+    "totalOrders" : 163,
+    "avarageTravelDurationInMinutes" : 30
   },
   "skills" : [ {
     "name" : "Electrical"
@@ -51,8 +54,15 @@
     "id" : 1,
     "name" : "BackOffice-1",
     "location" : {
-      "latitude" : 8.187452557985077,
-      "longitude" : 3.8181127519392426
+      "latitude" : 4.2818587131751675,
+      "longitude" : 1.060748597614094
+    }
+  }, {
+    "id" : 2,
+    "name" : "BackOffice-2",
+    "location" : {
+      "latitude" : 2.871688997871218,
+      "longitude" : 3.578513388298478
     }
   } ],
   "customers" : [ {
@@ -90,30 +100,30 @@
     "id" : 1,
     "name" : "Alice",
     "backOfficeId" : 1,
-    "skills" : [ "Security", "Exclusive", "Engine-Petrol", "Exterior", "Tires", "Other", "Engine-Diesel", "Interior", "Electrical", "Software" ],
+    "skills" : [ "Total Damage", "Interior", "Hardware", "Painting-Part", "Other", "Electrical", "Engine-Petrol", "Glass", "Software", "Security", "Tires", "Painting-Scratches" ],
     "availabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
+      "startTime" : [ 10, 15 ],
+      "endTime" : [ 14, 0 ]
     }, {
       "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "TUESDAY",
       "startTime" : [ 9, 30 ],
-      "endTime" : [ 14, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 10, 15 ],
       "endTime" : [ 13, 0 ]
     }, {
       "year" : 2026,
       "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
       "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 9, 30 ],
+      "startTime" : [ 9, 15 ],
       "endTime" : [ 13, 0 ]
     }, {
       "year" : 2026,
@@ -127,44 +137,44 @@
     "id" : 2,
     "name" : "Bob",
     "backOfficeId" : 1,
-    "skills" : [ "Painting-Part", "Tires", "Hardware", "Engine-Diesel", "Exterior", "Interior", "Exclusive", "Other", "Glass", "Security", "Total Damage", "Engine-Petrol" ],
+    "skills" : [ "Other", "Painting-Part", "Painting-Scratches", "Engine-Petrol", "Tires", "Exterior", "Electrical", "Interior", "Glass", "Software", "Exclusive", "Engine-Diesel" ],
     "availabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "MONDAY",
       "startTime" : [ 10, 15 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "dayOfWeek" : "TUESDAY",
-      "startTime" : [ 10, 30 ],
       "endTime" : [ 14, 0 ]
     }, {
       "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "WEDNESDAY",
-      "startTime" : [ 10, 30 ],
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 9, 30 ],
       "endTime" : [ 13, 0 ]
     }, {
       "year" : 2026,
       "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
       "dayOfWeek" : "THURSDAY",
-      "startTime" : [ 10, 15 ],
+      "startTime" : [ 9, 15 ],
       "endTime" : [ 13, 0 ]
     }, {
       "year" : 2026,
       "calendarWeek" : 10,
       "dayOfWeek" : "FRIDAY",
       "startTime" : [ 10, 30 ],
-      "endTime" : [ 13, 0 ]
+      "endTime" : [ 14, 0 ]
     } ],
     "absences" : [ ]
   }, {
     "id" : 3,
     "name" : "Carol",
     "backOfficeId" : 1,
-    "skills" : [ "Exterior", "Interior", "Hardware", "Painting-Scratches", "Total Damage", "Security", "Software" ],
+    "skills" : [ "Painting-Scratches", "Engine-Petrol", "Security" ],
     "availabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
@@ -201,7 +211,7 @@
     "id" : 4,
     "name" : "Dave",
     "backOfficeId" : 1,
-    "skills" : [ "Engine-Petrol", "Tires", "Painting-Part", "Glass", "Hardware", "Engine-Diesel", "Interior", "Exclusive", "Electrical", "Security", "Painting-Scratches", "Total Damage", "Other" ],
+    "skills" : [ "Exclusive", "Hardware", "Painting-Part", "Total Damage", "Painting-Scratches", "Electrical", "Security", "Other", "Glass", "Engine-Diesel", "Engine-Petrol" ],
     "availabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
@@ -238,7 +248,7 @@
     "id" : 5,
     "name" : "Eve",
     "backOfficeId" : 1,
-    "skills" : [ "Hardware" ],
+    "skills" : [ "Engine-Diesel" ],
     "availabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
@@ -273,1226 +283,1449 @@
     "absences" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "dayOfWeek" : "MONDAY",
+      "dayOfWeek" : "THURSDAY",
       "startTime" : [ 9, 30 ],
       "endTime" : [ 12, 0 ],
+      "reason" : "Leave"
+    } ]
+  }, {
+    "id" : 6,
+    "name" : "Alice",
+    "backOfficeId" : 2,
+    "skills" : [ "Electrical", "Total Damage", "Exterior", "Other", "Security", "Interior", "Hardware", "Painting-Part", "Painting-Scratches" ],
+    "availabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 10, 15 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 13, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 13, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 0 ]
+    } ],
+    "absences" : [ ]
+  }, {
+    "id" : 7,
+    "name" : "Bob",
+    "backOfficeId" : 2,
+    "skills" : [ "Electrical", "Total Damage", "Engine-Diesel", "Engine-Petrol", "Painting-Scratches" ],
+    "availabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 10, 15 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 13, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 10, 0 ],
+      "endTime" : [ 14, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 13, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 10, 30 ],
+      "endTime" : [ 14, 0 ]
+    } ],
+    "absences" : [ ]
+  }, {
+    "id" : 8,
+    "name" : "Carol",
+    "backOfficeId" : 2,
+    "skills" : [ "Exclusive", "Exterior", "Painting-Part", "Other", "Painting-Scratches", "Electrical", "Hardware", "Interior", "Software" ],
+    "availabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    } ],
+    "absences" : [ ]
+  }, {
+    "id" : 9,
+    "name" : "Dave",
+    "backOfficeId" : 2,
+    "skills" : [ "Glass", "Interior", "Engine-Diesel", "Total Damage", "Painting-Scratches", "Exclusive", "Electrical", "Security", "Other", "Hardware", "Painting-Part", "Software", "Engine-Petrol", "Exterior" ],
+    "availabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    } ],
+    "absences" : [ ]
+  }, {
+    "id" : 10,
+    "name" : "Eve",
+    "backOfficeId" : 2,
+    "skills" : [ "Software", "Total Damage", "Hardware", "Interior" ],
+    "availabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "MONDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "TUESDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "WEDNESDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "THURSDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    }, {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 18, 0 ]
+    } ],
+    "absences" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "dayOfWeek" : "FRIDAY",
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 13, 0 ],
       "reason" : "Leave"
     } ]
   } ],
   "orders" : [ {
     "id" : 1,
     "code" : "ORDER-1",
-    "customerId" : 1,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 8.148780666628621,
-      "longitude" : 3.9267640485493884
+      "latitude" : 4.403405104921258,
+      "longitude" : 1.0360425120026464
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 3 ],
+    "requiredSkills" : [ "Electrical", "Glass", "Tires", "Painting-Scratches", "Software", "Painting-Part", "Interior", "Total Damage", "Security", "Hardware" ],
+    "dueDate" : [ 2026, 3, 2 ],
     "priority" : "HIGH",
-    "diagnosisDuration" : "PT30M",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 15, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 14, 45 ],
-      "endTime" : [ 17, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 10, 30 ],
-      "endTime" : [ 13, 30 ]
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 11, 15 ]
     } ]
   }, {
     "id" : 2,
     "code" : "ORDER-2",
-    "customerId" : 4,
+    "customerId" : 9,
     "location" : {
-      "latitude" : 8.233719481345835,
-      "longitude" : 3.969421545916549
+      "latitude" : 4.252877465379774,
+      "longitude" : 1.1570838975317703
     },
-    "requiredSkills" : [ "Security", "Exclusive", "Software", "Interior", "Engine-Petrol", "Electrical" ],
-    "dueDate" : [ 2026, 3, 4 ],
-    "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H",
+    "requiredSkills" : [ "Software", "Hardware", "Security", "Engine-Petrol", "Total Damage", "Painting-Part" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 2,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 12, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 30 ]
     } ]
   }, {
     "id" : 3,
     "code" : "ORDER-3",
-    "customerId" : 5,
+    "customerId" : 10,
     "location" : {
-      "latitude" : 8.116249203916837,
-      "longitude" : 3.863056712874838
+      "latitude" : 4.2368376332138675,
+      "longitude" : 1.192240889505134
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 5 ],
-    "priority" : "MEDIUM",
+    "requiredSkills" : [ "Hardware", "Electrical", "Tires", "Painting-Part", "Engine-Petrol", "Other" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
     "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 13, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 14, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 3,
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 13, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 11, 0 ]
     } ]
   }, {
     "id" : 4,
     "code" : "ORDER-4",
-    "customerId" : 9,
+    "customerId" : 10,
     "location" : {
-      "latitude" : 8.343049714761701,
-      "longitude" : 3.8164106687416495
+      "latitude" : 4.18691721381257,
+      "longitude" : 1.0499750455925752
     },
-    "requiredSkills" : [ "Exclusive", "Engine-Petrol", "Engine-Diesel", "Painting-Part" ],
-    "dueDate" : [ 2026, 3, 6 ],
-    "priority" : "HIGH",
+    "requiredSkills" : [ "Other", "Total Damage", "Interior", "Electrical", "Security", "Painting-Part", "Tires", "Glass", "Engine-Petrol", "Hardware", "Painting-Scratches", "Software" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 4,
       "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
+      "endTime" : [ 10, 15 ]
     } ]
   }, {
     "id" : 5,
     "code" : "ORDER-5",
-    "customerId" : 4,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 8.289492370523732,
-      "longitude" : 3.855593467731226
+      "latitude" : 4.390393573029106,
+      "longitude" : 1.0452147814723818
     },
-    "requiredSkills" : [ "Painting-Scratches", "Exterior", "Interior", "Security", "Software", "Hardware" ],
-    "dueDate" : [ 2026, 3, 7 ],
+    "requiredSkills" : [ "Tires" ],
+    "dueDate" : [ 2026, 3, 5 ],
     "priority" : "LOW",
-    "diagnosisDuration" : "PT1H",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 15, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 4,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 11, 0 ],
-      "endTime" : [ 14, 0 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 15 ]
     } ]
   }, {
     "id" : 6,
     "code" : "ORDER-6",
-    "customerId" : 2,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 8.335835200483201,
-      "longitude" : 3.7413864295694075
+      "latitude" : 4.423173892144006,
+      "longitude" : 1.14418098249698
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 3 ],
+    "requiredSkills" : [ "Security", "Electrical", "Glass", "Engine-Petrol", "Painting-Part", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 6 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H30M",
+    "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 13, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 11, 30 ]
     } ]
   }, {
     "id" : 7,
     "code" : "ORDER-7",
     "customerId" : 10,
     "location" : {
-      "latitude" : 8.314942194684413,
-      "longitude" : 3.9326379351154794
+      "latitude" : 4.371424708657275,
+      "longitude" : 1.1143160651482709
     },
-    "requiredSkills" : [ "Engine-Petrol", "Exterior", "Other" ],
-    "dueDate" : [ 2026, 3, 4 ],
-    "priority" : "MEDIUM",
+    "requiredSkills" : [ "Engine-Petrol", "Interior", "Painting-Scratches", "Security", "Electrical", "Other", "Tires", "Painting-Part", "Total Damage", "Glass", "Software" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 13, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 11, 0 ],
+      "startTime" : [ 12, 0 ],
       "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 8,
     "code" : "ORDER-8",
-    "customerId" : 4,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 8.126546673407894,
-      "longitude" : 3.8572570152177064
+      "latitude" : 4.1380458045625685,
+      "longitude" : 1.0444058300090369
     },
-    "requiredSkills" : [ "Tires", "Engine-Petrol", "Electrical", "Security", "Software", "Interior", "Exclusive", "Other", "Engine-Diesel", "Exterior" ],
-    "dueDate" : [ 2026, 3, 5 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
-    "customerAvailabilities" : [ {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 14, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 15, 45 ]
-    } ]
-  }, {
-    "id" : 9,
-    "code" : "ORDER-9",
-    "customerId" : 3,
-    "location" : {
-      "latitude" : 8.094623763298582,
-      "longitude" : 3.8453382562897036
-    },
-    "requiredSkills" : [ "Painting-Part", "Other", "Exclusive", "Engine-Petrol", "Tires" ],
-    "dueDate" : [ 2026, 3, 6 ],
-    "priority" : "HIGH",
+    "requiredSkills" : [ "Engine-Diesel", "Interior", "Software", "Painting-Part", "Exclusive", "Tires", "Glass", "Exterior", "Painting-Scratches", "Engine-Petrol", "Electrical", "Other" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
     "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
       "startTime" : [ 9, 15 ],
-      "endTime" : [ 12, 15 ]
-    }, {
+      "endTime" : [ 11, 15 ]
+    } ]
+  }, {
+    "id" : 9,
+    "code" : "ORDER-9",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 4.412959193626218,
+      "longitude" : 0.9551139094165918
+    },
+    "requiredSkills" : [ "Exterior" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 14, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 13, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 14, 45 ],
-      "endTime" : [ 17, 45 ]
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 10,
     "code" : "ORDER-10",
-    "customerId" : 5,
+    "customerId" : 10,
     "location" : {
-      "latitude" : 8.311474284238393,
-      "longitude" : 3.803125925944991
+      "latitude" : 4.1610598338362275,
+      "longitude" : 0.9817522847508087
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 7 ],
-    "priority" : "LOW",
+    "requiredSkills" : [ "Painting-Part", "Exclusive", "Exterior", "Engine-Diesel", "Painting-Scratches", "Tires", "Electrical", "Software" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 2,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
       "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 14, 45 ],
-      "endTime" : [ 17, 45 ]
+      "endTime" : [ 10, 30 ]
     } ]
   }, {
     "id" : 11,
     "code" : "ORDER-11",
-    "customerId" : 8,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 8.206007008008525,
-      "longitude" : 3.847792680663879
+      "latitude" : 4.296925175156225,
+      "longitude" : 1.0659126270442087
     },
-    "requiredSkills" : [ "Tires", "Electrical" ],
-    "dueDate" : [ 2026, 3, 3 ],
-    "priority" : "HIGH",
+    "requiredSkills" : [ "Tires", "Glass" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
     "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 13, 0 ],
-      "endTime" : [ 16, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 3,
-      "startTime" : [ 14, 45 ],
-      "endTime" : [ 17, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 11, 0 ]
     } ]
   }, {
     "id" : 12,
     "code" : "ORDER-12",
-    "customerId" : 7,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 8.186057738117231,
-      "longitude" : 3.9066673430783574
+      "latitude" : 4.13570189019462,
+      "longitude" : 1.1176037385370985
     },
-    "requiredSkills" : [ "Exterior", "Painting-Scratches", "Interior", "Hardware", "Security", "Total Damage", "Software" ],
-    "dueDate" : [ 2026, 3, 4 ],
+    "requiredSkills" : [ "Painting-Part", "Interior", "Engine-Petrol", "Tires" ],
+    "dueDate" : [ 2026, 3, 5 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H30M",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 12, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 15, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 14, 30 ],
-      "endTime" : [ 17, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 4,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 15 ]
     } ]
   }, {
     "id" : 13,
     "code" : "ORDER-13",
-    "customerId" : 3,
+    "customerId" : 7,
     "location" : {
-      "latitude" : 8.133102256034011,
-      "longitude" : 3.867971649613643
+      "latitude" : 4.195667079401443,
+      "longitude" : 0.9029844953945562
     },
-    "requiredSkills" : [ "Hardware" ],
+    "requiredSkills" : [ "Interior", "Glass", "Tires", "Exclusive", "Other", "Electrical", "Exterior", "Engine-Diesel", "Engine-Petrol", "Painting-Scratches", "Software", "Painting-Part" ],
     "dueDate" : [ 2026, 3, 5 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT30M",
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 15, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 4,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 15 ]
     } ]
   }, {
     "id" : 14,
     "code" : "ORDER-14",
-    "customerId" : 4,
+    "customerId" : 3,
     "location" : {
-      "latitude" : 8.090658686872766,
-      "longitude" : 3.863229764538251
+      "latitude" : 4.248199999242676,
+      "longitude" : 0.9828895748927639
     },
-    "requiredSkills" : [ "Other", "Tires", "Electrical", "Painting-Scratches", "Exclusive", "Glass", "Engine-Petrol" ],
+    "requiredSkills" : [ "Other", "Tires", "Painting-Part", "Software", "Painting-Scratches", "Interior", "Exterior" ],
     "dueDate" : [ 2026, 3, 6 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 13, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 14, 45 ],
-      "endTime" : [ 17, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 11, 30 ]
     } ]
   }, {
     "id" : 15,
     "code" : "ORDER-15",
-    "customerId" : 6,
+    "customerId" : 3,
     "location" : {
-      "latitude" : 8.2790342359212,
-      "longitude" : 3.6904796962133504
+      "latitude" : 4.371315240894683,
+      "longitude" : 1.2001005655766304
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 7 ],
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H30M",
+    "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 13, 0 ],
-      "endTime" : [ 16, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 14, 30 ],
-      "endTime" : [ 17, 30 ]
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 16,
     "code" : "ORDER-16",
-    "customerId" : 4,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 8.116696709905188,
-      "longitude" : 3.7679287806723036
+      "latitude" : 4.276429660587502,
+      "longitude" : 0.9106974259602498
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 3 ],
+    "requiredSkills" : [ "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 2 ],
     "priority" : "HIGH",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 13, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 10, 15 ],
-      "endTime" : [ 13, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
     } ]
   }, {
     "id" : 17,
     "code" : "ORDER-17",
-    "customerId" : 9,
+    "customerId" : 8,
     "location" : {
-      "latitude" : 8.198053925747583,
-      "longitude" : 3.9055348133839565
+      "latitude" : 4.445683048948202,
+      "longitude" : 1.111630647108996
     },
-    "requiredSkills" : [ "Total Damage", "Painting-Part", "Glass", "Security", "Hardware", "Interior", "Other", "Exclusive", "Exterior", "Engine-Diesel", "Tires", "Engine-Petrol" ],
-    "dueDate" : [ 2026, 3, 4 ],
+    "requiredSkills" : [ "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 2 ],
     "priority" : "HIGH",
     "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 15, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
     } ]
   }, {
     "id" : 18,
     "code" : "ORDER-18",
-    "customerId" : 1,
+    "customerId" : 6,
     "location" : {
-      "latitude" : 8.104123607463372,
-      "longitude" : 3.668825869921126
+      "latitude" : 4.263679253842285,
+      "longitude" : 1.0952153260977284
     },
-    "requiredSkills" : [ "Hardware", "Painting-Scratches", "Total Damage", "Interior", "Software", "Security", "Exterior" ],
-    "dueDate" : [ 2026, 3, 5 ],
-    "priority" : "LOW",
-    "diagnosisDuration" : "PT1H30M",
-    "customerAvailabilities" : [ {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 12, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
-    } ]
-  }, {
-    "id" : 19,
-    "code" : "ORDER-19",
-    "customerId" : 3,
-    "location" : {
-      "latitude" : 8.2477892736522,
-      "longitude" : 3.925750535268621
-    },
-    "requiredSkills" : [ "Painting-Scratches", "Software", "Security", "Total Damage", "Exterior", "Hardware", "Interior" ],
-    "dueDate" : [ 2026, 3, 6 ],
+    "requiredSkills" : [ "Security" ],
+    "dueDate" : [ 2026, 3, 2 ],
     "priority" : "HIGH",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
       "startTime" : [ 12, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 19,
+    "code" : "ORDER-19",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 4.343694645200237,
+      "longitude" : 0.9777657616082989
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Painting-Scratches", "Security" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 11, 0 ],
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
       "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 20,
     "code" : "ORDER-20",
-    "customerId" : 3,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 8.210231979079463,
-      "longitude" : 3.919046158677622
+      "latitude" : 4.193501597655042,
+      "longitude" : 1.2167279604873795
     },
-    "requiredSkills" : [ "Software", "Security", "Painting-Scratches", "Hardware", "Interior" ],
-    "dueDate" : [ 2026, 3, 7 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
-    "customerAvailabilities" : [ {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 12, 45 ],
-      "endTime" : [ 15, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 14, 30 ],
-      "endTime" : [ 17, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    } ]
-  }, {
-    "id" : 21,
-    "code" : "ORDER-21",
-    "customerId" : 5,
-    "location" : {
-      "latitude" : 8.227953602187243,
-      "longitude" : 3.7691846489106933
-    },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 3 ],
-    "priority" : "LOW",
+    "requiredSkills" : [ "Painting-Scratches", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
     "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 21,
+    "code" : "ORDER-21",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.3846694745709565,
+      "longitude" : 1.0253448243228287
+    },
+    "requiredSkills" : [ "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 2,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 14, 30 ],
-      "endTime" : [ 17, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 12, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
     } ]
   }, {
     "id" : 22,
     "code" : "ORDER-22",
-    "customerId" : 3,
+    "customerId" : 4,
     "location" : {
-      "latitude" : 8.124209441779964,
-      "longitude" : 3.7061772550900995
+      "latitude" : 4.1775991748529755,
+      "longitude" : 0.9606505038087575
     },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 4 ],
-    "priority" : "HIGH",
+    "requiredSkills" : [ "Security" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
       "workDay" : 2,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 12, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 14, 15 ]
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 23,
     "code" : "ORDER-23",
     "customerId" : 5,
     "location" : {
-      "latitude" : 8.069001730730568,
-      "longitude" : 3.948429365744638
+      "latitude" : 4.121838654323973,
+      "longitude" : 1.127386768547543
     },
-    "requiredSkills" : [ "Exclusive", "Total Damage", "Other" ],
-    "dueDate" : [ 2026, 3, 5 ],
-    "priority" : "LOW",
-    "diagnosisDuration" : "PT1H",
-    "customerAvailabilities" : [ {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 10, 45 ],
-      "endTime" : [ 13, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 14, 0 ],
-      "endTime" : [ 17, 0 ]
-    } ]
-  }, {
-    "id" : 24,
-    "code" : "ORDER-24",
-    "customerId" : 7,
-    "location" : {
-      "latitude" : 8.042441101980806,
-      "longitude" : 3.8597287000333127
-    },
-    "requiredSkills" : [ "Interior" ],
-    "dueDate" : [ 2026, 3, 6 ],
+    "requiredSkills" : [ "Security", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 3 ],
     "priority" : "MEDIUM",
-    "diagnosisDuration" : "PT1H30M",
-    "customerAvailabilities" : [ {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 13, 0 ],
-      "endTime" : [ 16, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 10, 30 ],
-      "endTime" : [ 13, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 14, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    } ]
-  }, {
-    "id" : 25,
-    "code" : "ORDER-25",
-    "customerId" : 1,
-    "location" : {
-      "latitude" : 8.316995129522759,
-      "longitude" : 3.8134913997884707
-    },
-    "requiredSkills" : [ "Hardware" ],
-    "dueDate" : [ 2026, 3, 7 ],
-    "priority" : "HIGH",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 14, 15 ],
-      "endTime" : [ 17, 15 ]
-    }, {
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 24,
+    "code" : "ORDER-24",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.356375507231173,
+      "longitude" : 1.1776076534056505
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Security", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 2,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 25,
+    "code" : "ORDER-25",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.175958733983223,
+      "longitude" : 0.9494186125079905
+    },
+    "requiredSkills" : [ "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 15, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 12, 30 ],
-      "endTime" : [ 15, 30 ]
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 26,
     "code" : "ORDER-26",
-    "customerId" : 1,
+    "customerId" : 3,
     "location" : {
-      "latitude" : 8.133300367866381,
-      "longitude" : 3.8748258558730373
+      "latitude" : 4.290003051760385,
+      "longitude" : 1.1238049645878556
     },
-    "requiredSkills" : [ "Glass", "Painting-Scratches", "Electrical", "Hardware", "Painting-Part", "Total Damage", "Engine-Diesel", "Engine-Petrol", "Security", "Other", "Exclusive", "Interior" ],
-    "dueDate" : [ 2026, 3, 3 ],
-    "priority" : "HIGH",
-    "diagnosisDuration" : "PT1H",
-    "customerAvailabilities" : [ {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 13, 15 ],
-      "endTime" : [ 16, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 15, 0 ],
-      "endTime" : [ 18, 0 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 12, 15 ],
-      "endTime" : [ 15, 15 ]
-    } ]
-  }, {
-    "id" : 27,
-    "code" : "ORDER-27",
-    "customerId" : 10,
-    "location" : {
-      "latitude" : 8.299599684618098,
-      "longitude" : 3.721221986774719
-    },
-    "requiredSkills" : [ "Electrical", "Engine-Petrol", "Hardware" ],
+    "requiredSkills" : [ "Painting-Scratches" ],
     "dueDate" : [ 2026, 3, 4 ],
     "priority" : "HIGH",
     "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 11, 15 ],
-      "endTime" : [ 14, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 14, 45 ],
-      "endTime" : [ 17, 45 ]
-    }, {
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 27,
+    "code" : "ORDER-27",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.362015476230219,
+      "longitude" : 1.0160012675238541
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 3,
-      "startTime" : [ 9, 15 ],
-      "endTime" : [ 12, 15 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 4,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 5,
-      "startTime" : [ 11, 30 ],
-      "endTime" : [ 14, 30 ]
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
     } ]
   }, {
     "id" : 28,
     "code" : "ORDER-28",
-    "customerId" : 9,
+    "customerId" : 2,
     "location" : {
-      "latitude" : 8.336164618251683,
-      "longitude" : 3.747962310789557
+      "latitude" : 4.422494779887688,
+      "longitude" : 1.009126113983826
     },
-    "requiredSkills" : [ "Exclusive", "Other", "Total Damage", "Hardware", "Engine-Petrol", "Engine-Diesel", "Painting-Part", "Security" ],
+    "requiredSkills" : [ "Engine-Petrol", "Security" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 29,
+    "code" : "ORDER-29",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 4.174425240348585,
+      "longitude" : 0.9990077778356885
+    },
+    "requiredSkills" : [ "Security", "Engine-Petrol", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 30,
+    "code" : "ORDER-30",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.23745635368425,
+      "longitude" : 0.8883264664504996
+    },
+    "requiredSkills" : [ "Security", "Painting-Scratches", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 31,
+    "code" : "ORDER-31",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.388905468525102,
+      "longitude" : 1.0144728593591148
+    },
+    "requiredSkills" : [ "Security", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 32,
+    "code" : "ORDER-32",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.126408617555387,
+      "longitude" : 1.0847403014601633
+    },
+    "requiredSkills" : [ "Security", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 33,
+    "code" : "ORDER-33",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.25248097574352,
+      "longitude" : 1.1663686092327252
+    },
+    "requiredSkills" : [ "Security", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 34,
+    "code" : "ORDER-34",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.188754359832306,
+      "longitude" : 0.9678149961034159
+    },
+    "requiredSkills" : [ "Security", "Engine-Petrol", "Painting-Scratches" ],
     "dueDate" : [ 2026, 3, 5 ],
     "priority" : "MEDIUM",
     "diagnosisDuration" : "PT30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
-      "workDay" : 1,
-      "startTime" : [ 9, 30 ],
-      "endTime" : [ 12, 30 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 2,
-      "startTime" : [ 13, 45 ],
-      "endTime" : [ 16, 45 ]
-    }, {
-      "year" : 2026,
-      "calendarWeek" : 10,
-      "workDay" : 3,
-      "startTime" : [ 13, 0 ],
-      "endTime" : [ 16, 0 ]
-    }, {
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 35,
+    "code" : "ORDER-35",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 4.317040435840444,
+      "longitude" : 1.1497854758327324
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 4,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    }, {
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 36,
+    "code" : "ORDER-36",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 4.4108376396401185,
+      "longitude" : 1.0660273688697586
+    },
+    "requiredSkills" : [ "Security" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
     } ]
   }, {
-    "id" : 29,
-    "code" : "ORDER-29",
+    "id" : 37,
+    "code" : "ORDER-37",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 4.197459728568425,
+      "longitude" : 1.1097919949973563
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Security", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 38,
+    "code" : "ORDER-38",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.367676402387633,
+      "longitude" : 1.1684396938417214
+    },
+    "requiredSkills" : [ "Security", "Engine-Petrol", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 39,
+    "code" : "ORDER-39",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.365046646508259,
+      "longitude" : 0.9137465715929074
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 40,
+    "code" : "ORDER-40",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 4.188173320115696,
+      "longitude" : 0.966323163773777
+    },
+    "requiredSkills" : [ "Security", "Painting-Scratches", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 41,
+    "code" : "ORDER-41",
     "customerId" : 5,
     "location" : {
-      "latitude" : 8.14102560613663,
-      "longitude" : 3.9177897022366652
+      "latitude" : 4.4070882473927036,
+      "longitude" : 0.9972559267189843
     },
-    "requiredSkills" : [ "Painting-Scratches", "Total Damage", "Electrical", "Engine-Petrol", "Glass", "Painting-Part", "Tires", "Other", "Engine-Diesel", "Hardware", "Security", "Exclusive", "Interior" ],
+    "requiredSkills" : [ "Exclusive", "Painting-Scratches", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 42,
+    "code" : "ORDER-42",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 4.358208583944062,
+      "longitude" : 0.9888637898109869
+    },
+    "requiredSkills" : [ "Glass", "Painting-Scratches", "Painting-Part", "Security", "Electrical" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 43,
+    "code" : "ORDER-43",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 4.392352550551394,
+      "longitude" : 1.1843662024040722
+    },
+    "requiredSkills" : [ "Electrical", "Glass", "Engine-Diesel", "Painting-Scratches", "Total Damage", "Hardware" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 44,
+    "code" : "ORDER-44",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 4.308812544595867,
+      "longitude" : 1.1350659668543883
+    },
+    "requiredSkills" : [ "Security" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 45,
+    "code" : "ORDER-45",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.355419035795198,
+      "longitude" : 0.9475419939620131
+    },
+    "requiredSkills" : [ "Hardware", "Engine-Diesel", "Engine-Petrol", "Painting-Part", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 46,
+    "code" : "ORDER-46",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 4.4253109644369815,
+      "longitude" : 1.0870258436939295
+    },
+    "requiredSkills" : [ "Painting-Part", "Engine-Petrol", "Exclusive", "Painting-Scratches", "Total Damage", "Electrical", "Hardware", "Engine-Diesel", "Security", "Glass", "Other" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 47,
+    "code" : "ORDER-47",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.133981066782099,
+      "longitude" : 1.1253717174694067
+    },
+    "requiredSkills" : [ "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 48,
+    "code" : "ORDER-48",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.250023078150669,
+      "longitude" : 1.1549327009170713
+    },
+    "requiredSkills" : [ "Painting-Part", "Exclusive", "Engine-Petrol", "Other", "Glass", "Security", "Electrical", "Hardware", "Painting-Scratches", "Total Damage", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 49,
+    "code" : "ORDER-49",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.328030709685839,
+      "longitude" : 0.8982705555633975
+    },
+    "requiredSkills" : [ "Total Damage", "Security", "Glass", "Engine-Petrol", "Other", "Engine-Diesel", "Electrical", "Painting-Part", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 50,
+    "code" : "ORDER-50",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 4.379999792634329,
+      "longitude" : 1.0709067936654044
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 51,
+    "code" : "ORDER-51",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.267819084948221,
+      "longitude" : 1.2383957770048466
+    },
+    "requiredSkills" : [ "Glass", "Total Damage", "Electrical", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 52,
+    "code" : "ORDER-52",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.236279324314135,
+      "longitude" : 0.9186580317974377
+    },
+    "requiredSkills" : [ "Electrical", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 53,
+    "code" : "ORDER-53",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 4.166911355401914,
+      "longitude" : 1.1764106039443276
+    },
+    "requiredSkills" : [ "Other", "Security", "Glass", "Engine-Petrol", "Electrical", "Engine-Diesel", "Hardware", "Exclusive", "Painting-Part" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 54,
+    "code" : "ORDER-54",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.176580374725858,
+      "longitude" : 0.9386687967470256
+    },
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 55,
+    "code" : "ORDER-55",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.2987860828437885,
+      "longitude" : 0.9523586318427105
+    },
+    "requiredSkills" : [ "Hardware", "Painting-Part", "Exclusive", "Electrical", "Engine-Petrol", "Glass", "Engine-Diesel", "Total Damage", "Security", "Painting-Scratches", "Other" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 56,
+    "code" : "ORDER-56",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 4.292266564186894,
+      "longitude" : 0.9128090808602507
+    },
+    "requiredSkills" : [ "Exclusive", "Electrical", "Engine-Diesel", "Other", "Painting-Scratches", "Glass", "Security", "Total Damage", "Hardware", "Painting-Part", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 57,
+    "code" : "ORDER-57",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 4.382250305249448,
+      "longitude" : 1.1898677366209234
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Total Damage", "Exclusive", "Security", "Engine-Petrol", "Glass", "Electrical", "Painting-Part", "Hardware", "Other", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 58,
+    "code" : "ORDER-58",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 4.159188467720768,
+      "longitude" : 0.9468270276970726
+    },
+    "requiredSkills" : [ "Painting-Part", "Hardware", "Exclusive", "Painting-Scratches", "Security", "Other", "Engine-Petrol", "Engine-Diesel", "Electrical" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 59,
+    "code" : "ORDER-59",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 4.296671358607229,
+      "longitude" : 0.9676859749819895
+    },
+    "requiredSkills" : [ "Glass", "Painting-Scratches", "Painting-Part", "Electrical", "Engine-Diesel", "Security", "Hardware", "Exclusive", "Engine-Petrol", "Total Damage", "Other" ],
     "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 60,
+    "code" : "ORDER-60",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 4.408905143232818,
+      "longitude" : 1.1630462957133438
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 61,
+    "code" : "ORDER-61",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.446004754550258,
+      "longitude" : 1.0641520657392003
+    },
+    "requiredSkills" : [ "Exclusive", "Painting-Scratches", "Engine-Diesel", "Engine-Petrol", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 62,
+    "code" : "ORDER-62",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 4.416416787749289,
+      "longitude" : 1.1324832606499653
+    },
+    "requiredSkills" : [ "Hardware", "Security", "Engine-Diesel", "Exclusive", "Glass" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 63,
+    "code" : "ORDER-63",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.294609123214102,
+      "longitude" : 1.0423278921622128
+    },
+    "requiredSkills" : [ "Engine-Diesel", "Total Damage", "Other", "Engine-Petrol", "Painting-Scratches", "Exclusive", "Painting-Part", "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 64,
+    "code" : "ORDER-64",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.330906848500361,
+      "longitude" : 1.0581075901762476
+    },
+    "requiredSkills" : [ "Hardware", "Exclusive", "Painting-Part", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 65,
+    "code" : "ORDER-65",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.138470225709878,
+      "longitude" : 1.1055694379500363
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 66,
+    "code" : "ORDER-66",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 4.422942950692932,
+      "longitude" : 1.1241213760626225
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
     "priority" : "LOW",
     "diagnosisDuration" : "PT1H",
     "customerAvailabilities" : [ {
@@ -1500,74 +1733,1850 @@
       "calendarWeek" : 10,
       "workDay" : 1,
       "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 67,
+    "code" : "ORDER-67",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.337821517638501,
+      "longitude" : 1.0265259049837308
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 68,
+    "code" : "ORDER-68",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.317273074302149,
+      "longitude" : 1.0447375954379396
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 69,
+    "code" : "ORDER-69",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 4.252826922657724,
+      "longitude" : 1.0153221405801798
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 70,
+    "code" : "ORDER-70",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.403577479473787,
+      "longitude" : 1.1528619447470303
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 71,
+    "code" : "ORDER-71",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 4.407645907779425,
+      "longitude" : 1.073073637607944
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 2,
       "startTime" : [ 12, 0 ],
-      "endTime" : [ 15, 0 ]
-    }, {
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 72,
+    "code" : "ORDER-72",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.246926446563351,
+      "longitude" : 1.042585524546916
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 73,
+    "code" : "ORDER-73",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.236797473589322,
+      "longitude" : 0.9433462399748747
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 74,
+    "code" : "ORDER-74",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.24420258973887,
+      "longitude" : 1.1632901274232383
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 3,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
-    }, {
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 75,
+    "code" : "ORDER-75",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 4.391478775549999,
+      "longitude" : 1.0174915350093965
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 76,
+    "code" : "ORDER-76",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.253267366650429,
+      "longitude" : 1.136176179379031
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 77,
+    "code" : "ORDER-77",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.391603486593017,
+      "longitude" : 1.1132799491084557
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 78,
+    "code" : "ORDER-78",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.458578228192919,
+      "longitude" : 1.0507931790242995
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 79,
+    "code" : "ORDER-79",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 4.211839883781758,
+      "longitude" : 1.1219663380181608
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 4,
-      "startTime" : [ 9, 45 ],
-      "endTime" : [ 12, 45 ]
-    }, {
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 80,
+    "code" : "ORDER-80",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 4.3003842876234,
+      "longitude" : 1.0129095604834888
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 81,
+    "code" : "ORDER-81",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 4.237778701312441,
+      "longitude" : 0.9829294937921468
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
     } ]
   }, {
-    "id" : 30,
-    "code" : "ORDER-30",
+    "id" : 82,
+    "code" : "ORDER-82",
     "customerId" : 4,
     "location" : {
-      "latitude" : 8.069780598006643,
-      "longitude" : 3.905289963629402
+      "latitude" : 4.304067471245257,
+      "longitude" : 1.207698651493274
     },
-    "requiredSkills" : [ "Exterior", "Engine-Diesel" ],
-    "dueDate" : [ 2026, 3, 7 ],
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 83,
+    "code" : "ORDER-83",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 4.3405335907965075,
+      "longitude" : 0.9181369736969518
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 84,
+    "code" : "ORDER-84",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 4.166808827314821,
+      "longitude" : 1.0890502872594863
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 6 ],
     "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 85,
+    "code" : "ORDER-85",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 2.866318033347148,
+      "longitude" : 3.6486192427762467
+    },
+    "requiredSkills" : [ "Interior", "Painting-Scratches", "Hardware", "Painting-Part", "Other", "Exterior", "Security", "Total Damage", "Electrical" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 11, 15 ]
+    } ]
+  }, {
+    "id" : 86,
+    "code" : "ORDER-86",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 3.0460419618842454,
+      "longitude" : 3.588074819463158
+    },
+    "requiredSkills" : [ "Other", "Painting-Scratches", "Security", "Total Damage", "Electrical", "Painting-Part", "Exterior", "Hardware", "Interior" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 30 ]
+    } ]
+  }, {
+    "id" : 87,
+    "code" : "ORDER-87",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 2.9492252784326607,
+      "longitude" : 3.474466489203548
+    },
+    "requiredSkills" : [ "Other", "Painting-Part", "Electrical", "Exterior", "Security", "Total Damage", "Interior", "Painting-Scratches", "Hardware" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 11, 0 ]
+    } ]
+  }, {
+    "id" : 88,
+    "code" : "ORDER-88",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.851592547525941,
+      "longitude" : 3.723718779149151
+    },
+    "requiredSkills" : [ "Exterior" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 15 ]
+    } ]
+  }, {
+    "id" : 89,
+    "code" : "ORDER-89",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 3.036458994267696,
+      "longitude" : 3.5597214663627006
+    },
+    "requiredSkills" : [ "Interior", "Painting-Scratches", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 11, 30 ]
+    } ]
+  }, {
+    "id" : 90,
+    "code" : "ORDER-90",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 2.8936665447423033,
+      "longitude" : 3.525716246634664
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 15 ],
+      "endTime" : [ 11, 15 ]
+    } ]
+  }, {
+    "id" : 91,
+    "code" : "ORDER-91",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.9378140826266606,
+      "longitude" : 3.457588626513269
+    },
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 30 ]
+    } ]
+  }, {
+    "id" : 92,
+    "code" : "ORDER-92",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.944907213615248,
+      "longitude" : 3.605375591214807
+    },
+    "requiredSkills" : [ "Total Damage", "Electrical", "Engine-Petrol", "Engine-Diesel", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 11, 0 ]
+    } ]
+  }, {
+    "id" : 93,
+    "code" : "ORDER-93",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.786736755996007,
+      "longitude" : 3.6914734675301766
+    },
+    "requiredSkills" : [ "Engine-Diesel" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 15 ]
+    } ]
+  }, {
+    "id" : 94,
+    "code" : "ORDER-94",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 2.8681134357363756,
+      "longitude" : 3.4662025810419603
+    },
+    "requiredSkills" : [ "Electrical", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 15 ]
+    } ]
+  }, {
+    "id" : 95,
+    "code" : "ORDER-95",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 2.8124707050356066,
+      "longitude" : 3.505577061448965
+    },
+    "requiredSkills" : [ "Electrical", "Engine-Diesel", "Engine-Petrol", "Painting-Scratches", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 30 ],
+      "endTime" : [ 11, 30 ]
+    } ]
+  }, {
+    "id" : 96,
+    "code" : "ORDER-96",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 2.7429649772428335,
+      "longitude" : 3.651325290633837
+    },
+    "requiredSkills" : [ "Hardware" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
     "diagnosisDuration" : "PT1H30M",
     "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 1,
       "startTime" : [ 9, 0 ],
-      "endTime" : [ 12, 0 ]
-    }, {
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 97,
+    "code" : "ORDER-97",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 2.962982656639819,
+      "longitude" : 3.516271467858165
+    },
+    "requiredSkills" : [ "Painting-Part", "Exclusive", "Other", "Interior", "Painting-Scratches", "Exterior", "Software" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 98,
+    "code" : "ORDER-98",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.8274726350950043,
+      "longitude" : 3.534483135581122
+    },
+    "requiredSkills" : [ "Other", "Interior", "Painting-Part", "Exterior", "Electrical", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 99,
+    "code" : "ORDER-99",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.804104592274194,
+      "longitude" : 3.6151253063452913
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Painting-Part" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 100,
+    "code" : "ORDER-100",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 2.751907660949409,
+      "longitude" : 3.664970651743727
+    },
+    "requiredSkills" : [ "Electrical" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 101,
+    "code" : "ORDER-101",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.83230785772139,
+      "longitude" : 3.456015979493362
+    },
+    "requiredSkills" : [ "Painting-Part", "Hardware", "Exclusive", "Interior" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 102,
+    "code" : "ORDER-102",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 2.9069860568353647,
+      "longitude" : 3.6423428460249303
+    },
+    "requiredSkills" : [ "Interior", "Software", "Hardware" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 2,
-      "startTime" : [ 10, 30 ],
-      "endTime" : [ 13, 30 ]
-    }, {
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 103,
+    "code" : "ORDER-103",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.828038936887547,
+      "longitude" : 3.5913194852064376
+    },
+    "requiredSkills" : [ "Interior", "Exterior", "Painting-Scratches", "Hardware", "Painting-Part", "Other", "Software" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 104,
+    "code" : "ORDER-104",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.983283417870313,
+      "longitude" : 3.7106457975414426
+    },
+    "requiredSkills" : [ "Hardware", "Exterior", "Electrical" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 105,
+    "code" : "ORDER-105",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.700269977974427,
+      "longitude" : 3.5870584009569617
+    },
+    "requiredSkills" : [ "Exclusive", "Hardware", "Exterior", "Other", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 106,
+    "code" : "ORDER-106",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.9320059217584737,
+      "longitude" : 3.4343339762816463
+    },
+    "requiredSkills" : [ "Exclusive", "Interior", "Painting-Part", "Software", "Exterior", "Hardware", "Electrical", "Other" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 107,
+    "code" : "ORDER-107",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.8862641228821913,
+      "longitude" : 3.6827472598104243
+    },
+    "requiredSkills" : [ "Software", "Hardware", "Exterior", "Painting-Part", "Electrical" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 3,
-      "startTime" : [ 13, 30 ],
-      "endTime" : [ 16, 30 ]
-    }, {
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 108,
+    "code" : "ORDER-108",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 2.7994841706860054,
+      "longitude" : 3.7217762296074026
+    },
+    "requiredSkills" : [ "Exterior" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 109,
+    "code" : "ORDER-109",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 3.047844239211507,
+      "longitude" : 3.578342911813352
+    },
+    "requiredSkills" : [ "Electrical", "Painting-Part", "Hardware", "Exterior", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 110,
+    "code" : "ORDER-110",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 2.8619643965636423,
+      "longitude" : 3.6161294185601505
+    },
+    "requiredSkills" : [ "Exterior", "Other", "Painting-Part", "Software", "Interior" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 111,
+    "code" : "ORDER-111",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 3.018406041017604,
+      "longitude" : 3.6485204453829203
+    },
+    "requiredSkills" : [ "Painting-Part", "Exterior", "Hardware" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 4,
-      "startTime" : [ 11, 45 ],
-      "endTime" : [ 14, 45 ]
-    }, {
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 112,
+    "code" : "ORDER-112",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.8672080835837,
+      "longitude" : 3.525889752992129
+    },
+    "requiredSkills" : [ "Painting-Part", "Hardware", "Exterior", "Electrical", "Exclusive", "Other", "Painting-Scratches", "Software" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 113,
+    "code" : "ORDER-113",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 3.0134197534275637,
+      "longitude" : 3.6816628179256923
+    },
+    "requiredSkills" : [ "Software", "Painting-Scratches", "Exterior", "Hardware", "Interior", "Other", "Exclusive", "Painting-Part" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 114,
+    "code" : "ORDER-114",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 2.7117882696375744,
+      "longitude" : 3.639550424732512
+    },
+    "requiredSkills" : [ "Exterior", "Painting-Part", "Painting-Scratches", "Interior" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 115,
+    "code" : "ORDER-115",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.994127663707194,
+      "longitude" : 3.564292171319307
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Exclusive", "Painting-Part", "Software", "Hardware" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 116,
+    "code" : "ORDER-116",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.885014294552656,
+      "longitude" : 3.6418027257101904
+    },
+    "requiredSkills" : [ "Software", "Painting-Scratches", "Interior", "Other", "Exclusive", "Hardware", "Exterior", "Painting-Part", "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
       "year" : 2026,
       "calendarWeek" : 10,
       "workDay" : 5,
-      "startTime" : [ 10, 0 ],
-      "endTime" : [ 13, 0 ]
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 117,
+    "code" : "ORDER-117",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 2.9122192044497615,
+      "longitude" : 3.475503521539342
+    },
+    "requiredSkills" : [ "Electrical", "Painting-Scratches", "Exclusive", "Software", "Exterior", "Interior", "Painting-Part" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 118,
+    "code" : "ORDER-118",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.966579870833471,
+      "longitude" : 3.670586123451502
+    },
+    "requiredSkills" : [ "Exclusive", "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 119,
+    "code" : "ORDER-119",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.8203448426359023,
+      "longitude" : 3.4838593458065428
+    },
+    "requiredSkills" : [ "Hardware", "Exterior" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 120,
+    "code" : "ORDER-120",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.795753132337449,
+      "longitude" : 3.450267694000003
+    },
+    "requiredSkills" : [ "Hardware", "Electrical", "Security" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 121,
+    "code" : "ORDER-121",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 2.959546795085585,
+      "longitude" : 3.6508891791748734
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Interior", "Total Damage", "Exclusive", "Painting-Part", "Engine-Petrol", "Other", "Glass", "Engine-Diesel", "Hardware" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 122,
+    "code" : "ORDER-122",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 3.0096460563061034,
+      "longitude" : 3.515823698666253
+    },
+    "requiredSkills" : [ "Software", "Electrical", "Interior", "Other", "Painting-Scratches", "Hardware", "Security" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 123,
+    "code" : "ORDER-123",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 3.0039505065401357,
+      "longitude" : 3.6904713509943234
+    },
+    "requiredSkills" : [ "Painting-Scratches", "Security", "Engine-Petrol", "Other", "Hardware", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 124,
+    "code" : "ORDER-124",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.8226596935435966,
+      "longitude" : 3.473147842073666
+    },
+    "requiredSkills" : [ "Engine-Diesel", "Total Damage", "Other", "Hardware", "Security", "Glass", "Painting-Scratches", "Engine-Petrol", "Exterior", "Interior", "Painting-Part", "Exclusive", "Software", "Electrical" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 125,
+    "code" : "ORDER-125",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.9054512283620766,
+      "longitude" : 3.608678294664298
+    },
+    "requiredSkills" : [ "Hardware", "Interior", "Exclusive", "Other", "Software", "Engine-Petrol", "Security", "Exterior" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 126,
+    "code" : "ORDER-126",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 2.788154630580559,
+      "longitude" : 3.6566680173234416
+    },
+    "requiredSkills" : [ "Exclusive", "Security", "Exterior" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 127,
+    "code" : "ORDER-127",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.9146975485449604,
+      "longitude" : 3.7033453033529966
+    },
+    "requiredSkills" : [ "Exclusive", "Other", "Painting-Part", "Hardware", "Software", "Exterior", "Painting-Scratches", "Total Damage", "Security" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 128,
+    "code" : "ORDER-128",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 3.0343018594169497,
+      "longitude" : 3.616669453616294
+    },
+    "requiredSkills" : [ "Total Damage", "Exclusive", "Security", "Interior", "Hardware", "Glass", "Electrical", "Engine-Petrol" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 129,
+    "code" : "ORDER-129",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 2.910824024965255,
+      "longitude" : 3.5316404623100435
+    },
+    "requiredSkills" : [ "Other", "Software", "Glass", "Interior", "Hardware", "Engine-Diesel", "Painting-Scratches", "Electrical", "Total Damage", "Engine-Petrol", "Security", "Exclusive", "Painting-Part", "Exterior" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 130,
+    "code" : "ORDER-130",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 2.8150865022444025,
+      "longitude" : 3.671487435184003
+    },
+    "requiredSkills" : [ "Interior", "Hardware", "Other", "Exterior", "Painting-Scratches", "Exclusive", "Engine-Diesel", "Glass" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 131,
+    "code" : "ORDER-131",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.921517098136763,
+      "longitude" : 3.5900249475522172
+    },
+    "requiredSkills" : [ "Exterior", "Total Damage", "Exclusive", "Hardware", "Interior", "Software", "Electrical" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 132,
+    "code" : "ORDER-132",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 3.0135258868743775,
+      "longitude" : 3.6280773102681514
+    },
+    "requiredSkills" : [ "Security", "Interior", "Glass", "Engine-Diesel", "Painting-Part", "Exclusive" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 133,
+    "code" : "ORDER-133",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 2.9371487824818945,
+      "longitude" : 3.507920669858991
+    },
+    "requiredSkills" : [ "Software", "Interior", "Total Damage", "Hardware", "Engine-Petrol", "Exterior", "Other", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 134,
+    "code" : "ORDER-134",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.823439712356953,
+      "longitude" : 3.602018463241559
+    },
+    "requiredSkills" : [ "Exterior" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 135,
+    "code" : "ORDER-135",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.888886917635832,
+      "longitude" : 3.4496410371498856
+    },
+    "requiredSkills" : [ "Exclusive", "Electrical", "Software", "Interior", "Security", "Engine-Diesel", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 136,
+    "code" : "ORDER-136",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 2.7542761175650727,
+      "longitude" : 3.618144059038122
+    },
+    "requiredSkills" : [ "Electrical", "Software", "Hardware", "Painting-Part", "Engine-Diesel", "Security", "Engine-Petrol", "Painting-Scratches", "Glass", "Exterior" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 137,
+    "code" : "ORDER-137",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.958066543744756,
+      "longitude" : 3.6048599160230927
+    },
+    "requiredSkills" : [ "Hardware" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 138,
+    "code" : "ORDER-138",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 2.9497086710573974,
+      "longitude" : 3.4775440629692547
+    },
+    "requiredSkills" : [ "Engine-Petrol", "Interior", "Glass", "Painting-Scratches", "Hardware", "Other", "Electrical" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 139,
+    "code" : "ORDER-139",
+    "customerId" : 3,
+    "location" : {
+      "latitude" : 2.87018319647415,
+      "longitude" : 3.452445310531265
+    },
+    "requiredSkills" : [ "Exclusive", "Painting-Part", "Engine-Diesel", "Painting-Scratches", "Interior", "Other" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 140,
+    "code" : "ORDER-140",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.8564542546183236,
+      "longitude" : 3.756654528288137
+    },
+    "requiredSkills" : [ "Painting-Part", "Other", "Exterior", "Exclusive", "Electrical", "Security", "Interior", "Painting-Scratches", "Total Damage", "Hardware", "Engine-Petrol", "Glass" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 141,
+    "code" : "ORDER-141",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 2.7299072760743375,
+      "longitude" : 3.6388258498572865
+    },
+    "requiredSkills" : [ "Electrical", "Security", "Engine-Petrol", "Other", "Interior", "Exterior", "Painting-Scratches" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 142,
+    "code" : "ORDER-142",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 2.8881972686012074,
+      "longitude" : 3.5189713868142167
+    },
+    "requiredSkills" : [ "Total Damage", "Painting-Part", "Software", "Electrical", "Engine-Diesel", "Security", "Glass" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 143,
+    "code" : "ORDER-143",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 3.0087961748128698,
+      "longitude" : 3.5743718701312264
+    },
+    "requiredSkills" : [ "Interior", "Hardware", "Software" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 144,
+    "code" : "ORDER-144",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.7880088609153666,
+      "longitude" : 3.5020655047872773
+    },
+    "requiredSkills" : [ "Hardware", "Interior", "Software", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 145,
+    "code" : "ORDER-145",
+    "customerId" : 9,
+    "location" : {
+      "latitude" : 2.9558247148484,
+      "longitude" : 3.562706017724188
+    },
+    "requiredSkills" : [ "Hardware", "Interior" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 146,
+    "code" : "ORDER-146",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 2.9579708544806724,
+      "longitude" : 3.7073823105809884
+    },
+    "requiredSkills" : [ "Total Damage", "Hardware", "Software" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 147,
+    "code" : "ORDER-147",
+    "customerId" : 1,
+    "location" : {
+      "latitude" : 2.8820936928145913,
+      "longitude" : 3.606450534251439
+    },
+    "requiredSkills" : [ "Hardware", "Total Damage", "Interior" ],
+    "dueDate" : [ 2026, 3, 2 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 1,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 148,
+    "code" : "ORDER-148",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 2.772819552028374,
+      "longitude" : 3.5507000665242074
+    },
+    "requiredSkills" : [ "Software", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 149,
+    "code" : "ORDER-149",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.794141833016157,
+      "longitude" : 3.549307493912733
+    },
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 150,
+    "code" : "ORDER-150",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.9283938013259316,
+      "longitude" : 3.6223144188264067
+    },
+    "requiredSkills" : [ "Total Damage", "Hardware", "Software" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 151,
+    "code" : "ORDER-151",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 2.8948886468503354,
+      "longitude" : 3.539428390632152
+    },
+    "requiredSkills" : [ "Interior", "Software", "Hardware", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 3 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 2,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 152,
+    "code" : "ORDER-152",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.823326990181798,
+      "longitude" : 3.657077139088869
+    },
+    "requiredSkills" : [ "Interior", "Hardware" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 153,
+    "code" : "ORDER-153",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 3.0235407097605482,
+      "longitude" : 3.5191967502886126
+    },
+    "requiredSkills" : [ "Interior" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 154,
+    "code" : "ORDER-154",
+    "customerId" : 4,
+    "location" : {
+      "latitude" : 2.749617042808086,
+      "longitude" : 3.457068777984088
+    },
+    "requiredSkills" : [ "Hardware", "Interior", "Software" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 155,
+    "code" : "ORDER-155",
+    "customerId" : 7,
+    "location" : {
+      "latitude" : 2.9543248771519135,
+      "longitude" : 3.6957662037981893
+    },
+    "requiredSkills" : [ "Interior", "Hardware", "Total Damage", "Software" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 156,
+    "code" : "ORDER-156",
+    "customerId" : 6,
+    "location" : {
+      "latitude" : 2.7743526379621706,
+      "longitude" : 3.667951918841158
+    },
+    "requiredSkills" : [ "Total Damage" ],
+    "dueDate" : [ 2026, 3, 4 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 3,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 157,
+    "code" : "ORDER-157",
+    "customerId" : 8,
+    "location" : {
+      "latitude" : 2.7119836129906094,
+      "longitude" : 3.610431891614541
+    },
+    "requiredSkills" : [ "Software", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 9, 0 ],
+      "endTime" : [ 10, 0 ]
+    } ]
+  }, {
+    "id" : 158,
+    "code" : "ORDER-158",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.8037128735919663,
+      "longitude" : 3.4379010241882413
+    },
+    "requiredSkills" : [ "Interior", "Hardware", "Total Damage" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 159,
+    "code" : "ORDER-159",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.8767528251837198,
+      "longitude" : 3.754222512478686
+    },
+    "requiredSkills" : [ "Total Damage", "Interior" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 160,
+    "code" : "ORDER-160",
+    "customerId" : 10,
+    "location" : {
+      "latitude" : 2.9043983616337394,
+      "longitude" : 3.4282932596306552
+    },
+    "requiredSkills" : [ "Interior", "Software" ],
+    "dueDate" : [ 2026, 3, 5 ],
+    "priority" : "HIGH",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 4,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 161,
+    "code" : "ORDER-161",
+    "customerId" : 2,
+    "location" : {
+      "latitude" : 2.8914923352569066,
+      "longitude" : 3.494368538805922
+    },
+    "requiredSkills" : [ "Total Damage", "Software" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "MEDIUM",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 162,
+    "code" : "ORDER-162",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.8389239080181907,
+      "longitude" : 3.7361645182683536
+    },
+    "requiredSkills" : [ "Software" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT30M",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
+    } ]
+  }, {
+    "id" : 163,
+    "code" : "ORDER-163",
+    "customerId" : 5,
+    "location" : {
+      "latitude" : 2.757612771566243,
+      "longitude" : 3.6767157997076505
+    },
+    "requiredSkills" : [ "Hardware", "Software" ],
+    "dueDate" : [ 2026, 3, 6 ],
+    "priority" : "LOW",
+    "diagnosisDuration" : "PT1H",
+    "customerAvailabilities" : [ {
+      "year" : 2026,
+      "calendarWeek" : 10,
+      "workDay" : 5,
+      "startTime" : [ 12, 0 ],
+      "endTime" : [ 14, 0 ]
     } ]
   } ]
 }
