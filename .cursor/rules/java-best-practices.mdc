@@ -11,6 +11,12 @@ alwaysApply: false
 - Keep methods **at most 20–25 lines** (excluding blanks and braces). Extract helpers when logic grows.
 - One clear responsibility per method. Prefer early returns over deep nesting.
 
+## Imports
+
+- Static methods are above all other methods at the beginning of the class
+- Static methods are ordered by visibility (public, package protected, protected, private)
+- Non static methods are also ordered by visibility
+
 ## Naming
 
 - Use **talkative names** that state intent: `partitionExpertsByBackOffice`, not `doPartition` or `pe`.
