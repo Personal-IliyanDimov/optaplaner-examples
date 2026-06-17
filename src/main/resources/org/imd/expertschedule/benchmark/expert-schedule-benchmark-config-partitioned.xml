@@ -18,6 +18,7 @@
             <entityClass>org.imd.expertschedule.planner.domain.ScheduleItem</entityClass>
             <scoreDirectorFactory>
                 <constraintProviderClass>org.imd.expertschedule.planner.cp.ExpertPlanningConstraintProvider</constraintProviderClass>
+                <constraintStreamImplType>BAVET</constraintStreamImplType>
                 <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
             </scoreDirectorFactory>
             <termination>
